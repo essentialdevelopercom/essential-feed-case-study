@@ -61,6 +61,17 @@
                ReferencedContainer = "container:EssentialFeed.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            testExecutionOrdering = "random">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0832C67C22A0223A00E1C5E9"
+               BuildableName = "EssentialFeedCacheIntegrationTests.xctest"
+               BlueprintName = "EssentialFeedCacheIntegrationTests"
+               ReferencedContainer = "container:EssentialFeed.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

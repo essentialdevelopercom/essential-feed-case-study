@@ -108,12 +108,12 @@ class URLSessionHTTPClientTests: XCTestCase {
 		}
 	}
 	
-	private func resultFor(data: Data?, response: URLResponse?, error: Error?, file: StaticString = #file, line: UInt = #line) -> HTTPClientResult {
+	private func resultFor(data: Data?, response: URLResponse?, error: Error?, file: StaticString = #file, line: UInt = #line) -> HTTPClient.Result {
 		URLProtocolStub.stub(data: data, response: response, error: error)
 		let sut = makeSUT(file: file, line: line)
 		let exp = expectation(description: "Wait for completion")
 		
-		var receivedResult: HTTPClientResult!
+		var receivedResult: HTTPClient.Result!
 		sut.get(from: anyURL()) { result in
 			receivedResult = result
 			exp.fulfill()
@@ -124,7 +124,7 @@ class URLSessionHTTPClientTests: XCTestCase {
 	}
 		
 	private func anyData() -> Data {
-		return Data(bytes: "any data".utf8)
+		return Data("any data".utf8)
 	}
 		
 	private func anyHTTPURLResponse() -> HTTPURLResponse {

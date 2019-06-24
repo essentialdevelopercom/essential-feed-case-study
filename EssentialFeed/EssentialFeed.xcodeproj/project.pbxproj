@@ -44,6 +44,7 @@
 		089C40DE22170F2300DE552E /* FeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 089C40DD22170F2300DE552E /* FeedStore.swift */; };
 		08B42EA421C3F09A00DDA349 /* RemoteFeedLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B42EA321C3F09A00DDA349 /* RemoteFeedLoader.swift */; };
 		08BB7EA622C1347800F8B83C /* FeedViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BB7EA522C1347800F8B83C /* FeedViewControllerTests.swift */; };
+		08BB7EA822C1381600F8B83C /* EssentialFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080EDEF121B6DA7E00813479 /* EssentialFeed.framework */; };
 		08C0880C21E4EED600ACFB30 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C0880B21E4EED600ACFB30 /* HTTPClient.swift */; };
 		08C0880E21E4EF2900ACFB30 /* FeedItemsMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C0880D21E4EF2900ACFB30 /* FeedItemsMapper.swift */; };
 		08D917A922B92A5D003BC31B /* EssentialFeediOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08D917A022B92A5D003BC31B /* EssentialFeediOS.framework */; };
@@ -167,6 +168,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08BB7EA822C1381600F8B83C /* EssentialFeed.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,6 +193,7 @@
 				08D917A122B92A5D003BC31B /* EssentialFeediOS */,
 				08D917AC22B92A5D003BC31B /* EssentialFeediOSTests */,
 				080EDEF221B6DA7E00813479 /* Products */,
+				08BB7EA722C1381600F8B83C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -341,6 +344,13 @@
 				0844769021FCBE7D00439BE9 /* URLSessionHTTPClient.swift */,
 			);
 			path = "Feed API";
+			sourceTree = "<group>";
+		};
+		08BB7EA722C1381600F8B83C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		08C0880F21E4F53000ACFB30 /* Feed API */ = {

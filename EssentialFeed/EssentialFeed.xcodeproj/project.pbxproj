@@ -55,6 +55,7 @@
 		08DDC13A21BEA99E00F490ED /* LoadFeedFromRemoteUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DDC13921BEA99E00F490ED /* LoadFeedFromRemoteUseCaseTests.swift */; };
 		08E5941522523FCC00E2D213 /* FeedCachePolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E5941422523FCC00E2D213 /* FeedCachePolicy.swift */; };
 		08EFB82322D4A4E500A46837 /* UIImage+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EFB82222D4A4E500A46837 /* UIImage+TestHelpers.swift */; };
+		08EFB82522D4A52F00A46837 /* UIRefreshControl+TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EFB82422D4A52F00A46837 /* UIRefreshControl+TestHelpers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -139,6 +140,7 @@
 		08DDC13921BEA99E00F490ED /* LoadFeedFromRemoteUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadFeedFromRemoteUseCaseTests.swift; sourceTree = "<group>"; };
 		08E5941422523FCC00E2D213 /* FeedCachePolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCachePolicy.swift; sourceTree = "<group>"; };
 		08EFB82222D4A4E500A46837 /* UIImage+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+TestHelpers.swift"; sourceTree = "<group>"; };
+		08EFB82422D4A52F00A46837 /* UIRefreshControl+TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+TestHelpers.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -396,6 +398,7 @@
 			isa = PBXGroup;
 			children = (
 				08EFB82222D4A4E500A46837 /* UIImage+TestHelpers.swift */,
+				08EFB82422D4A52F00A46837 /* UIRefreshControl+TestHelpers.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -713,6 +716,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08BB7EA622C1347800F8B83C /* FeedViewControllerTests.swift in Sources */,
+				08EFB82522D4A52F00A46837 /* UIRefreshControl+TestHelpers.swift in Sources */,
 				08BB7EA922C138AC00F8B83C /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 				08EFB82322D4A4E500A46837 /* UIImage+TestHelpers.swift in Sources */,
 			);

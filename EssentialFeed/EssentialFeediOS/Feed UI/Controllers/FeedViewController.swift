@@ -3,7 +3,6 @@
 //
 
 import UIKit
-import EssentialFeed
 
 public final class FeedViewController: UITableViewController, UITableViewDataSourcePrefetching {
 	private var refreshController: FeedRefreshViewController?

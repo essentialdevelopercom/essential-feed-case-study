@@ -1,2 +1,3 @@
 
 "FEED_VIEW_TITLE" = "Meu Feed";
+"FEED_VIEW_CONNECTION_ERROR" = "Não foi possível conectar com o servidor";

@@ -316,9 +316,9 @@
 			isa = PBXGroup;
 			children = (
 				080EDEF521B6DA7E00813479 /* Info.plist */,
-				089C40DA22170EB200DE552E /* Feed Cache */,
 				080EDF1021B6DFA200813479 /* Feed Feature */,
 				08B42EA221C3F08A00DDA349 /* Feed API */,
+				089C40DA22170EB200DE552E /* Feed Cache */,
 				087148B4232BEA9100D6BE1A /* Feed Presentation */,
 			);
 			path = EssentialFeed;
@@ -329,8 +329,8 @@
 			children = (
 				080EDF0121B6DA7E00813479 /* Info.plist */,
 				0844768D21FCB23900439BE9 /* Helpers */,
-				089C40D22216C32600DE552E /* Feed Cache */,
 				08C0880F21E4F53000ACFB30 /* Feed API */,
+				089C40D22216C32600DE552E /* Feed Cache */,
 				087148AA232BDF4B00D6BE1A /* Feed Presentation */,
 			);
 			path = EssentialFeedTests;

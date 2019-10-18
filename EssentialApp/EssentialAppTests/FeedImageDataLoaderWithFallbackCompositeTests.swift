@@ -14,14 +14,17 @@ class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
 		self.fallback = fallback
 	}
 	
-	private class Task: FeedImageDataLoaderTask {
+	private class TaskWrapper: FeedImageDataLoaderTask {
+		var wrapped: FeedImageDataLoaderTask?
+		
 		func cancel() {
-			
+			wrapped?.cancel()
 		}
 	}
 
 	func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
-		_ = primary.loadImageData(from: url) { [weak self] result in
+		let task = TaskWrapper()
+		task.wrapped = primary.loadImageData(from: url) { [weak self] result in
 			switch result {
 			case .success:
 				break
@@ -31,7 +34,7 @@ class FeedImageDataLoaderWithFallbackComposite: FeedImageDataLoader {
 			}
 
 		}
-		return Task()
+		return task
 	}
 }
 
@@ -65,6 +68,17 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
 		XCTAssertEqual(primaryLoader.loadedURLs, [url], "Expected to load URL from primary loader")
 		XCTAssertEqual(fallbackLoader.loadedURLs, [url], "Expected to load URL from fallback loader")
 	}
+	
+	func test_cancelLoadImageData_cancelsPrimaryLoaderTask() {
+		let url = anyURL()
+		let (sut, primaryLoader, fallbackLoader) = makeSUT()
+
+		let task = sut.loadImageData(from: url) { _ in }
+		task.cancel()
+		
+		XCTAssertEqual(primaryLoader.cancelledURLs, [url], "Expected to cancel URL loading from primary loader")
+		XCTAssertTrue(fallbackLoader.cancelledURLs.isEmpty, "Expected no cancelled URLs in the fallback loader")
+	}
 		
 	// MARK: - Helpers
 	
@@ -95,17 +109,22 @@ class FeedImageDataLoaderWithFallbackCompositeTests: XCTestCase {
 	private class LoaderSpy: FeedImageDataLoader {
 		private var messages = [(url: URL, completion: (FeedImageDataLoader.Result) -> Void)]()
 
+		private(set) var cancelledURLs = [URL]()
+
 		var loadedURLs: [URL] {
 			return messages.map { $0.url }
 		}
 
 		private struct Task: FeedImageDataLoaderTask {
-			func cancel() {}
+			let callback: () -> Void
+			func cancel() { callback() }
 		}
-		
+
 		func loadImageData(from url: URL, completion: @escaping (FeedImageDataLoader.Result) -> Void) -> FeedImageDataLoaderTask {
 			messages.append((url, completion))
-			return Task()
+			return Task { [weak self] in
+				self?.cancelledURLs.append(url)
+			}
 		}
 		
 		func complete(with error: Error, at index: Int = 0) {

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0800314723B68FAB00720217 /* UIViewController+Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0800314623B68FAB00720217 /* UIViewController+Snapshot.swift */; };
 		0804862E236345A40087ED48 /* FeedImageDataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0804862D236345A40087ED48 /* FeedImageDataCache.swift */; };
 		080EDEFB21B6DA7E00813479 /* EssentialFeed.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 080EDEF121B6DA7E00813479 /* EssentialFeed.framework */; };
 		080EDF0C21B6DAE800813479 /* FeedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 080EDF0B21B6DAE800813479 /* FeedImage.swift */; };
@@ -123,6 +124,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0800314623B68FAB00720217 /* UIViewController+Snapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Snapshot.swift"; sourceTree = "<group>"; };
 		0804862D236345A40087ED48 /* FeedImageDataCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataCache.swift; sourceTree = "<group>"; };
 		080EDEF121B6DA7E00813479 /* EssentialFeed.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = EssentialFeed.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		080EDEF521B6DA7E00813479 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -370,6 +372,7 @@
 			isa = PBXGroup;
 			children = (
 				086AEFBB23A7E5C300EE8933 /* UIImage+TestHelpers.swift */,
+				0800314623B68FAB00720217 /* UIViewController+Snapshot.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -919,6 +922,7 @@
 			files = (
 				08BB7EA922C138AC00F8B83C /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 				086AEFB923A7DFA400EE8933 /* FeedSnapshotTests.swift in Sources */,
+				0800314723B68FAB00720217 /* UIViewController+Snapshot.swift in Sources */,
 				086AEFBC23A7E5C300EE8933 /* UIImage+TestHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

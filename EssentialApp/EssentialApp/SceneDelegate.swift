@@ -3,7 +3,6 @@
 //
 
 import UIKit
-import CoreData
 import EssentialFeed
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -14,10 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}()
 	
 	private lazy var store: FeedStore & FeedImageDataStore = {
-		try! CoreDataFeedStore(
-			storeURL: NSPersistentContainer
-				.defaultDirectoryURL()
-				.appendingPathComponent("feed-store.sqlite"))
+        try! CoreDataFeedStore(storeURL: CoreDataFeedStore.storeURL)
 	}()
 
 	private lazy var localFeedLoader: LocalFeedLoader = {

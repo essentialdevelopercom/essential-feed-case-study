@@ -1,0 +1,54 @@
+
+name: Deploy
+
+# Controls when the action will run. Triggers the workflow on push events
+# but only for the master branch
+on:
+  push:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build-and-deploy"
+  build-and-deploy:
+    # The type of runner that the job will run on
+    runs-on: macos-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    - name: Install provisioning profile
+      run: |
+        gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.SECRET_KEY }}" --output .github/deployment/profile.mobileprovision .github/deployment/profile.mobileprovision.gpg
+        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+        cp .github/deployment/profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
+
+    - name: Install keychain certificate
+      run: |
+        gpg --quiet --batch --yes --decrypt --passphrase="${{ secrets.SECRET_KEY }}" --output .github/deployment/certificate.p12 .github/deployment/certificate.p12.gpg
+        security create-keychain -p "" build.keychain
+        security import .github/deployment/certificate.p12 -t agg -k ~/Library/Keychains/build.keychain -P "${{ secrets.CERTIFICATE_PASSWORD }}" -A
+        security list-keychains -s ~/Library/Keychains/build.keychain
+        security default-keychain -s ~/Library/Keychains/build.keychain
+        security unlock-keychain -p "" ~/Library/Keychains/build.keychain
+        security set-key-partition-list -S apple-tool:,apple: -s -k "" ~/Library/Keychains/build.keychain
+
+    - name: Select Xcode
+      run: sudo xcode-select -switch /Applications/Xcode_11.4.1.app
+      
+    - name: Xcode version
+      run: /usr/bin/xcodebuild -version
+
+    - name: Set build number
+      run: /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $GITHUB_RUN_NUMBER" "EssentialApp/EssentialApp/Info.plist"
+
+    - name: Build
+      run: xcodebuild clean archive -sdk iphoneos -workspace EssentialApp/EssentialApp.xcworkspace -configuration "Release" -scheme "EssentialApp" -derivedDataPath "DerivedData" -archivePath "DerivedData/Archive/EssentialApp.xcarchive"
+    
+    - name: Export
+      run: xcodebuild -exportArchive -archivePath DerivedData/Archive/EssentialApp.xcarchive -exportOptionsPlist .github/deployment/ExportOptions.plist -exportPath DerivedData/ipa
+      
+    - name: Deploy
+      run: xcrun altool --upload-app --type ios --file "DerivedData/ipa/EssentialApp.ipa" --username "${{ secrets.APPSTORE_USERNAME }}" --password "${{ secrets.APPSTORE_PASSWORD }}" --verbose

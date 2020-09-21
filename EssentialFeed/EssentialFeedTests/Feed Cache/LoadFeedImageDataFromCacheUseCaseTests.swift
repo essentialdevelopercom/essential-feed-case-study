@@ -78,7 +78,7 @@ class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
 	
 	// MARK: - Helpers
 	
-	private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #file, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: FeedImageDataStoreSpy) {
+	private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedImageDataLoader, store: FeedImageDataStoreSpy) {
 		let store = FeedImageDataStoreSpy()
 		let sut = LocalFeedImageDataLoader(store: store)
 		trackForMemoryLeaks(store, file: file, line: line)
@@ -94,11 +94,11 @@ class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
 		return .failure(LocalFeedImageDataLoader.LoadError.notFound)
 	}
 	
-	private func never(file: StaticString = #file, line: UInt = #line) {
+	private func never(file: StaticString = #filePath, line: UInt = #line) {
 		XCTFail("Expected no no invocations", file: file, line: line)
 	}
 
-	private func expect(_ sut: LocalFeedImageDataLoader, toCompleteWith expectedResult: FeedImageDataLoader.Result, when action: () -> Void, file: StaticString = #file, line: UInt = #line) {
+	private func expect(_ sut: LocalFeedImageDataLoader, toCompleteWith expectedResult: FeedImageDataLoader.Result, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
 		let exp = expectation(description: "Wait for load completion")
 		
 		_ = sut.loadImageData(from: anyURL()) { receivedResult in

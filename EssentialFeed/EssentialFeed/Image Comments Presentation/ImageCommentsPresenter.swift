@@ -8,7 +8,7 @@ public struct ImageCommentsViewModel {
     public let comments: [ImageCommentViewModel]
 }
 
-public struct ImageCommentViewModel: Equatable {
+public struct ImageCommentViewModel: Hashable {
     public let message: String
     public let date: String
     public let username: String

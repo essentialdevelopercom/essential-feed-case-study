@@ -14,7 +14,24 @@ class FeedAcceptanceTests: XCTestCase {
 		
 		XCTAssertEqual(feed.numberOfRenderedFeedImageViews(), 2)
 		XCTAssertEqual(feed.renderedFeedImageData(at: 0), makeImageData0())
-		XCTAssertEqual(feed.renderedFeedImageData(at: 1), makeImageData1())
+        XCTAssertEqual(feed.renderedFeedImageData(at: 1), makeImageData1())
+        XCTAssertTrue(feed.canLoadMoreFeed)
+        
+        feed.simulateLoadMoreFeedAction()
+        
+        XCTAssertEqual(feed.numberOfRenderedFeedImageViews(), 3)
+        XCTAssertEqual(feed.renderedFeedImageData(at: 0), makeImageData0())
+        XCTAssertEqual(feed.renderedFeedImageData(at: 1), makeImageData1())
+        XCTAssertEqual(feed.renderedFeedImageData(at: 2), makeImageData2())
+        XCTAssertTrue(feed.canLoadMoreFeed)
+        
+        feed.simulateLoadMoreFeedAction()
+        
+        XCTAssertEqual(feed.numberOfRenderedFeedImageViews(), 3)
+        XCTAssertEqual(feed.renderedFeedImageData(at: 0), makeImageData0())
+        XCTAssertEqual(feed.renderedFeedImageData(at: 1), makeImageData1())
+        XCTAssertEqual(feed.renderedFeedImageData(at: 2), makeImageData2())
+        XCTAssertFalse(feed.canLoadMoreFeed)
 	}
 	
 	func test_onLaunch_displaysCachedRemoteFeedWhenCustomerHasNoConnectivity() {
@@ -97,9 +114,16 @@ class FeedAcceptanceTests: XCTestCase {
         switch url.path {
         case "/image-0": return makeImageData0()
         case "/image-1": return makeImageData1()
+        case "/image-2": return makeImageData2()
 
-        case "/essential-feed/v1/feed":
-            return makeFeedData()
+        case "/essential-feed/v1/feed" where url.query?.contains("after_id") == false:
+            return makeFirstFeedPageData()
+
+        case "/essential-feed/v1/feed" where url.query?.contains("after_id=A28F5FE3-27A7-44E9-8DF5-53742D0E4A5A") == true:
+            return makeSecondFeedPageData()
+
+        case "/essential-feed/v1/feed" where url.query?.contains("after_id=166FCDD7-C9F4-420A-B2D6-CE2EAFA3D82F") == true:
+            return makeLastEmptyFeedPageData()
 
         case "/essential-feed/v1/image/2AB2AE66-A4B7-4A16-B374-51BBAC8DB086/comments":
             return makeCommentsData()
@@ -111,13 +135,24 @@ class FeedAcceptanceTests: XCTestCase {
 	
 	private func makeImageData0() -> Data { UIImage.make(withColor: .red).pngData()! }
     private func makeImageData1() -> Data { UIImage.make(withColor: .green).pngData()! }
-	
-	private func makeFeedData() -> Data {
+    private func makeImageData2() -> Data { UIImage.make(withColor: .blue).pngData()! }
+
+	private func makeFirstFeedPageData() -> Data {
 		return try! JSONSerialization.data(withJSONObject: ["items": [
             ["id": "2AB2AE66-A4B7-4A16-B374-51BBAC8DB086", "image": "http://feed.com/image-0"],
             ["id": "A28F5FE3-27A7-44E9-8DF5-53742D0E4A5A", "image": "http://feed.com/image-1"]
 		]])
 	}
+    
+    private func makeSecondFeedPageData() -> Data {
+        return try! JSONSerialization.data(withJSONObject: ["items": [
+            ["id": "166FCDD7-C9F4-420A-B2D6-CE2EAFA3D82F", "image": "http://feed.com/image-2"],
+        ]])
+    }
+    
+    private func makeLastEmptyFeedPageData() -> Data {
+        return try! JSONSerialization.data(withJSONObject: ["items": []])
+    }
     
     private func makeCommentsData() -> Data {
         return try! JSONSerialization.data(withJSONObject: ["items": [

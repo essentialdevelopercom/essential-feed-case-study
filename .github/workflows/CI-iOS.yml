@@ -20,10 +20,10 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Select Xcode
-      run: sudo xcode-select -switch /Applications/Xcode_12.app
+      run: sudo xcode-select -switch /Applications/Xcode_12.2.app
       
     - name: Xcode version
       run: /usr/bin/xcodebuild -version
       
     - name: Build and Test
-      run: xcodebuild clean build test -workspace EssentialApp/EssentialApp.xcworkspace -scheme "CI_iOS" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 11" ONLY_ACTIVE_ARCH=YES
+      run: xcodebuild clean build test -workspace EssentialApp/EssentialApp.xcworkspace -scheme "CI_iOS" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 12,OS=14.2" ONLY_ACTIVE_ARCH=YES

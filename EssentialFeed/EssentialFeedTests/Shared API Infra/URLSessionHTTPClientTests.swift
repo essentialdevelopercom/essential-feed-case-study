@@ -30,7 +30,7 @@ class URLSessionHTTPClientTests: XCTestCase {
 	
 	func test_cancelGetFromURLTask_cancelsURLRequest() {
 		let receivedError = resultErrorFor(taskHandler: { $0.cancel() }) as NSError?
-
+		
 		XCTAssertEqual(receivedError?.code, URLError.cancelled.rawValue)
 	}
 	
@@ -39,7 +39,7 @@ class URLSessionHTTPClientTests: XCTestCase {
 		
 		let receivedError = resultErrorFor((data: nil, response: nil, error: requestError))
 		
-        XCTAssertNotNil(receivedError)
+		XCTAssertNotNil(receivedError)
 	}
 	
 	func test_getFromURL_failsOnAllInvalidRepresentationCases() {
@@ -69,13 +69,13 @@ class URLSessionHTTPClientTests: XCTestCase {
 		let response = anyHTTPURLResponse()
 		
 		let receivedValues = resultValuesFor((data: nil, response: response, error: nil))
-
+		
 		let emptyData = Data()
 		XCTAssertEqual(receivedValues?.data, emptyData)
 		XCTAssertEqual(receivedValues?.response.url, response.url)
 		XCTAssertEqual(receivedValues?.response.statusCode, response.statusCode)
 	}
-
+	
 	// MARK: - Helpers
 	
 	private func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> HTTPClient {
@@ -90,7 +90,7 @@ class URLSessionHTTPClientTests: XCTestCase {
 	
 	private func resultValuesFor(_ values: (data: Data?, response: URLResponse?, error: Error?), file: StaticString = #filePath, line: UInt = #line) -> (data: Data, response: HTTPURLResponse)? {
 		let result = resultFor(values, file: file, line: line)
-
+		
 		switch result {
 		case let .success(values):
 			return values
@@ -99,7 +99,7 @@ class URLSessionHTTPClientTests: XCTestCase {
 			return nil
 		}
 	}
-
+	
 	private func resultErrorFor(_ values: (data: Data?, response: URLResponse?, error: Error?)? = nil, taskHandler: (HTTPClientTask) -> Void = { _ in }, file: StaticString = #filePath, line: UInt = #line) -> Error? {
 		let result = resultFor(values, taskHandler: taskHandler, file: file, line: line)
 		

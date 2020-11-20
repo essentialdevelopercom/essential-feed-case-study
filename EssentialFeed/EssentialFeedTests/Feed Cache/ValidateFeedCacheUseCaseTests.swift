@@ -93,13 +93,13 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
 			store.completeRetrievalWithEmptyCache()
 		})
 	}
-
+	
 	func test_validateCache_succeedsOnNonExpiredCache() {
 		let feed = uniqueImageFeed()
 		let fixedCurrentDate = Date()
 		let nonExpiredTimestamp = fixedCurrentDate.minusFeedCacheMaxAge().adding(seconds: 1)
 		let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
-
+		
 		expect(sut, toCompleteWith: .success(()), when: {
 			store.completeRetrieval(with: feed.local, timestamp: nonExpiredTimestamp)
 		})
@@ -129,7 +129,7 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
 			store.completeDeletionSuccessfully()
 		})
 	}
-
+	
 	func test_validateCache_doesNotDeleteInvalidCacheAfterSUTInstanceHasBeenDeallocated() {
 		let store = FeedStoreSpy()
 		var sut: LocalFeedLoader? = LocalFeedLoader(store: store, currentDate: Date.init)
@@ -141,7 +141,7 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
 		
 		XCTAssertEqual(store.receivedMessages, [.retrieve])
 	}
-
+	
 	// MARK: - Helpers
 	
 	private func makeSUT(currentDate: @escaping () -> Date = Date.init, file: StaticString = #filePath, line: UInt = #line) -> (sut: LocalFeedLoader, store: FeedStoreSpy) {
@@ -151,7 +151,7 @@ class ValidateFeedCacheUseCaseTests: XCTestCase {
 		trackForMemoryLeaks(sut, file: file, line: line)
 		return (sut, store)
 	}
-
+	
 	private func expect(_ sut: LocalFeedLoader, toCompleteWith expectedResult: LocalFeedLoader.ValidationResult, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
 		let exp = expectation(description: "Wait for load completion")
 		

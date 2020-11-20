@@ -470,6 +470,7 @@
 				08BB7EA722C1381600F8B83C /* Frameworks */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		080EDEF221B6DA7E00813479 /* Products */ = {
 			isa = PBXGroup;

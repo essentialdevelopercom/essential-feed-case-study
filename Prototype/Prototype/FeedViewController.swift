@@ -12,7 +12,7 @@ struct FeedImageViewModel {
 
 final class FeedViewController: UITableViewController {
 	private var feed = [FeedImageViewModel]()
-
+	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
@@ -30,7 +30,7 @@ final class FeedViewController: UITableViewController {
 			self.refreshControl?.endRefreshing()
 		}
 	}
-
+	
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return feed.count
 	}

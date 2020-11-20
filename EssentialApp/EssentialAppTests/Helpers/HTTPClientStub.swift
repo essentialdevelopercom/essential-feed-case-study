@@ -11,11 +11,11 @@ class HTTPClientStub: HTTPClient {
 	}
 	
 	private let stub: (URL) -> HTTPClient.Result
-			
+	
 	init(stub: @escaping (URL) -> HTTPClient.Result) {
 		self.stub = stub
 	}
-
+	
 	func get(from url: URL, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
 		completion(stub(url))
 		return Task()

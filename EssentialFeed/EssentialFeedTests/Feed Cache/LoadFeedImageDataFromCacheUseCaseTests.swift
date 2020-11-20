@@ -30,7 +30,7 @@ class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
 			store.completeRetrieval(with: retrievalError)
 		})
 	}
-
+	
 	func test_loadImageDataFromURL_deliversNotFoundErrorOnNotFound() {
 		let (sut, store) = makeSUT()
 		

@@ -5,5 +5,5 @@
 import Foundation
 
 public protocol ResourceErrorView {
-    func display(_ viewModel: ResourceErrorViewModel)
+	func display(_ viewModel: ResourceErrorViewModel)
 }

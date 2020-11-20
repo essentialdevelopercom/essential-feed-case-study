@@ -94,7 +94,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
 		let fixedCurrentDate = Date()
 		let nonExpiredTimestamp = fixedCurrentDate.minusFeedCacheMaxAge().adding(seconds: 1)
 		let (sut, store) = makeSUT(currentDate: { fixedCurrentDate })
-
+		
 		sut.load { _ in }
 		store.completeRetrieval(with: feed.local, timestamp: nonExpiredTimestamp)
 		
@@ -155,7 +155,7 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
 			switch (receivedResult, expectedResult) {
 			case let (.success(receivedImages), .success(expectedImages)):
 				XCTAssertEqual(receivedImages, expectedImages, file: file, line: line)
-			
+				
 			case let (.failure(receivedError as NSError), .failure(expectedError as NSError)):
 				XCTAssertEqual(receivedError, expectedError, file: file, line: line)
 				
@@ -169,5 +169,5 @@ class LoadFeedFromCacheUseCaseTests: XCTestCase {
 		action()
 		wait(for: [exp], timeout: 1.0)
 	}
-
+	
 }

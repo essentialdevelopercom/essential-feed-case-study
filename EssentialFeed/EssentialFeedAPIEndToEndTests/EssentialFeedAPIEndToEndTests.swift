@@ -6,7 +6,7 @@ import XCTest
 import EssentialFeed
 
 class EssentialFeedAPIEndToEndTests: XCTestCase {
-
+	
 	func test_endToEndTestServerGETFeedResult_matchesFixedTestAccountData() {
 		switch getFeedResult() {
 		case let .success(imageFeed)?:
@@ -44,18 +44,18 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
 	// MARK: - Helpers
 	
 	private func getFeedResult(file: StaticString = #filePath, line: UInt = #line) -> Swift.Result<[FeedImage], Error>? {
-        let client = ephemeralClient()
+		let client = ephemeralClient()
 		let exp = expectation(description: "Wait for load completion")
 		
 		var receivedResult: Swift.Result<[FeedImage], Error>?
-        client.get(from: feedTestServerURL) { result in
-            receivedResult = result.flatMap { (data, response) in
-                do {
-                    return .success(try FeedItemsMapper.map(data, from: response))
-                } catch {
-                    return .failure(error)
-                }
-            }
+		client.get(from: feedTestServerURL) { result in
+			receivedResult = result.flatMap { (data, response) in
+				do {
+					return .success(try FeedItemsMapper.map(data, from: response))
+				} catch {
+					return .failure(error)
+				}
+			}
 			exp.fulfill()
 		}
 		wait(for: [exp], timeout: 5.0)
@@ -65,20 +65,20 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
 	
 	private func getFeedImageDataResult(file: StaticString = #filePath, line: UInt = #line) -> FeedImageDataLoader.Result? {
 		let client = ephemeralClient()
-        let url = feedTestServerURL.appendingPathComponent("73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")
-        let exp = expectation(description: "Wait for load completion")
-
+		let url = feedTestServerURL.appendingPathComponent("73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")
+		let exp = expectation(description: "Wait for load completion")
+		
 		var receivedResult: FeedImageDataLoader.Result?
-        client.get(from: url) { result in
-            receivedResult = result.flatMap { (data, response) in
-                do {
-                    return .success(try FeedImageDataMapper.map(data, from: response))
-                } catch {
-                    return .failure(error)
-                }
-            }
-            exp.fulfill()
-        }
+		client.get(from: url) { result in
+			receivedResult = result.flatMap { (data, response) in
+				do {
+					return .success(try FeedImageDataMapper.map(data, from: response))
+				} catch {
+					return .failure(error)
+				}
+			}
+			exp.fulfill()
+		}
 		wait(for: [exp], timeout: 5.0)
 		
 		return receivedResult

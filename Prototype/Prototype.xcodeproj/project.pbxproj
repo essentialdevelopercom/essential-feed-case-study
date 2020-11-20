@@ -46,6 +46,7 @@
 				08A1189522B14CD500DE93F2 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		08A1189522B14CD500DE93F2 /* Products */ = {
 			isa = PBXGroup;

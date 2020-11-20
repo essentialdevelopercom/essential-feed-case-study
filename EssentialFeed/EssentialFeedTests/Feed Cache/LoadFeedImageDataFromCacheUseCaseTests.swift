@@ -30,7 +30,7 @@ class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
 			store.completeRetrieval(with: retrievalError)
 		})
 	}
-
+	
 	func test_loadImageDataFromURL_deliversNotFoundErrorOnNotFound() {
 		let (sut, store) = makeSUT()
 		
@@ -94,10 +94,6 @@ class LoadFeedImageDataFromCacheUseCaseTests: XCTestCase {
 		return .failure(LocalFeedImageDataLoader.LoadError.notFound)
 	}
 	
-	private func never(file: StaticString = #filePath, line: UInt = #line) {
-		XCTFail("Expected no no invocations", file: file, line: line)
-	}
-
 	private func expect(_ sut: LocalFeedImageDataLoader, toCompleteWith expectedResult: FeedImageDataLoader.Result, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
 		let exp = expectation(description: "Wait for load completion")
 		

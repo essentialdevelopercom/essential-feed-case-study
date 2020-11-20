@@ -14,11 +14,11 @@ public final class LocalFeedImageDataLoader {
 
 extension LocalFeedImageDataLoader: FeedImageDataCache {
 	public typealias SaveResult = FeedImageDataCache.Result
-
+	
 	public enum SaveError: Error {
 		case failed
 	}
-
+	
 	public func save(_ data: Data, for url: URL, completion: @escaping (SaveResult) -> Void) {
 		store.insert(data, for: url) { [weak self] result in
 			guard self != nil else { return }
@@ -30,7 +30,7 @@ extension LocalFeedImageDataLoader: FeedImageDataCache {
 
 extension LocalFeedImageDataLoader: FeedImageDataLoader {
 	public typealias LoadResult = FeedImageDataLoader.Result
-
+	
 	public enum LoadError: Error {
 		case failed
 		case notFound
@@ -62,10 +62,10 @@ extension LocalFeedImageDataLoader: FeedImageDataLoader {
 			guard self != nil else { return }
 			
 			task.complete(with: result
-				.mapError { _ in LoadError.failed }
-				.flatMap { data in
-					data.map { .success($0) } ?? .failure(LoadError.notFound)
-				})
+							.mapError { _ in LoadError.failed }
+							.flatMap { data in
+								data.map { .success($0) } ?? .failure(LoadError.notFound)
+							})
 		}
 		return task
 	}

@@ -10,12 +10,12 @@ public final class CoreDataFeedStore {
 	
 	private let container: NSPersistentContainer
 	private let context: NSManagedObjectContext
-
+	
 	enum StoreError: Error {
 		case modelNotFound
 		case failedToLoadPersistentContainer(Error)
 	}
-
+	
 	public init(storeURL: URL) throws {
 		guard let model = CoreDataFeedStore.model else {
 			throw StoreError.modelNotFound
@@ -28,7 +28,7 @@ public final class CoreDataFeedStore {
 			throw StoreError.failedToLoadPersistentContainer(error)
 		}
 	}
-
+	
 	func perform(_ action: @escaping (NSManagedObjectContext) -> Void) {
 		let context = self.context
 		context.perform { action(context) }

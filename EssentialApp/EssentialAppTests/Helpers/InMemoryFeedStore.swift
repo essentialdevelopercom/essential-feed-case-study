@@ -31,13 +31,12 @@ extension InMemoryFeedStore: FeedStore {
 }
 
 extension InMemoryFeedStore: FeedImageDataStore {
-	func insert(_ data: Data, for url: URL, completion: @escaping (FeedImageDataStore.InsertionResult) -> Void) {
+	func insert(_ data: Data, for url: URL) throws {
 		feedImageDataCache[url] = data
-		completion(.success(()))
 	}
 	
-	func retrieve(dataForURL url: URL, completion: @escaping (FeedImageDataStore.RetrievalResult) -> Void) {
-		completion(.success(feedImageDataCache[url]))
+	func retrieve(dataForURL url: URL) throws -> Data? {
+		feedImageDataCache[url]
 	}
 }
 

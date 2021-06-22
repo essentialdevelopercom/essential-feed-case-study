@@ -1,18 +1,20 @@
 
 name: CI-macOS
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
+# Controls when the action will run. 
+# Triggers the workflow on pull request events but only for the master branch.
 on:
   pull_request:
     branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+  # This workflow contains a single job called "build-and-test"
   build-and-test:
     # The type of runner that the job will run on
-    runs-on: macos-latest
+    runs-on: macos-11
+
+    timeout-minutes: 10
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -20,7 +22,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Select Xcode
-      run: sudo xcode-select -switch /Applications/Xcode_12.4.app
+      run: sudo xcode-select -switch /Applications/Xcode_12.5.app
       
     - name: Xcode version
       run: /usr/bin/xcodebuild -version

@@ -9,7 +9,7 @@
 import XCTest
 import EssentialFeed
 
-class URLSessionHTTPClient {
+class URLSessionHTTPClient: HTTPClient {
     let session: URLSession
     
     init(session: URLSession = .shared) {

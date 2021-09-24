@@ -324,7 +324,7 @@ GET /image/{image-id}/comments
 		{
 			"id": "another UUID",
 			"message": "another message",
-			"create at": "2020-05-19T14:23:53+0000",
+			"created_at": "2020-05-19T14:23:53+0000",
 			"author": {
 				"username": "another username"
 			}

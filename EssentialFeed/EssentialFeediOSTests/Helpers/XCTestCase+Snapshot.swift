@@ -21,6 +21,11 @@ extension XCTestCase {
 			
 			try? snapshotData?.write(to: temporarySnapshotURL)
 			
+			add(makeSnapshotAttachment(for: snapshot, named: "New snapshot - \(name)"))
+			if let storedSnapshot = UIImage(data: storedSnapshotData) {
+				add(makeSnapshotAttachment(for: storedSnapshot, named: "Stored snapshot - \(name)"))
+			}
+			
 			XCTFail("New snapshot does not match stored snapshot. New snapshot URL: \(temporarySnapshotURL), Stored snapshot URL: \(snapshotURL)", file: file, line: line)
 		}
 	}
@@ -56,6 +61,12 @@ extension XCTestCase {
 		}
 		
 		return data
+	}
+	
+	private func makeSnapshotAttachment(for snapshot: UIImage, named name: String) -> XCTAttachment {
+		let attachment = XCTAttachment(image: snapshot)
+		attachment.name = name
+		return attachment
 	}
 	
 }

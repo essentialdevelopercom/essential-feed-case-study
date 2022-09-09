@@ -37,6 +37,8 @@ extension FeedImageCellController: UITableViewDataSource, UITableViewDelegate, U
 		cell?.locationLabel.text = viewModel.location
 		cell?.descriptionLabel.text = viewModel.description
 		cell?.feedImageView.image = nil
+		cell?.feedImageContainer.isShimmering = true
+		cell?.feedImageRetryButton.isHidden = true
 		cell?.onRetry = { [weak self] in
 			self?.delegate.didRequestImage()
 		}

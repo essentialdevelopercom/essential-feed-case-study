@@ -51,6 +51,7 @@
       <Testables>
          <TestableReference
             skipped = "NO"
+            parallelizable = "YES"
             testExecutionOrdering = "random">
             <BuildableReference
                BuildableIdentifier = "primary"
@@ -62,6 +63,7 @@
          </TestableReference>
          <TestableReference
             skipped = "NO"
+            parallelizable = "YES"
             testExecutionOrdering = "random">
             <BuildableReference
                BuildableIdentifier = "primary"
@@ -73,6 +75,7 @@
          </TestableReference>
          <TestableReference
             skipped = "NO"
+            parallelizable = "YES"
             testExecutionOrdering = "random">
             <BuildableReference
                BuildableIdentifier = "primary"

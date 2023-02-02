@@ -492,6 +492,21 @@ class FeedUIIntegrationTests: XCTestCase {
 		XCTAssertEqual(view0?.isShowingImageLoadingIndicator, false, "Expected no loading indicator when image loads successfully after view becomes visible again")
 	}
 	
+	func test_feedImageView_doesNotShowDataFromPreviousRequestWhenCellIsReused() throws {
+		let (sut, loader) = makeSUT()
+		
+		sut.loadViewIfNeeded()
+		loader.completeFeedLoading(with: [makeImage(), makeImage()])
+		
+		let view0 = try XCTUnwrap(sut.simulateFeedImageViewVisible(at: 0))
+		view0.prepareForReuse()
+		
+		let imageData0 = UIImage.make(withColor: .red).pngData()!
+		loader.completeImageLoading(with: imageData0, at: 0)
+		
+		XCTAssertEqual(view0.renderedImage, .none, "Expected no image state change for reused view once image loading completes successfully")
+	}
+	
 	func test_feedImageView_doesNotRenderLoadedImageWhenNotVisibleAnymore() {
 		let (sut, loader) = makeSUT()
 		sut.loadViewIfNeeded()

@@ -14,15 +14,28 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
 		}
 	}()
 	
+	private var onViewIsAppearing: ((ListViewController) -> Void)?
+	
 	public var onRefresh: (() -> Void)?
 	
 	public override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		configureTableView()
-		refresh()
+		configureTraitCollectionObservers()
+		
+		onViewIsAppearing = { vc in
+			vc.onViewIsAppearing = nil
+			vc.refresh()
+		}
 	}
 	
+	public override func viewIsAppearing(_ animated: Bool) {
+		super.viewIsAppearing(animated)
+		
+		onViewIsAppearing?(self)
+	}
+
 	private func configureTableView() {
 		dataSource.defaultRowAnimation = .fade
 		tableView.dataSource = dataSource
@@ -35,16 +48,18 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
 		}
 	}
 	
+	private func configureTraitCollectionObservers() {
+		registerForTraitChanges(
+			[UITraitPreferredContentSizeCategory.self]
+		) { (self: Self, previous: UITraitCollection) in
+			self.tableView.reloadData()
+		}
+	}
+	
 	public override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		
 		tableView.sizeTableHeaderToFit()
-	}
-	
-	public override func traitCollectionDidChange(_ previous: UITraitCollection?) {
-		if previous?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-			tableView.reloadData()
-		}
 	}
 	
 	@IBAction private func refresh() {

@@ -21,6 +21,25 @@ public final class ErrorView: UIButton {
 		super.init(coder: coder)
 	}
 	
+	public override var intrinsicContentSize: CGSize {
+		guard
+			let size = titleLabel?.intrinsicContentSize,
+			let insets = configuration?.contentInsets
+		else {
+			return super.intrinsicContentSize
+		}
+		
+		return CGSize(width: size.width + insets.leading + insets.trailing, height: size.height + insets.top + insets.bottom)
+	}
+	
+	public override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		if let insets = configuration?.contentInsets {
+			titleLabel?.preferredMaxLayoutWidth = bounds.size.width - insets.leading - insets.trailing
+		}
+	}
+	
 	private var titleAttributes: AttributeContainer {
 		let paragraphStyle = NSMutableParagraphStyle()
 		paragraphStyle.alignment = NSTextAlignment.center

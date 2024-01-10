@@ -20,8 +20,13 @@ final class FeedViewController: UITableViewController {
         
         refreshControl = UIRefreshControl()
         refreshControl?.addTarget(self, action: #selector(load), for: .valueChanged)
-        refreshControl?.beginRefreshing()
         load()
+    }
+    
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+        
+        refreshControl?.beginRefreshing()
     }
     
     @objc private func load() {
@@ -60,7 +65,12 @@ final class FeedViewControllerTests: XCTestCase {
         let (sut, _) = makeSUT()
         
         sut.loadViewIfNeeded()
+        XCTAssertEqual(sut.refreshControl?.isRefreshing, false)
         
+        let window = UIWindow()
+        window.rootViewController = sut
+        window.makeKeyAndVisible()
+        window.layoutIfNeeded()
         XCTAssertEqual(sut.refreshControl?.isRefreshing, true)
     }
     

@@ -14,7 +14,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: macos-13
 
-    timeout-minutes: 10
+    timeout-minutes: 8
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -22,7 +22,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Select Xcode
-      run: sudo xcode-select -switch /Applications/Xcode_15.1.app
+      run: sudo xcode-select -switch /Applications/Xcode_15.2.app
       
     - name: Xcode version
       run: /usr/bin/xcodebuild -version

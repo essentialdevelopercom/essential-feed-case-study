@@ -36,7 +36,7 @@ class SceneDelegateTests: XCTestCase {
 		var makeKeyAndVisibleCallCount = 0
 		
 		override func makeKeyAndVisible() {
-			makeKeyAndVisibleCallCount = 1
+			makeKeyAndVisibleCallCount += 1
 		}
 	}
 	

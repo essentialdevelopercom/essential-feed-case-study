@@ -50,11 +50,7 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
 		var receivedResult: Swift.Result<[FeedImage], Error>?
 		client.get(from: feedTestServerURL) { result in
 			receivedResult = result.flatMap { (data, response) in
-				do {
-					return .success(try FeedItemsMapper.map(data, from: response))
-				} catch {
-					return .failure(error)
-				}
+				Result { try FeedItemsMapper.map(data, from: response) }
 			}
 			exp.fulfill()
 		}
@@ -71,11 +67,7 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
 		var receivedResult: Result<Data, Error>?
 		client.get(from: url) { result in
 			receivedResult = result.flatMap { (data, response) in
-				do {
-					return .success(try FeedImageDataMapper.map(data, from: response))
-				} catch {
-					return .failure(error)
-				}
+				Result { try FeedImageDataMapper.map(data, from: response) }
 			}
 			exp.fulfill()
 		}

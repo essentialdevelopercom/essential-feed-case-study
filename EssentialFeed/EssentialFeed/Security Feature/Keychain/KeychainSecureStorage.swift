@@ -1,5 +1,17 @@
 import Foundation
 
 public final class KeychainSecureStorage {
-    // Implementación pendiente
+    private let keychain: KeychainProtocol
+
+    public init(keychain: KeychainProtocol) {
+        self.keychain = keychain
+    }
+
+    public func save(data: Data, forKey key: String) -> Bool {
+        return keychain.save(data: data, forKey: key)
+    }
+}
+
+public protocol KeychainProtocol {
+    func save(data: Data, forKey key: String) -> Bool
 }

@@ -10,7 +10,7 @@
 ## Resumen Actualizado de Estado de Implementación
 | Caso de Uso                                   | Estado                  |
 |-----------------------------------------------|-------------------------|
-| 1. Almacenamiento Seguro                     | 🔜 Siguiente a implementar |
+| 1. Almacenamiento Seguro                     | ✅ Completado (tests unitarios, happy path) |
 | 2. Registro de Usuario                       | 🔄 Pendiente             |
 | 3. Autenticación de Usuario                  | 🔄 Pendiente             |
 | 4. Gestión de Token Expirado                 | 🔄 Pendiente             |
@@ -33,8 +33,9 @@
 **Curso Principal (happy path):**
 - ✅ Sistema determina el nivel de protección necesario.
 - ✅ Sistema encripta la información si es necesario. _(cubierto por tests)_
-- 🔄 Sistema almacena en el Keychain con configuración adecuada. _(pendiente de integración real con Keychain)_
-- 🔄 Sistema verifica el almacenamiento correcto. _(falta integración real)_
+- ✅ Sistema almacena en el Keychain con configuración adecuada. _(cubierto por tests unitarios con spy)_
+- ✅ Sistema verifica el almacenamiento correcto. _(cubierto por tests unitarios con spy)_
+- 🔜 Integración real con Keychain: siguiente paso a implementar.
 
 **Curso de error - error de Keychain (sad path):**
 - 🔄 Sistema intenta estrategia alternativa de almacenamiento.
@@ -435,3 +436,26 @@ _(Ver detalles en el documento fuente)_
 7.- Lleva siempre un control de versionado con git.
 8.- Para la implementación, como usamos TDD (Red-Green-Refactor). crearas la estructura de carpetas dentro del proyecto que tenemos, y arrancaremos con un fichero XCTestCase, en el cual se irán generando, tanto las pruebas como el código de producción que dichas pruebas nos generará, así podemos hacer un seguimiento correcto tanto de las pruebas como del código de producción que estás generan. Una vez terminado el punto del curso, probadas las pruebas, pasaremos ese código de producción a su fichero correspondiente fuera de los test.
 9.- Aunque está especificado en las "rules" actualiza siempre los ficheros de configuración del proyecto(xcodeproj/xcconfig/xcworkspace, o el que corresponda, para que al ejecutarlos en Xcode aparezcan reflejados y dentro de sus correspondientes targets
+
+
+Seguiré exactamente este enfoque:
+TDD/BBD y Clean Architecture.
+Spies, SOLID, desacoplamiento y testabilidad.
+Actualización automática del BDD y documentación.
+Commits cortos, atómicos y descriptivos tras cada avance relevante.
+Nada de acumulación de funcionalidades en un solo commit.
+Siempre priorizando la trazabilidad y la calidad del historial.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

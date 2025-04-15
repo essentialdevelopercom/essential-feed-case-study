@@ -1,4 +1,5 @@
 import Foundation
+import EssentialFeed
 
 public struct User {
     public let name: String
@@ -42,6 +43,8 @@ public actor UserRegistrationUseCase {
             struct RegistrationError: Error {}
             return .failure(RegistrationError())
         }
+        // Persistencia segura de credenciales
+        _ = keychain.save(data: password.data(using: .utf8)!, forKey: email)
         let user = User(name: name, email: email)
         return .success(user)
     }

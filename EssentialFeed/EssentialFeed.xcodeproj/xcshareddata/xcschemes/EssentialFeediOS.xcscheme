@@ -28,7 +28,8 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       codeCoverageEnabled = "YES"
-      onlyGenerateCoverageForSpecifiedTargets = "YES">
+      onlyGenerateCoverageForSpecifiedTargets = "YES"
+      destination = "platform=iOS Simulator,name=iPhone 16 Pro,OS=18.4">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"

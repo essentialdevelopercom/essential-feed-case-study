@@ -54,7 +54,7 @@
 - ✅ Implementación KeychainSecureStorage usando el Keychain de iOS
 - ✅ Pruebas unitarias para happy path y error de Keychain
 
-## 2. 🔄 Registro de Usuario
+## 2. ✅ Registro de Usuario
 
 ### Historia: Usuario nuevo solicita registrarse en la aplicación
 
@@ -65,13 +65,13 @@ Para crear una cuenta y acceder a las funcionalidades
 
 ### Escenarios (Criterios de aceptación)
 
-🔄 **Escenario 1: Registro exitoso**
+✅ **Escenario 1: Registro exitoso**
 Dado que el usuario introduce datos válidos (nombre, correo electrónico, contraseña)
 Cuando el usuario envía el formulario de registro
 ✅ Entonces la aplicación debe crear una cuenta
 🟡 Y enviar un correo de verificación
 🟡 Y redirigir al usuario a la pantalla de confirmación
-🟡 Y almacenar las credenciales de forma segura en el Keychain
+✅ Y almacenar las credenciales de forma segura en el Keychain
 
 
 - [ ] **Escenario 2: Error de datos inválidos**  

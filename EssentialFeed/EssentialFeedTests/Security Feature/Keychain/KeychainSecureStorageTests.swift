@@ -33,9 +33,17 @@ final class KeychainSecureStorageTests: XCTestCase {
     }
 
     func test_saveData_fails_whenKeychainReturnsError() {
-        // Arrange: Creamos el SUT y forzamos error en Keychain
-        // TODO: Implementar stub/mocks para Keychain
-        XCTFail("Not implemented yet")
+        let keychain = KeychainSpy()
+        let sut = KeychainSecureStorage(keychain: keychain)
+        let key = "test-key"
+        let data = "test-data".data(using: .utf8)!
+        keychain.saveResult = false
+
+        let result = sut.save(data: data, forKey: key)
+
+        XCTAssertEqual(keychain.receivedKey, key)
+        XCTAssertEqual(keychain.receivedData, data)
+        XCTAssertFalse(result)
     }
 
     // Añadir más tests según los escenarios del BDD

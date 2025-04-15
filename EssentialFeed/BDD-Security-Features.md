@@ -35,12 +35,12 @@
 - ✅ Sistema encripta la información si es necesario. _(cubierto por tests)_
 - ✅ Sistema almacena en el Keychain con configuración adecuada. _(cubierto por tests unitarios con spy)_
 - ✅ Sistema verifica el almacenamiento correcto. _(cubierto por tests unitarios con spy)_
-- 🔜 Integración real con Keychain: siguiente paso a implementar.
+- ✅ Integración real con Keychain: completado e integrado en producción.
 
 **Curso de error - error de Keychain (sad path):**
+- ✅ Sistema notifica error si persiste. _(cubierto por tests unitarios con spy)_
+- ✅ Sistema registra error para diagnóstico. _(cubierto por tests unitarios con spy)_
 - 🔄 Sistema intenta estrategia alternativa de almacenamiento.
-- 🔄 Sistema notifica error si persiste.
-- 🔄 Sistema registra error para diagnóstico.
 
 **Curso de error - datos corruptos (sad path):**
 - 🔄 Sistema detecta inconsistencia en datos.
@@ -50,7 +50,7 @@
 **Implementación:**
 - ✅ Protocolo SecureStorage que define operaciones de guardado, recuperación y eliminación
 - ✅ Implementación del método protectionLevel para determinar nivel de seguridad
-- 🔄 Implementación KeychainSecureStorage usando el Keychain de iOS
+- ✅ Implementación KeychainSecureStorage usando el Keychain de iOS
 - ✅ Pruebas unitarias completas que validan todos los escenarios del dominio SecureStorage
 
 ---
@@ -446,9 +446,11 @@ Commits cortos, atómicos y descriptivos tras cada avance relevante.
 Nada de acumulación de funcionalidades en un solo commit.
 Siempre priorizando la trazabilidad y la calidad del historial.
 
+ 
+Apartir de aquí, seguiré este flujo SIEMPRE:
 
-
-
+Añadir test → comprobar que falla → implementar código de producción → comprobar que pasa → actualizar BDD/documentación → commit atómico.
+No preguntaré si avanzar, simplemente seguiré el ciclo profesional y ágil pactado.
 
 
 

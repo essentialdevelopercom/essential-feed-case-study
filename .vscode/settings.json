@@ -1,3 +1,6 @@
 {
-    "sweetpad.build.xcodeWorkspacePath": "EssentialApp/EssentialApp.xcworkspace"
+    "sweetpad.build.xcodeWorkspacePath": "EssentialApp/EssentialApp.xcworkspace",
+    "window.autoDetectColorScheme": true,
+    "window.confirmSaveUntitledWorkspace": true,
+    "interactiveWindow.promptToSaveOnClose": true
 }

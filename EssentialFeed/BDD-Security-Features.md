@@ -3,6 +3,7 @@
 ## Estado de Implementación
 - ✅ Completado
 - 🔜 Siguiente a implementar
+- 🚧 Implementación en curso
 - 🔄 Pendiente
 
 ---
@@ -40,7 +41,7 @@
 **Curso de error - error de Keychain (sad path):**
 - ✅ Sistema notifica error si persiste. _(cubierto por tests unitarios con spy)_
 - ✅ Sistema registra error para diagnóstico. _(cubierto por tests unitarios con spy)_
-- 🔄 Sistema intenta estrategia alternativa de almacenamiento.
+- 🚧 Sistema intenta estrategia alternativa de almacenamiento: Si el Keychain falla, el sistema debe intentar guardar los datos en un almacenamiento alternativo seguro (por ejemplo, cifrado en disco o en memoria). Si la alternativa también falla, se debe notificar y registrar el error.
 
 **Curso de error - datos corruptos (sad path):**
 - 🔄 Sistema detecta inconsistencia en datos.

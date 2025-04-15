@@ -5,7 +5,7 @@ public protocol KeychainProtocol {
     func save(data: Data, forKey key: String) -> Bool
 }
 
-public final class KeychainKeychain: KeychainProtocol {
+public final class SystemKeychain: KeychainProtocol {
     public init() {}
     
     public func save(data: Data, forKey key: String) -> Bool {

@@ -54,7 +54,7 @@
 - ✅ Implementación KeychainSecureStorage usando el Keychain de iOS
 - ✅ Pruebas unitarias para happy path y error de Keychain
 
-## 2. ✅ Registro de Usuario
+## 2. 🔄 Registro de Usuario
 
 ### Historia: Usuario nuevo solicita registrarse en la aplicación
 

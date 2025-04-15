@@ -132,6 +132,7 @@
 		08EF9D34250BCA52004539C2 /* ImageComments.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08EF9D36250BCA52004539C2 /* ImageComments.strings */; };
 		08EFE6BD22D6384100DA417A /* FeedImageCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EFE6BC22D6384100DA417A /* FeedImageCellController.swift */; };
 		08F8822D236499B200CAEE16 /* FeedCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8822C236499B200CAEE16 /* FeedCache.swift */; };
+		4624C63911AA66FA655289C8 /* SecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7220DED41BB5526CEE74540C /* SecureStorageTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -300,6 +301,7 @@
 		08EFE6BC22D6384100DA417A /* FeedImageCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageCellController.swift; sourceTree = "<group>"; };
 		08F8822C236499B200CAEE16 /* FeedCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCache.swift; sourceTree = "<group>"; };
 		08FC5AA922D5F47900148E12 /* FeedImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataLoader.swift; sourceTree = "<group>"; };
+		7220DED41BB5526CEE74540C /* SecureStorageTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SecureStorageTests.swift; path = "../EssentialFeedTests/Security Feature/SecureStorageTests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -468,6 +470,7 @@
 				08D917AC22B92A5D003BC31B /* EssentialFeediOSTests */,
 				080EDEF221B6DA7E00813479 /* Products */,
 				08BB7EA722C1381600F8B83C /* Frameworks */,
+				7220DED41BB5526CEE74540C /* SecureStorageTests.swift */,
 			);
 			sourceTree = "<group>";
 			usesTabs = 1;
@@ -1225,6 +1228,7 @@
 				0844768F21FCB24E00439BE9 /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 				08285AEF228BF7E3000A8987 /* CoreDataFeedStoreTests.swift in Sources */,
 				0875468E227234AB00542C32 /* XCTestCase+FeedStoreSpecs.swift in Sources */,
+				4624C63911AA66FA655289C8 /* SecureStorageTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

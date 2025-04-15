@@ -28,10 +28,6 @@ final class KeychainSecureStorageTests: XCTestCase {
         }
     }
 
-    private protocol KeychainProtocol {
-        func save(data: Data, forKey key: String) -> Bool
-    }
-
     func test_saveData_fails_whenKeychainReturnsError() {
         let keychain = KeychainSpy()
         let sut = KeychainSecureStorage(keychain: keychain)

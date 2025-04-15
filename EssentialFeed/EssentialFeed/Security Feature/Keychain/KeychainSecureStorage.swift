@@ -12,6 +12,4 @@ public final class KeychainSecureStorage {
     }
 }
 
-public protocol KeychainProtocol {
-    func save(data: Data, forKey key: String) -> Bool
-}
+

@@ -132,11 +132,12 @@
 		08EF9D34250BCA52004539C2 /* ImageComments.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08EF9D36250BCA52004539C2 /* ImageComments.strings */; };
 		08EFE6BD22D6384100DA417A /* FeedImageCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EFE6BC22D6384100DA417A /* FeedImageCellController.swift */; };
 		08F8822D236499B200CAEE16 /* FeedCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8822C236499B200CAEE16 /* FeedCache.swift */; };
+		B42EB7022DAEBA65002FBC51 /* KeychainKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EB7002DAEBA17002FBC51 /* KeychainKeychain.swift */; };
+		B42EB7042DAEBA8E002FBC51 /* KeychainSecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EB7032DAEBA8E002FBC51 /* KeychainSecureStorage.swift */; };
+		B42EB7062DAEBAA8002FBC51 /* KeychainSecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EB7052DAEBAA8002FBC51 /* KeychainSecureStorageTests.swift */; };
 		B4F6AFE52DAE9D8A00D46FA8 /* SecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F6AFE12DAE99A900D46FA8 /* SecureStorageTests.swift */; };
 		B4F6AFE82DAE9DDA00D46FA8 /* SecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F6AFE62DAE9DDA00D46FA8 /* SecureStorage.swift */; };
-		B4F6AFF12DAEA1B400D46FA8 /* KeychainSecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F6AFF02DAEA1B400D46FA8 /* KeychainSecureStorage.swift */; };
-		B4F6AFF32DAEA1D600D46FA8 /* KeychainSecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F6AFF22DAEA1D600D46FA8 /* KeychainSecureStorageTests.swift */; };
-	/* End PBXBuildFile section */
+/* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		080EDEFC21B6DA7E00813479 /* PBXContainerItemProxy */ = {
@@ -304,10 +305,11 @@
 		08EFE6BC22D6384100DA417A /* FeedImageCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageCellController.swift; sourceTree = "<group>"; };
 		08F8822C236499B200CAEE16 /* FeedCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCache.swift; sourceTree = "<group>"; };
 		08FC5AA922D5F47900148E12 /* FeedImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataLoader.swift; sourceTree = "<group>"; };
+		B42EB7002DAEBA17002FBC51 /* KeychainKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeychainKeychain.swift; path = "EssentialFeed/Security Feature/Keychain/KeychainKeychain.swift"; sourceTree = SOURCE_ROOT; };
+		B42EB7032DAEBA8E002FBC51 /* KeychainSecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeychainSecureStorage.swift; path = "EssentialFeed/Security Feature/Keychain/KeychainSecureStorage.swift"; sourceTree = SOURCE_ROOT; };
+		B42EB7052DAEBAA8002FBC51 /* KeychainSecureStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeychainSecureStorageTests.swift; path = Keychain/KeychainSecureStorageTests.swift; sourceTree = "<group>"; };
 		B4F6AFE12DAE99A900D46FA8 /* SecureStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageTests.swift; sourceTree = "<group>"; };
 		B4F6AFE62DAE9DDA00D46FA8 /* SecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorage.swift; sourceTree = "<group>"; };
-		B4F6AFF02DAEA1B400D46FA8 /* KeychainSecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeychainSecureStorage.swift"; sourceTree = "<group>"; };
-		B4F6AFF22DAEA1D600D46FA8 /* KeychainSecureStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeychainSecureStorageTests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -901,7 +903,7 @@
 			isa = PBXGroup;
 			children = (
 				B4F6AFE12DAE99A900D46FA8 /* SecureStorageTests.swift */,
-				B4F6AFF22DAEA1D600D46FA8 /* KeychainSecureStorageTests.swift */,
+				B42EB7052DAEBAA8002FBC51 /* KeychainSecureStorageTests.swift */,
 			);
 			path = "Security Feature";
 			sourceTree = "<group>";
@@ -910,7 +912,8 @@
 			isa = PBXGroup;
 			children = (
 				B4F6AFE62DAE9DDA00D46FA8 /* SecureStorage.swift */,
-				B4F6AFF02DAEA1B400D46FA8 /* KeychainSecureStorage.swift */,
+				B42EB7002DAEBA17002FBC51 /* KeychainKeychain.swift */,
+				B42EB7032DAEBA8E002FBC51 /* KeychainSecureStorage.swift */,
 			);
 			path = "Security Feature";
 			sourceTree = SOURCE_ROOT;
@@ -1189,6 +1192,7 @@
 				08346CF224F93EC600A9F17C /* ImageComment.swift in Sources */,
 				08285AF4228BFAFF000A8987 /* FeedStore.xcdatamodeld in Sources */,
 				08604505233E316F005ECD22 /* CoreDataFeedStore+FeedStore.swift in Sources */,
+				B42EB7022DAEBA65002FBC51 /* KeychainKeychain.swift in Sources */,
 				08EF9D2F250BC9A5004539C2 /* ImageCommentsPresenter.swift in Sources */,
 				0886893A221DAA34007BC3E7 /* LocalFeedImage.swift in Sources */,
 				089C40DE22170F2300DE552E /* FeedStore.swift in Sources */,
@@ -1208,6 +1212,7 @@
 				08897BEF233A1C8E0029F5E4 /* HTTPURLResponse+StatusCode.swift in Sources */,
 				08285AFD228C1843000A8987 /* ManagedCache.swift in Sources */,
 				08285AF1228BF91E000A8987 /* CoreDataFeedStore.swift in Sources */,
+				B42EB7042DAEBA8E002FBC51 /* KeychainSecureStorage.swift in Sources */,
 				087148BD232BEC6700D6BE1A /* ResourceErrorViewModel.swift in Sources */,
 				08897BE623390F4E0029F5E4 /* FeedImageDataLoader.swift in Sources */,
 				087148BB232BEC1200D6BE1A /* ResourceLoadingViewModel.swift in Sources */,
@@ -1240,6 +1245,7 @@
 				08C4E984233E037200D939F8 /* LoadFeedImageDataFromCacheUseCaseTests.swift in Sources */,
 				08346CEB24F93B0A00A9F17C /* ImageCommentsMapperTests.swift in Sources */,
 				086BE4842232725E004CDC26 /* FeedStoreSpy.swift in Sources */,
+				B42EB7062DAEBAA8002FBC51 /* KeychainSecureStorageTests.swift in Sources */,
 				081C0DB322491EEF00AC754E /* SharedTestHelpers.swift in Sources */,
 				089C40D42216C37400DE552E /* CacheFeedUseCaseTests.swift in Sources */,
 				08EF9D1E250BB77A004539C2 /* SharedLocalizationTests.swift in Sources */,

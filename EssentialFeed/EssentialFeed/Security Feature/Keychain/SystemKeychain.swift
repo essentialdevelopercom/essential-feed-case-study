@@ -1,18 +1,6 @@
 import Foundation
 import Security
 
-// MARK: - KeychainProtocol
-
-/// Protocolo que define las operaciones básicas para almacenar datos de forma segura
-public protocol KeychainProtocol {
-    /// Guarda datos de forma segura
-    /// - Parameters:
-    ///   - data: Los datos a guardar
-    ///   - key: La clave bajo la cual se guardarán los datos
-    /// - Returns: True si el guardado fue exitoso, false en caso contrario
-    func save(data: Data, forKey key: String) -> Bool
-}
-
 // MARK: - SystemKeychain
 
 /// Implementación del Keychain usando las APIs del sistema

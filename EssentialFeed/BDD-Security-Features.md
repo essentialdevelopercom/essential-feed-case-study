@@ -2,7 +2,8 @@
 
 ✅ Completado  
 🔜 Siguiente a implementar  
-🔄 Pendiente  
+🟡 Pendiente    
+🔄 En progreso 
 
 ---
 
@@ -64,17 +65,24 @@ Para crear una cuenta y acceder a las funcionalidades
 
 ### Escenarios (Criterios de aceptación)
 
-**Escenario 1: Registro exitoso**  
-Dado que el usuario introduce datos válidos (nombre, correo electrónico, contraseña)  
-Cuando el usuario envía el formulario de registro  
-Entonces la aplicación debe crear una cuenta  
-Y enviar un correo de verificación  
-Y redirigir al usuario a la pantalla de confirmación  
-Y almacenar las credenciales de forma segura en el Keychain  
+🔄 **Escenario 1: Registro exitoso**
+Dado que el usuario introduce datos válidos (nombre, correo electrónico, contraseña)
+Cuando el usuario envía el formulario de registro
+✅ Entonces la aplicación debe crear una cuenta
+🟡 Y enviar un correo de verificación
+🟡 Y redirigir al usuario a la pantalla de confirmación
+🟡 Y almacenar las credenciales de forma segura en el Keychain
 
-**Escenario 2: Error de datos inválidos**  
-Dado que el usuario introduce datos inválidos  
-Cuando el usuario intenta registrarse  
+
+- [ ] **Escenario 2: Error de datos inválidos**  
+  Dado que el usuario introduce datos inválidos  
+  Cuando el usuario intenta registrarse  
+  Entonces la aplicación debe mostrar mensajes de error apropiados  
+
+**Notas:**  
+- El escenario 1 está parcialmente completado: se crea el usuario con datos válidos.  
+- Pendiente implementar almacenamiento seguro en Keychain, correo de verificación y redirección.
+
 Entonces la aplicación debe mostrar mensajes específicos para cada campo inválido  
 Y no permitir el envío hasta que se corrijan los errores  
 Y ofrecer sugerencias de formato correcto  

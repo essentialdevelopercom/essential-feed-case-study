@@ -134,7 +134,9 @@
 		08F8822D236499B200CAEE16 /* FeedCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8822C236499B200CAEE16 /* FeedCache.swift */; };
 		B4F6AFE52DAE9D8A00D46FA8 /* SecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F6AFE12DAE99A900D46FA8 /* SecureStorageTests.swift */; };
 		B4F6AFE82DAE9DDA00D46FA8 /* SecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F6AFE62DAE9DDA00D46FA8 /* SecureStorage.swift */; };
-/* End PBXBuildFile section */
+		B4F6AFF12DAEA1B400D46FA8 /* KeychainSecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F6AFF02DAEA1B400D46FA8 /* KeychainSecureStorage.swift */; };
+		B4F6AFF32DAEA1D600D46FA8 /* KeychainSecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F6AFF22DAEA1D600D46FA8 /* KeychainSecureStorageTests.swift */; };
+	/* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		080EDEFC21B6DA7E00813479 /* PBXContainerItemProxy */ = {
@@ -304,6 +306,8 @@
 		08FC5AA922D5F47900148E12 /* FeedImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataLoader.swift; sourceTree = "<group>"; };
 		B4F6AFE12DAE99A900D46FA8 /* SecureStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageTests.swift; sourceTree = "<group>"; };
 		B4F6AFE62DAE9DDA00D46FA8 /* SecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorage.swift; sourceTree = "<group>"; };
+		B4F6AFF02DAEA1B400D46FA8 /* KeychainSecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeychainSecureStorage.swift"; sourceTree = "<group>"; };
+		B4F6AFF22DAEA1D600D46FA8 /* KeychainSecureStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeychainSecureStorageTests.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -897,6 +901,7 @@
 			isa = PBXGroup;
 			children = (
 				B4F6AFE12DAE99A900D46FA8 /* SecureStorageTests.swift */,
+				B4F6AFF22DAEA1D600D46FA8 /* KeychainSecureStorageTests.swift */,
 			);
 			path = "Security Feature";
 			sourceTree = "<group>";
@@ -905,6 +910,7 @@
 			isa = PBXGroup;
 			children = (
 				B4F6AFE62DAE9DDA00D46FA8 /* SecureStorage.swift */,
+				B4F6AFF02DAEA1B400D46FA8 /* KeychainSecureStorage.swift */,
 			);
 			path = "Security Feature";
 			sourceTree = SOURCE_ROOT;

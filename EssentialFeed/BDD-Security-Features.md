@@ -432,7 +432,6 @@ _(Ver detalles en el documento fuente)_
 - Marca los escenarios como completados a medida que avances.
 - Amplía los escenarios con ejemplos Gherkin si lo deseas (puedo ayudarte a generarlos).
 
-
+7.- Lleva siempre un control de versionado con git.
 8.- Para la implementación, como usamos TDD (Red-Green-Refactor). crearas la estructura de carpetas dentro del proyecto que tenemos, y arrancaremos con un fichero XCTestCase, en el cual se irán generando, tanto las pruebas como el código de producción que dichas pruebas nos generará, así podemos hacer un seguimiento correcto tanto de las pruebas como del código de producción que estás generan. Una vez terminado el punto del curso, probadas las pruebas, pasaremos ese código de producción a su fichero correspondiente fuera de los test.
-9.- Lleva siempre un control de versionado con git.
-10.- Aunque está especificado en las "rules" actualiza siempre los ficheros de configuración del proyecto(xcodeproj/xcconfig/xcworkspace, o el que corresponda, para que al ejecutarlos en Xcode aparezcan reflejados y dentro de sus correspondientes targets
+9.- Aunque está especificado en las "rules" actualiza siempre los ficheros de configuración del proyecto(xcodeproj/xcconfig/xcworkspace, o el que corresponda, para que al ejecutarlos en Xcode aparezcan reflejados y dentro de sus correspondientes targets

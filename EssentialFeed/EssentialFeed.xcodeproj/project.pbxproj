@@ -132,9 +132,9 @@
 		08EF9D34250BCA52004539C2 /* ImageComments.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08EF9D36250BCA52004539C2 /* ImageComments.strings */; };
 		08EFE6BD22D6384100DA417A /* FeedImageCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EFE6BC22D6384100DA417A /* FeedImageCellController.swift */; };
 		08F8822D236499B200CAEE16 /* FeedCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8822C236499B200CAEE16 /* FeedCache.swift */; };
-		B42EB7022DAEBA65002FBC51 /* KeychainKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EB7002DAEBA17002FBC51 /* KeychainKeychain.swift */; };
 		B42EB7042DAEBA8E002FBC51 /* KeychainSecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EB7032DAEBA8E002FBC51 /* KeychainSecureStorage.swift */; };
 		B42EB7062DAEBAA8002FBC51 /* KeychainSecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EB7052DAEBAA8002FBC51 /* KeychainSecureStorageTests.swift */; };
+		B442B75C2DAED51A00284B91 /* KeychainKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EB7002DAEBA17002FBC51 /* KeychainKeychain.swift */; };
 		B4F6AFE52DAE9D8A00D46FA8 /* SecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F6AFE12DAE99A900D46FA8 /* SecureStorageTests.swift */; };
 		B4F6AFE82DAE9DDA00D46FA8 /* SecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F6AFE62DAE9DDA00D46FA8 /* SecureStorage.swift */; };
 /* End PBXBuildFile section */
@@ -1192,10 +1192,10 @@
 				08346CF224F93EC600A9F17C /* ImageComment.swift in Sources */,
 				08285AF4228BFAFF000A8987 /* FeedStore.xcdatamodeld in Sources */,
 				08604505233E316F005ECD22 /* CoreDataFeedStore+FeedStore.swift in Sources */,
-				B42EB7022DAEBA65002FBC51 /* KeychainKeychain.swift in Sources */,
 				08EF9D2F250BC9A5004539C2 /* ImageCommentsPresenter.swift in Sources */,
 				0886893A221DAA34007BC3E7 /* LocalFeedImage.swift in Sources */,
 				089C40DE22170F2300DE552E /* FeedStore.swift in Sources */,
+				B442B75C2DAED51A00284B91 /* KeychainKeychain.swift in Sources */,
 				089C40DC22170EC500DE552E /* LocalFeedLoader.swift in Sources */,
 				08346CEF24F93BC400A9F17C /* ImageCommentsMapper.swift in Sources */,
 				08EF9D1A250BB15C004539C2 /* LoadResourcePresenter.swift in Sources */,

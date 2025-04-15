@@ -11,7 +11,7 @@
 ## Resumen Actualizado de Estado de Implementación
 | Caso de Uso                                   | Estado                  |
 |-----------------------------------------------|-------------------------|
-| 1. Almacenamiento Seguro                     | ✅ Completado (tests unitarios, happy path) |
+| 1. Almacenamiento Seguro                     | ✅ Completado (tests unitarios, fallback y alternativa, todos los paths cubiertos) |
 | 2. Registro de Usuario                       | 🔄 Pendiente             |
 | 3. Autenticación de Usuario                  | 🔄 Pendiente             |
 | 4. Gestión de Token Expirado                 | 🔄 Pendiente             |
@@ -41,7 +41,7 @@
 **Curso de error - error de Keychain (sad path):**
 - ✅ Sistema notifica error si persiste. _(cubierto por tests unitarios con spy)_
 - ✅ Sistema registra error para diagnóstico. _(cubierto por tests unitarios con spy)_
-- 🚧 Sistema intenta estrategia alternativa de almacenamiento: Si el Keychain falla, el sistema debe intentar guardar los datos en un almacenamiento alternativo seguro (por ejemplo, cifrado en disco o en memoria). Si la alternativa también falla, se debe notificar y registrar el error.
+- ✅ Sistema intenta estrategia alternativa de almacenamiento: Si el Keychain falla, el sistema intenta guardar los datos en un almacenamiento alternativo seguro (por ejemplo, cifrado en disco o en memoria). Si la alternativa también falla, se notifica y registra el error. _(cubierto por tests unitarios con spy)_
 
 **Curso de error - datos corruptos (sad path):**
 - 🔄 Sistema detecta inconsistencia en datos.
@@ -450,7 +450,7 @@ Siempre priorizando la trazabilidad y la calidad del historial.
  
 Apartir de aquí, seguiré este flujo SIEMPRE:
 
-Añadir test → comprobar que falla → implementar código de producción → comprobar que pasa → actualizar BDD/documentación → commit atómico.
+Añadir test → comprobar que falla → implementar código de producción → comprobar que pasa → actualizar fichero de configuración () → actualizar BDD/documentación → commit atómico.
 No preguntaré si avanzar, simplemente seguiré el ciclo profesional y ágil pactado.
 
 

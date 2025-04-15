@@ -65,29 +65,59 @@ Para crear una cuenta y acceder a las funcionalidades
 
 ### Escenarios (Criterios de aceptación)
 
-✅ **Escenario 1: Registro exitoso**
+_(Solo referencia para QA y negocio. El avance se marca únicamente en los cursos técnicos de abajo)_
+
+**Escenario 1: Registro exitoso**
 Dado que el usuario introduce datos válidos (nombre, correo electrónico, contraseña)
 Cuando el usuario envía el formulario de registro
-✅ Entonces la aplicación debe crear una cuenta
-🟡 Y enviar un correo de verificación
-🟡 Y redirigir al usuario a la pantalla de confirmación
-✅ Y almacenar las credenciales de forma segura en el Keychain
+Entonces la aplicación debe crear una cuenta
+Y enviar un correo de verificación
+Y redirigir al usuario a la pantalla de confirmación
+Y almacenar las credenciales de forma segura en el Keychain
 
-
-- [ ] **Escenario 2: Error de datos inválidos**  
-  Dado que el usuario introduce datos inválidos  
-  Cuando el usuario intenta registrarse  
-  Entonces la aplicación debe mostrar mensajes de error apropiados  
-
-**Notas:**  
-- El escenario 1 está parcialmente completado: se crea el usuario con datos válidos.  
-- Pendiente implementar almacenamiento seguro en Keychain, correo de verificación y redirección.
-
-Entonces la aplicación debe mostrar mensajes específicos para cada campo inválido  
-Y no permitir el envío hasta que se corrijan los errores  
-Y ofrecer sugerencias de formato correcto  
+**Escenario 2: Error de datos inválidos**  
+Dado que el usuario introduce datos inválidos  
+Cuando el usuario intenta registrarse  
+Entonces la aplicación debe mostrar mensajes de error apropiados  
 
 **Escenario 3: Error de correo ya registrado**  
+Dado que el usuario introduce un correo electrónico ya registrado  
+Cuando el usuario intenta registrarse  
+Entonces la aplicación debe mostrar un mensaje indicando que el correo ya está en uso  
+Y sugerir iniciar sesión o recuperar contraseña  
+
+**Escenario 4: Error de conexión**  
+Dado que el usuario no tiene conexión a internet  
+Cuando el usuario intenta registrarse  
+Entonces la aplicación debe mostrar un mensaje de error de conectividad  
+Y guardar los datos de forma segura para reintentarlo cuando la conexión se restablezca  
+Y ofrecer la opción de notificar cuando se complete  
+
+---
+
+### Checklist de implementación técnica (solo desarrolladores)
+
+#### Curso Principal (happy path)
+- ✅ Ejecutar comando "Registrar Usuario" con los datos proporcionados
+- ✅ Validar el formato de los datos
+- 🟡 Enviar solicitud de registro al servidor
+- 🟡 Recibir confirmación de creación de cuenta
+- ✅ Almacenar credenciales iniciales de forma segura
+- 🟡 Notificar éxito de registro
+
+#### Curso de error - datos inválidos (sad path)
+- ✅ Notificar errores de validación específicos
+
+#### Curso de error - correo ya registrado (sad path)
+- 🟡 Notificar que el correo ya está en uso
+- 🟡 Sugerir recuperación de contraseña
+
+#### Curso de error - sin conectividad (sad path)
+- 🟡 Almacenar la solicitud para reintentar
+- 🟡 Notificar error de conectividad
+- 🟡 Ofrecer la opción de notificar cuando se complete
+
+_(Solo marcar aquí el avance técnico real. Los escenarios arriba son referencia de QA/negocio)_
 Dado que el usuario introduce un correo electrónico ya registrado  
 Cuando el usuario intenta registrarse  
 Entonces la aplicación debe mostrar un mensaje indicando que el correo ya está en uso  

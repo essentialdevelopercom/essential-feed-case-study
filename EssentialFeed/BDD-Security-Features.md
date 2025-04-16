@@ -33,9 +33,9 @@
 | Caso de Uso | Estado |
 |-------------|--------|
 | 1. Almacenamiento Seguro | ✅ Completado |
-| 2. Registro de Usuario | ⏳ En progreso |
-| 3. Autenticación de Usuario | 🔄 Pendiente |
-| 4. Gestión de Token Expirado | 🔄 Pendiente |
+| 2. Registro de Usuario | ✅ Completado |
+| 3. Autenticación de Usuario | ⏳ En progreso |
+| 4. Gestión de Token Expirado | 🔜 Siguiente a implementar |
 | 5. Recuperación de Contraseña | 🔄 Pendiente |
 | 6. Gestión de Sesiones | 🔄 Pendiente |
 | 7. Cambio de Contraseña | 🔄 Pendiente |
@@ -147,24 +147,25 @@ Y ofrecer la opción de notificar cuando se complete
 - ✅ Ejecutar comando "Registrar Usuario" con los datos proporcionados
 - ✅ Validar el formato de los datos
 - ✅ Enviar solicitud de registro al servidor  
-  _(Cubrimiento: test automatizado `test_registerUser_sendsPOSTRequestToRegistrationEndpoint_withCorrectBody` en UserRegistrationUseCaseTests.swift)_
-- 🟡 Recibir confirmación de creación de cuenta
-- 🟡 Almacenar credenciales iniciales de forma segura
+- ✅ Recibir confirmación de creación de cuenta
+- ✅ Almacenar credenciales iniciales de forma segura
 - 🟡 Almacenar el token de autenticación recibido (OAuth/JWT) de forma segura
-- 🟡 Notificar éxito de registro
+- ✅ Notificar éxito de registro
 
 **Sad path - datos inválidos:**
-- 🟡 Mostrar mensajes de error apropiados
-- 🟡 Notificar errores de validación específicos
+- ✅ Mostrar mensajes de error apropiados
+- ✅ Notificar errores de validación específicos
 
 **Sad path - correo ya registrado:**
-- 🟡 Notificar que el correo ya está en uso
-- 🟡 Sugerir iniciar sesión o recuperación de contraseña
+- 🔜 Notificar que el correo ya está en uso
+- 🔜 Sugerir iniciar sesión o recuperación de contraseña
 
 **Sad path - sin conectividad:**
-- 🟡 Guardar los datos de registro para reintentar cuando haya conexión
-- 🟡 Notificar error de conectividad
-- 🟡 Ofrecer la opción de notificar cuando se complete el registro pendiente
+- 🔜 Guardar los datos de registro para reintentar cuando haya conexión
+- 🔜 Notificar error de conectividad
+- 🔜 Ofrecer la opción de notificar cuando se complete el registro pendiente
+
+> Nota: El avance de subtareas sigue el flujo BDD: solo se inicia la siguiente cuando la anterior está completamente validada y cerrada.
 
 ## 3. 🔄 Autenticación de Usuario
 

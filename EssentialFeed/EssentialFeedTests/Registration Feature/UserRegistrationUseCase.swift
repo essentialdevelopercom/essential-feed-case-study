@@ -10,24 +10,48 @@ public struct User {
     }
 }
 
-public struct KeychainSpy: KeychainProtocol {
-    public init() {}
-    public func save(data: Data, forKey key: String) -> Bool { false }
+public struct UserRegistrationData: Codable {
+    let name: String
+    let email: String
+    let password: String
 }
 
+public enum RegistrationValidationError: Error, Equatable {
+    case emptyName
+    case invalidEmail
+    case weakPassword
+}
 
 public protocol RegistrationValidatorProtocol {
-    func validate(name: String, email: String, password: String) -> Bool
+    func validate(name: String, email: String, password: String) -> RegistrationValidationError?
 }
 
 public struct RegistrationValidatorStub: RegistrationValidatorProtocol {
     public init() {}
-    public func validate(name: String, email: String, password: String) -> Bool { true }
+    public func validate(name: String, email: String, password: String) -> RegistrationValidationError? {
+        if name.trimmingCharacters(in: .whitespaces).isEmpty {
+            return .emptyName
+        }
+        if !email.contains("@") || !email.contains(".") {
+            return .invalidEmail
+        }
+        if password.count < 8 {
+            return .weakPassword
+        }
+        return nil
+    }
 }
 
 public enum UserRegistrationResult {
     case success(User)
     case failure(Error)
+}
+
+public enum NetworkError: Error, Equatable {
+    case invalidResponse
+    case clientError(statusCode: Int)
+    case serverError(statusCode: Int)
+    case unknown
 }
 
 public actor UserRegistrationUseCase {
@@ -43,25 +67,44 @@ public actor UserRegistrationUseCase {
         self.registrationEndpoint = registrationEndpoint
     }
 
-    public func register(name: String, email: String, password: String) async throws -> UserRegistrationResult {
-        guard validator.validate(name: name, email: email, password: password) else {
-            struct RegistrationError: Error {}
-            return .failure(RegistrationError())
+    public func register(name: String, email: String, password: String) async -> UserRegistrationResult {
+        if let validationError = validator.validate(name: name, email: email, password: password) {
+            return .failure(validationError)
         }
-        // Enviar solicitud de registro al servidor
+        
+        let userData = UserRegistrationData(name: name, email: email, password: password)
         let body = [
-            "name": name,
-            "email": email,
-            "password": password
+            "name": userData.name,
+            "email": userData.email,
+            "password": userData.password
         ]
-        let _ = await withCheckedContinuation { continuation in
-            _ = httpClient.post(to: registrationEndpoint, body: body) { _ in
-                continuation.resume()
+        
+        return await withCheckedContinuation { [self] continuation in
+            _ = httpClient.post(to: registrationEndpoint, body: body) { [weak self] result in
+                switch result {
+                case .success((_, let httpResponse)):
+                    switch httpResponse.statusCode {
+                    case 201:
+                        Task { [weak self] in
+                            await self?.saveCredentials(email: email, password: password)
+                            continuation.resume(returning: .success(User(name: name, email: email)))
+                        }
+                    case 400..<500:
+                        continuation.resume(returning: .failure(NetworkError.clientError(statusCode: httpResponse.statusCode)))
+                    case 500..<600:
+                        continuation.resume(returning: .failure(NetworkError.serverError(statusCode: httpResponse.statusCode)))
+                    default:
+                        continuation.resume(returning: .failure(NetworkError.unknown))
+                    }
+                case .failure(let error):
+                    continuation.resume(returning: .failure(error))
+                }
             }
         }
-        // Persistencia segura de credenciales
+    }
+
+    // MARK: - Private Helpers (Actor Context)
+    private func saveCredentials(email: String, password: String) {
         _ = keychain.save(data: password.data(using: .utf8)!, forKey: email)
-        let user = User(name: name, email: email)
-        return .success(user)
     }
 }

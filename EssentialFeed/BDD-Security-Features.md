@@ -1,5 +1,26 @@
 # Estado de Implementación
 
+## 🔐 Explicación técnica: Ciclo de vida y uso de tokens (JWT/OAuth)
+
+- **Registro de usuario:** No requiere token en la petición. El backend devuelve un token tras el registro exitoso (si aplica), que debe almacenarse de forma segura (Keychain).
+- **Login/autenticación:** No requiere token en la petición. El backend devuelve un token tras login exitoso, que debe almacenarse de forma segura.
+- **Operaciones protegidas:** Todas las peticiones a endpoints protegidos (cambio de contraseña, actualización de perfil, acceso a recursos, etc) requieren que la app añada el token en la cabecera `Authorization: Bearer <token>`. El token se obtiene del almacenamiento seguro.
+- **Expiración y renovación:** El token tiene un tiempo de vida limitado. Si expira, la app debe intentar renovarlo usando el refresh token. Si no es posible renovar, se fuerza al usuario a autenticarse de nuevo.
+- **Peticiones públicas:** Registro, login y recuperación de contraseña (si es pública) no requieren token.
+
+| Petición                   | ¿Requiere token? | ¿Almacena token? | ¿Usa refresh? |
+|----------------------------|:---------------:|:----------------:|:-------------:|
+| Registro                   |        ❌        |       ✅*        |      ❌       |
+| Login                      |        ❌        |       ✅         |      ❌       |
+| Cambio de contraseña       |        ✅        |       ❌         |      ❌       |
+| Acceso a datos protegidos  |        ✅        |       ❌         |      ❌       |
+| Refresh token              |        ✅        |       ✅         |      ✅       |
+| Logout                     |      Depende     |       ❌         |      ❌       |
+
+*El token se almacena solo si el backend lo devuelve tras el registro.
+
+---
+
 ✅ Completado  
 🔜 Siguiente a implementar  
 🟡 Pendiente    
@@ -62,6 +83,7 @@
 Como nuevo usuario  
 Quiero poder registrarme en la aplicación  
 Para crear una cuenta y acceder a las funcionalidades  
+Y recibir un **token de autenticación (OAuth/JWT)** tras el registro para poder acceder a recursos protegidos
 
 ### Escenarios (Criterios de aceptación)
 
@@ -74,6 +96,7 @@ Entonces la aplicación debe crear una cuenta
 Y enviar un correo de verificación
 Y redirigir al usuario a la pantalla de confirmación
 Y almacenar las credenciales de forma segura en el Keychain
+Y **almacenar el token de autenticación recibido (OAuth/JWT) de forma segura**
 
 **Escenario 2: Error de datos inválidos**  
 Dado que el usuario introduce datos inválidos  
@@ -95,67 +118,53 @@ Y ofrecer la opción de notificar cuando se complete
 
 ---
 
-### Checklist de implementación técnica (solo desarrolladores)
-
-#### Curso Principal (happy path)
-- ✅ Ejecutar comando "Registrar Usuario" con los datos proporcionados
-- ✅ Validar el formato de los datos
-- 🟡 Enviar solicitud de registro al servidor
-- 🟡 Recibir confirmación de creación de cuenta
-- ✅ Almacenar credenciales iniciales de forma segura
-- 🟡 Notificar éxito de registro
-
-#### Curso de error - datos inválidos (sad path)
-- ✅ Notificar errores de validación específicos
-
-#### Curso de error - correo ya registrado (sad path)
-- 🟡 Notificar que el correo ya está en uso
-- 🟡 Sugerir recuperación de contraseña
-
-#### Curso de error - sin conectividad (sad path)
-- 🟡 Almacenar la solicitud para reintentar
-- 🟡 Notificar error de conectividad
-- 🟡 Ofrecer la opción de notificar cuando se complete
-
-_(Solo marcar aquí el avance técnico real. Los escenarios arriba son referencia de QA/negocio)_
-Dado que el usuario introduce un correo electrónico ya registrado  
-Cuando el usuario intenta registrarse  
-Entonces la aplicación debe mostrar un mensaje indicando que el correo ya está en uso  
-Y sugerir iniciar sesión o recuperar contraseña  
-
-**Escenario 4: Error de conexión**  
-Dado que el usuario no tiene conexión a internet  
-Cuando el usuario intenta registrarse  
-Entonces la aplicación debe mostrar un mensaje de error de conectividad  
-Y guardar los datos de forma segura para reintentarlo cuando la conexión se restablezca  
-Y ofrecer la opción de notificar cuando se complete  
-
-### Caso de Uso Técnico: Registro de Usuario
-
-**Datos:**  
-- Nombre  
-- Correo electrónico  
-- Contraseña  
-
+### Registro de usuario
+#### Narrativa funcional
 **Curso Principal (happy path):**  
-- 🔄 Ejecutar comando "Registrar Usuario" con los datos proporcionados.  
-- 🔄 Sistema valida el formato de los datos.  
-- 🔄 Sistema envía solicitud de registro al servidor.  
-- 🔄 Sistema recibe confirmación de creación de cuenta.  
-- 🔄 Sistema almacena credenciales iniciales de forma segura.  
-- 🔄 Sistema notifica éxito de registro.  
+- Ejecutar comando "Registrar Usuario" con los datos proporcionados.  
+- Sistema valida el formato de los datos.  
+- Sistema envía solicitud de registro al servidor.  
+- Sistema recibe confirmación de creación de cuenta.  
+- Sistema almacena credenciales iniciales de forma segura.  
+- Sistema almacena el token de autenticación recibido (OAuth/JWT) de forma segura.  
+- Sistema notifica éxito de registro.
 
 **Curso de error - datos inválidos (sad path):**  
-- 🔄 Sistema notifica errores de validación específicos.  
+- Sistema notifica errores de validación específicos.
 
 **Curso de error - correo ya registrado (sad path):**  
-- 🔄 Sistema notifica que el correo ya está en uso.  
-- 🔄 Sistema sugiere recuperación de contraseña.  
+- Sistema notifica que el correo ya está en uso.  
+- Sistema sugiere recuperación de contraseña.
 
 **Curso de error - sin conectividad (sad path):**  
-- 🔄 Sistema almacena la solicitud para reintentar.  
-- 🔄 Sistema notifica error de conectividad.  
-- 🔄 Sistema ofrece la opción de notificar cuando se complete.
+- Sistema almacena la solicitud para reintentar.  
+- Sistema notifica error de conectividad.  
+- Sistema ofrece la opción de notificar cuando se complete.
+
+#### Checklist técnico
+
+**Happy path:**
+- ✅ Ejecutar comando "Registrar Usuario" con los datos proporcionados
+- ✅ Validar el formato de los datos
+- ✅ Enviar solicitud de registro al servidor  
+  _(Cubrimiento: test automatizado `test_registerUser_sendsPOSTRequestToRegistrationEndpoint_withCorrectBody` en UserRegistrationUseCaseTests.swift)_
+- 🟡 Recibir confirmación de creación de cuenta
+- 🟡 Almacenar credenciales iniciales de forma segura
+- 🟡 Almacenar el token de autenticación recibido (OAuth/JWT) de forma segura
+- 🟡 Notificar éxito de registro
+
+**Sad path - datos inválidos:**
+- 🟡 Mostrar mensajes de error apropiados
+- 🟡 Notificar errores de validación específicos
+
+**Sad path - correo ya registrado:**
+- 🟡 Notificar que el correo ya está en uso
+- 🟡 Sugerir iniciar sesión o recuperación de contraseña
+
+**Sad path - sin conectividad:**
+- 🟡 Guardar los datos de registro para reintentar cuando haya conexión
+- 🟡 Notificar error de conectividad
+- 🟡 Ofrecer la opción de notificar cuando se complete el registro pendiente
 
 ## 3. 🔄 Autenticación de Usuario
 
@@ -164,17 +173,56 @@ Y ofrecer la opción de notificar cuando se complete
 **Narrativa:**  
 Como usuario registrado  
 Quiero poder iniciar sesión en la aplicación  
-Para acceder a mis datos personales y funcionalidades exclusivas  
+Para acceder a mis recursos protegidos
 
 ### Escenarios (Criterios de aceptación)
+- 🟡 Recibir confirmación de autenticación
+- 🟡 Almacenar el token de autenticación recibido (OAuth/JWT) de forma segura
+- 🟡 Registrar sesión activa en SessionManager
+- 🟡 Notificar éxito de login
+- 🟡 Notificar errores de validación específicos
+- 🟡 Notificar error de credenciales
+- 🟡 Ofrecer recuperación de contraseña
+- 🟡 Almacenar la solicitud para reintentar (sin conexión)
+- 🟡 Notificar error de conectividad
+- 🟡 Aplicar retardo/bloqueo tras múltiples intentos fallidos
 
-**Escenario 1: Inicio de sesión exitoso**  
-Dado que el usuario tiene credenciales válidas  
-Cuando el usuario introduce su correo electrónico y contraseña correctos  
-Entonces la aplicación debe autenticar al usuario  
-Y almacenar el token de autenticación de forma segura en el Keychain  
-Y mostrar la pantalla principal  
+---
 
+### 3. Cambio de contraseña
+#### Narrativa funcional
+**Curso Principal (happy path):**
+- Como usuario autenticado
+- Quiero cambiar mi contraseña
+- Para mantener la seguridad de mi cuenta
+  
+**Flujo:**
+- El usuario introduce nueva contraseña válida
+- El sistema valida el formato
+- El sistema incluye token en cabecera Authorization
+- El sistema envía solicitud de cambio
+- El sistema recibe confirmación
+- El sistema gestiona expiración de token
+- El sistema notifica éxito
+
+**Cursos de error:**
+- Datos inválidos: El sistema notifica errores de validación
+- Credenciales incorrectas: El sistema notifica error
+- Sin conectividad: El sistema almacena la solicitud y notifica error
+
+#### Checklist técnico
+- 🔜 Incluir token en cabecera Authorization
+- 🟡 Validar el formato de los datos
+- 🟡 Enviar solicitud de cambio de contraseña al servidor
+- 🟡 Recibir confirmación de cambio
+- 🟡 Gestionar expiración de token
+- 🟡 Notificar éxito de cambio
+- 🟡 Notificar errores de validación específicos
+- 🟡 Notificar error de credenciales
+- 🟡 Almacenar la solicitud para reintentar (sin conexión)
+- 🟡 Notificar error de conectividad
+
+---
 **Escenario 2: Error de credenciales incorrectas**  
 Dado que el usuario introduce credenciales incorrectas  
 Cuando el usuario intenta iniciar sesión  
@@ -551,9 +599,39 @@ Y permitir continuar con funcionalidades básicas
 - 🔄 Sistema almacena la verificación para reintentar.  
 - 🔄 Sistema notifica error de conectividad.  
 - 🔄 Sistema reintenta automáticamente cuando la conexión se restablezca.
-## 9. 🔄 Autenticación con Proveedores Externos
 
-### Historia: Usuario desea autenticarse mediante proveedores externos
+### 9. Verificación de Cuenta
+#### Narrativa funcional
+**Curso Principal (happy path):**
+- Como usuario registrado
+- Quiero verificar mi cuenta mediante un enlace/token recibido por email
+- Para poder acceder a todas las funcionalidades protegidas
+
+**Flujo:**
+- El usuario recibe el correo de verificación
+- El usuario accede al enlace/token
+- El sistema valida el token con el servidor
+- El sistema actualiza el estado de la cuenta a verificada
+- El sistema actualiza el estado en SessionManager
+- El sistema notifica verificación exitosa
+- El sistema permite el inicio de sesión completo y acceso a funcionalidades avanzadas
+
+**Cursos de error:**
+- Token inválido o expirado: El sistema notifica error, registra intento fallido y ofrece solicitar nuevo token
+- Sin conectividad: El sistema almacena la verificación para reintentar y notifica error
+
+#### Checklist técnico
+- 🔜 Ejecutar comando "Verificar Cuenta" con el token proporcionado
+- 🟡 Validar el token con el servidor
+- 🟡 Actualizar estado de cuenta a verificada
+- 🟡 Actualizar estado en SessionManager
+- 🟡 Notificar verificación exitosa
+- 🟡 Permitir inicio de sesión completo y acceso a funciones avanzadas
+- 🟡 Notificar error de token inválido o expirado
+- 🟡 Ofrecer solicitar nuevo token
+- 🟡 Registrar intento fallido
+- 🟡 Almacenar la verificación para reintentar (sin conexión)
+- 🟡 Notificar error de conectividad
 
 **Narrativa:**  
 Como usuario  

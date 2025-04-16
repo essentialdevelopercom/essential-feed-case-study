@@ -160,6 +160,9 @@ Y ofrecer la opción de notificar cuando se complete
 **Siguiente:**
 - Preparar sad path: error de conectividad (almacenar solicitud para reintentar, notificar error y ofrecer opción de notificación al usuario)
 
+---
+
+
 - ✅ Almacenar credenciales iniciales de forma segura
 - 🟡 Almacenar el token de autenticación recibido (OAuth/JWT) de forma segura
 - ✅ Notificar éxito de registro

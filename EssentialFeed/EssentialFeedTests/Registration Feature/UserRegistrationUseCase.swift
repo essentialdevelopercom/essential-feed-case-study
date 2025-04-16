@@ -4,6 +4,7 @@ import EssentialFeed
 public struct User {
     public let name: String
     public let email: String
+    
     public init(name: String, email: String) {
         self.name = name
         self.email = email
@@ -28,6 +29,7 @@ public protocol RegistrationValidatorProtocol {
 
 public struct RegistrationValidatorStub: RegistrationValidatorProtocol {
     public init() {}
+    
     public func validate(name: String, email: String, password: String) -> RegistrationValidationError? {
         if name.trimmingCharacters(in: .whitespaces).isEmpty {
             return .emptyName

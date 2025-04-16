@@ -1,5 +1,12 @@
 # Essential App Case Study
 
+## Key Documentation
+
+- [BDD & Security Features](./EssentialFeed/BDD-Security-Features.md): Functional use cases and narrative
+- [Technical Roadmap](./EssentialFeed/TECHNICAL-ROADMAP.md): Cross-cutting technical priorities and next steps
+
+---
+
 ![](https://github.com/essentialdevelopercom/essential-feed-case-study/workflows/CI-iOS/badge.svg) ![](https://github.com/essentialdevelopercom/essential-feed-case-study/workflows/CI-macOS/badge.svg) ![](https://github.com/essentialdevelopercom/essential-feed-case-study/workflows/Deploy/badge.svg)
 
 ## Image Feed Feature Specs

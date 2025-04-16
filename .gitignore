@@ -1,3 +1,6 @@
+# Ignorar archivos de sistema de macOS
+.DS_Store
+
 # Created by https://www.gitignore.io/api/swift,xcode
 
 ### Swift ###

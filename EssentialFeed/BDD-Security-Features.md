@@ -3,7 +3,7 @@
 ✅ Completado  
 🔜 Siguiente a implementar  
 🟡 Pendiente    
-🔄 En progreso 
+⏳ En progreso 
 
 ---
 
@@ -12,7 +12,7 @@
 | Caso de Uso | Estado |
 |-------------|--------|
 | 1. Almacenamiento Seguro | ✅ Completado |
-| 2. Registro de Usuario | 🔄 Pendiente |
+| 2. Registro de Usuario | ⏳ En progreso |
 | 3. Autenticación de Usuario | 🔄 Pendiente |
 | 4. Gestión de Token Expirado | 🔄 Pendiente |
 | 5. Recuperación de Contraseña | 🔄 Pendiente |

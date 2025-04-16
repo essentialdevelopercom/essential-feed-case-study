@@ -36,6 +36,38 @@ So I can always enjoy images of my friends
 ```
 Given the customer doesn't have connectivity
   And there’s a cached version of the feed
+ ## 🧪 Patrón de test para HTTPClient con URLProtocolStub
+
+Para asegurar que los tests de integración de `HTTPClient` sean deterministas, rápidos y no dependan de la red real, utilizamos un stub de red (`URLProtocolStub`) y una configuración personalizada de `URLSession`.
+
+**¿Por qué no usar `.shared`?**
+- Usar `.shared` puede provocar interferencias entre tests y dependencias accidentales de la red real.
+- Cada test debe ser hermético: control total sobre las respuestas, sin efectos colaterales ni dependencias externas.
+
+**Patrón recomendado:**
+```swift
+private func makeSUT(
+    session: URLSession? = nil,
+    file: StaticString = #file,
+    line: UInt = #line
+) -> HTTPClient {
+    let configuration = URLSessionConfiguration.ephemeral
+    configuration.protocolClasses = [URLProtocolStub.self]
+    let session = session ?? URLSession(configuration: configuration)
+    let sut = URLSessionHTTPClient(session: session)
+    trackForMemoryLeaks(sut, file: file, line: line)
+    return sut as HTTPClient
+}
+```
+- Así, todos los tests de integración usan el stub, evitando la red real.
+- Si algún test necesita una sesión especial, puede proporcionarla.
+
+**Ventajas:**
+- Tests rápidos, predecibles y sin flakiness.
+- Aislamiento total de cada caso de test.
+- Facilita el TDD/BDD y la confianza en la suite de tests.
+
+> **Nota:** Este patrón es especialmente útil en proyectos modulares, CI y cuando hay tests concurrentes.
   And the cache is less than seven days old
  When the customer requests to see the feed
  Then the app should display the latest feed saved

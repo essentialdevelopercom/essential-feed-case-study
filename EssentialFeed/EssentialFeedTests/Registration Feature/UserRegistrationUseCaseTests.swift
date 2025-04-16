@@ -47,6 +47,22 @@ final class UserRegistrationUseCaseTests: XCTestCase {
         )
     }
 
+    func test_registerUser_withAlreadyRegisteredEmail_returnsEmailAlreadyInUseError_andDoesNotStoreCredentials() async {
+        let httpClient = HTTPClientSpy()
+        httpClient.statusCode = 409 // Simula respuesta de correo ya registrado
+        let (sut, keychain, name, email, password, _) = makeSUTWithDefaults(httpClient: httpClient)
+        
+        let result = await sut.register(name: name, email: email, password: password)
+        
+        switch result {
+        case .failure(let error as UserRegistrationError):
+            XCTAssertEqual(error, .emailAlreadyInUse)
+        default:
+            XCTFail("Expected .emailAlreadyInUse error, got \(result) instead")
+        }
+        XCTAssertEqual(keychain.saveCallCount, 0, "No Keychain save should occur if email is already registered")
+    }
+
 // MARK: - Helpers
 
     private func assertRegistrationValidation(
@@ -74,7 +90,7 @@ final class UserRegistrationUseCaseTests: XCTestCase {
         XCTAssertEqual(keychain.saveCallCount, 0, "No Keychain save should occur if validation fails", file: #file, line: #line)
     }
 
-    private func makeSUTWithDefaults(httpClient: HTTPClientSpy? = nil) -> (UserRegistrationUseCase, KeychainProtocol, String, String, String, HTTPClientSpy) {
+    private func makeSUTWithDefaults(httpClient: HTTPClientSpy? = nil) -> (UserRegistrationUseCase, KeychainSpy, String, String, String, HTTPClientSpy) {
     let keychain = KeychainSpy()
     let name = "Carlos"
     let email = "carlos@email.com"

@@ -148,6 +148,18 @@ Y ofrecer la opción de notificar cuando se complete
 - ✅ Validar el formato de los datos
 - ✅ Enviar solicitud de registro al servidor  
 - ✅ Recibir confirmación de creación de cuenta
+
+**Sad path:**
+- ✅ Datos inválidos: sistema no envía solicitud ni guarda credenciales
+- ✅ Email ya registrado (409): sistema devuelve error de dominio y no guarda credenciales
+
+**Notas técnicas:**
+- Refactor: helper de tests usa KeychainSpy concreto para asserts claros
+- Todos los tests pasan (**TEST SUCCEEDED**)
+
+**Siguiente:**
+- Preparar sad path: error de conectividad (almacenar solicitud para reintentar, notificar error y ofrecer opción de notificación al usuario)
+
 - ✅ Almacenar credenciales iniciales de forma segura
 - 🟡 Almacenar el token de autenticación recibido (OAuth/JWT) de forma segura
 - ✅ Notificar éxito de registro

@@ -42,6 +42,10 @@ public struct RegistrationValidatorStub: RegistrationValidatorProtocol {
     }
 }
 
+public enum UserRegistrationError: Error, Equatable {
+    case emailAlreadyInUse
+}
+
 public enum UserRegistrationResult {
     case success(User)
     case failure(Error)
@@ -89,6 +93,8 @@ public actor UserRegistrationUseCase {
                             await self?.saveCredentials(email: email, password: password)
                             continuation.resume(returning: .success(User(name: name, email: email)))
                         }
+                    case 409:
+                        continuation.resume(returning: .failure(UserRegistrationError.emailAlreadyInUse))
                     case 400..<500:
                         continuation.resume(returning: .failure(NetworkError.clientError(statusCode: httpResponse.statusCode)))
                     case 500..<600:

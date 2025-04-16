@@ -47,6 +47,27 @@ final class UserRegistrationUseCaseTests: XCTestCase {
         )
     }
 
+    func test_registerUser_withAlreadyRegisteredEmail_notifiesUserThatEmailIsAlreadyInUse() async {
+        let httpClient = HTTPClientSpy()
+        httpClient.statusCode = 409 // Simula respuesta de correo ya registrado
+        let notifier = UserRegistrationNotifierSpy()
+        let (sut, keychain, name, email, password, _) = makeSUTWithDefaults(httpClient: httpClient, notifier: notifier)
+        
+        let result = await sut.register(name: name, email: email, password: password)
+        
+        // Assert: Se notifica al usuario
+        XCTAssertEqual(notifier.notifiedEvents, [.emailAlreadyInUse])
+        // Assert: No se guardan credenciales
+        XCTAssertEqual(keychain.saveCallCount, 0)
+        // Assert: El resultado es el error esperado
+        switch result {
+        case .failure(let error as UserRegistrationError):
+            XCTAssertEqual(error, .emailAlreadyInUse)
+        default:
+            XCTFail("Expected .emailAlreadyInUse error, got \(result) instead")
+        }
+    }
+
     func test_registerUser_withAlreadyRegisteredEmail_returnsEmailAlreadyInUseError_andDoesNotStoreCredentials() async {
         let httpClient = HTTPClientSpy()
         httpClient.statusCode = 409 // Simula respuesta de correo ya registrado
@@ -80,7 +101,14 @@ final class UserRegistrationUseCaseTests: XCTestCase {
     }
 
 
-// MARK: - Helpers
+// MARK: - Notifier Spy
+final class UserRegistrationNotifierSpy: UserRegistrationNotifier {
+    private(set) var notifiedEvents: [Event] = []
+    enum Event { case emailAlreadyInUse }
+    func notifyEmailAlreadyInUse() { notifiedEvents.append(.emailAlreadyInUse) }
+}
+
+// MARK: - Tests
 
     private func assertRegistrationValidation(
         name: String,
@@ -107,7 +135,7 @@ final class UserRegistrationUseCaseTests: XCTestCase {
         XCTAssertEqual(keychain.saveCallCount, 0, "No Keychain save should occur if validation fails", file: #file, line: #line)
     }
 
-    private func makeSUTWithDefaults(httpClient: HTTPClientSpy? = nil) -> (UserRegistrationUseCase, KeychainSpy, String, String, String, HTTPClientSpy) {
+    private func makeSUTWithDefaults(httpClient: HTTPClientSpy? = nil, notifier: UserRegistrationNotifier? = nil) -> (UserRegistrationUseCase, KeychainSpy, String, String, String, HTTPClientSpy) {
     let keychain = KeychainSpy()
     let name = "Carlos"
     let email = "carlos@email.com"
@@ -118,7 +146,8 @@ final class UserRegistrationUseCaseTests: XCTestCase {
         keychain: keychain,
         validator: RegistrationValidatorStub(),
         httpClient: httpClient,
-        registrationEndpoint: registrationEndpoint
+        registrationEndpoint: registrationEndpoint,
+        notifier: notifier
     )
     trackForMemoryLeaks(sut, file: #file, line: #line)
     trackForMemoryLeaks(keychain as AnyObject, file: #file, line: #line)

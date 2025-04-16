@@ -60,17 +60,23 @@ public enum NetworkError: Error, Equatable {
     case noConnectivity
 }
 
+public protocol UserRegistrationNotifier {
+    func notifyEmailAlreadyInUse()
+}
+
 public actor UserRegistrationUseCase {
     private let keychain: KeychainProtocol
     private let validator: RegistrationValidatorProtocol
     private let httpClient: HTTPClient
     private let registrationEndpoint: URL
+    private let notifier: UserRegistrationNotifier?
 
-    public init(keychain: KeychainProtocol, validator: RegistrationValidatorProtocol, httpClient: HTTPClient, registrationEndpoint: URL) {
+    public init(keychain: KeychainProtocol, validator: RegistrationValidatorProtocol, httpClient: HTTPClient, registrationEndpoint: URL, notifier: UserRegistrationNotifier? = nil) {
         self.keychain = keychain
         self.validator = validator
         self.httpClient = httpClient
         self.registrationEndpoint = registrationEndpoint
+        self.notifier = notifier
     }
 
     public func register(name: String, email: String, password: String) async -> UserRegistrationResult {
@@ -96,6 +102,7 @@ public actor UserRegistrationUseCase {
                             continuation.resume(returning: .success(User(name: name, email: email)))
                         }
                     case 409:
+                        self?.notifier?.notifyEmailAlreadyInUse()
                         continuation.resume(returning: .failure(UserRegistrationError.emailAlreadyInUse))
                     case 400..<500:
                         continuation.resume(returning: .failure(NetworkError.clientError(statusCode: httpResponse.statusCode)))

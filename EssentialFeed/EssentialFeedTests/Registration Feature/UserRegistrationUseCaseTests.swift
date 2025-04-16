@@ -63,6 +63,23 @@ final class UserRegistrationUseCaseTests: XCTestCase {
         XCTAssertEqual(keychain.saveCallCount, 0, "No Keychain save should occur if email is already registered")
     }
 
+    func test_registerUser_withNoConnectivity_returnsConnectivityError_andDoesNotStoreCredentials() async {
+        let httpClient = HTTPClientSpy()
+        httpClient.errorToReturn = NetworkError.noConnectivity
+        let (sut, keychain, name, email, password, _) = makeSUTWithDefaults(httpClient: httpClient)
+        
+        let result = await sut.register(name: name, email: email, password: password)
+        
+        switch result {
+        case .failure(let error as NetworkError):
+            XCTAssertEqual(error, .noConnectivity)
+        default:
+            XCTFail("Expected failure with .noConnectivity, got \(result) instead")
+        }
+        XCTAssertEqual(keychain.saveCallCount, 0, "No Keychain save should occur if there is no connectivity")
+    }
+
+
 // MARK: - Helpers
 
     private func assertRegistrationValidation(

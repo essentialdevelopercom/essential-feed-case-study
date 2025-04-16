@@ -58,6 +58,7 @@ public enum NetworkError: Error, Equatable {
     case clientError(statusCode: Int)
     case serverError(statusCode: Int)
     case unknown
+    case noConnectivity
 }
 
 public actor UserRegistrationUseCase {

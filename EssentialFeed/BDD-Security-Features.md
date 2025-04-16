@@ -176,8 +176,12 @@ Y ofrecer la opción de notificar cuando se complete
 - 🔜 Sugerir iniciar sesión o recuperación de contraseña
 
 **Sad path - sin conectividad:**
+- ✅ Guardar los datos de registro para reintentar cuando haya conexión
+- ✅ Notificar error de conectividad
+- ✅ Ofrecer la opción de notificar cuando se complete el registro pendiente
 - ✅ Test: `test_registerUser_withNoConnectivity_returnsConnectivityError_andDoesNotStoreCredentials` implementado en `UserRegistrationUseCaseTests`
 - ✅ Resultado: El sistema devuelve `NetworkError.noConnectivity` y no guarda credenciales en Keychain
+- ✅ Arquitectura: Código de producción y de tests correctamente separados en módulos. Suite verificada en iPhone 16 Pro, iOS 18.4
 
 > Nota: El avance de subtareas sigue el flujo BDD: solo se inicia la siguiente cuando la anterior está completamente validada y cerrada.
 

@@ -132,12 +132,12 @@
 		08EF9D34250BCA52004539C2 /* ImageComments.strings in Resources */ = {isa = PBXBuildFile; fileRef = 08EF9D36250BCA52004539C2 /* ImageComments.strings */; };
 		08EFE6BD22D6384100DA417A /* FeedImageCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EFE6BC22D6384100DA417A /* FeedImageCellController.swift */; };
 		08F8822D236499B200CAEE16 /* FeedCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8822C236499B200CAEE16 /* FeedCache.swift */; };
+		B40098352DB022350081699A /* UserRegistrationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D71EF12DAF1D34003A1316 /* UserRegistrationUseCase.swift */; };
 		B42EB7062DAEBAA8002FBC51 /* KeychainSecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EB7052DAEBAA8002FBC51 /* KeychainSecureStorageTests.swift */; };
 		B442B75C2DAED51A00284B91 /* SystemKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EB7002DAEBA17002FBC51 /* SystemKeychain.swift */; };
 		B4D71EEF2DAF1643003A1316 /* KeychainProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B442B75D2AB3451700284B92 /* KeychainProtocol.swift */; };
 		B4D71EF72DAF1DE5003A1316 /* UserRegistrationUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D71EF22DAF1D34003A1316 /* UserRegistrationUseCaseTests.swift */; };
 		B4D71EF82DAF1DE5003A1316 /* RecordingKeychainSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D71EF02DAF1D34003A1316 /* RecordingKeychainSpy.swift */; };
-		B4D71EF92DAF1DE5003A1316 /* UserRegistrationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D71EF12DAF1D34003A1316 /* UserRegistrationUseCase.swift */; };
 		B4F6AFE52DAE9D8A00D46FA8 /* SecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F6AFE12DAE99A900D46FA8 /* SecureStorageTests.swift */; };
 		B4F6AFE82DAE9DDA00D46FA8 /* SecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F6AFE62DAE9DDA00D46FA8 /* SecureStorage.swift */; };
 /* End PBXBuildFile section */
@@ -504,6 +504,7 @@
 		080EDEF321B6DA7E00813479 /* EssentialFeed */ = {
 			isa = PBXGroup;
 			children = (
+				B40098342DB022150081699A /* Registration Feature */,
 				B4F6AFE72DAE9DDA00D46FA8 /* Security Feature */,
 				080EDEF521B6DA7E00813479 /* Info.plist */,
 				08EF9D18250BB14C004539C2 /* Shared Presentation */,
@@ -906,11 +907,18 @@
 			path = "Feed UI";
 			sourceTree = "<group>";
 		};
+		B40098342DB022150081699A /* Registration Feature */ = {
+			isa = PBXGroup;
+			children = (
+				B4D71EF12DAF1D34003A1316 /* UserRegistrationUseCase.swift */,
+			);
+			path = "Registration Feature";
+			sourceTree = "<group>";
+		};
 		B4D71EF32DAF1D34003A1316 /* Registration Feature */ = {
 			isa = PBXGroup;
 			children = (
 				B4D71EF02DAF1D34003A1316 /* RecordingKeychainSpy.swift */,
-				B4D71EF12DAF1D34003A1316 /* UserRegistrationUseCase.swift */,
 				B4D71EF22DAF1D34003A1316 /* UserRegistrationUseCaseTests.swift */,
 			);
 			path = "Registration Feature";
@@ -1201,6 +1209,7 @@
 				08C4E986233E139400D939F8 /* LocalFeedImageDataLoader.swift in Sources */,
 				08285AFB228C17B8000A8987 /* CoreDataHelpers.swift in Sources */,
 				08C0880E21E4EF2900ACFB30 /* FeedItemsMapper.swift in Sources */,
+				B40098352DB022350081699A /* UserRegistrationUseCase.swift in Sources */,
 				087148C4232BFCF100D6BE1A /* FeedImageViewModel.swift in Sources */,
 				08EF9D29250BBC6C004539C2 /* ResourceErrorView.swift in Sources */,
 				08E546CC24F9631300C64FAE /* FeedImageDataMapper.swift in Sources */,
@@ -1256,7 +1265,6 @@
 				087148C0232BF27700D6BE1A /* FeedImagePresenterTests.swift in Sources */,
 				B4D71EF72DAF1DE5003A1316 /* UserRegistrationUseCaseTests.swift in Sources */,
 				B4D71EF82DAF1DE5003A1316 /* RecordingKeychainSpy.swift in Sources */,
-				B4D71EF92DAF1DE5003A1316 /* UserRegistrationUseCase.swift in Sources */,
 				087546922272381700542C32 /* XCTestCase+FailableInsertFeedStoreSpecs.swift in Sources */,
 				08EF9D2C250BC95A004539C2 /* ImageCommentsPresenterTests.swift in Sources */,
 				086044FE233E1A90005ECD22 /* CacheFeedImageDataUseCaseTests.swift in Sources */,

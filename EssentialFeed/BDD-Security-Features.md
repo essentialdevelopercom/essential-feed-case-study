@@ -1,5 +1,10 @@
 # Estado de Implementación
 
+# Cómo usar este documento
+- Utiliza este documento como guía para priorizar el desarrollo y los tests.
+- Marca los escenarios como completados a medida que avances.
+- Amplía los escenarios con ejemplos Gherkin si lo deseas (puedo ayudarte a generarlos).
+
 ## 🔐 Explicación técnica: Ciclo de vida y uso de tokens (JWT/OAuth)
 
 - **Registro de usuario:** No requiere token en la petición. El backend devuelve un token tras el registro exitoso (si aplica), que debe almacenarse de forma segura (Keychain).
@@ -9,7 +14,7 @@
 - **Peticiones públicas:** Registro, login y recuperación de contraseña (si es pública) no requieren token.
 
 | Petición                   | ¿Requiere token? | ¿Almacena token? | ¿Usa refresh? |
-|----------------------------|:---------------:|:----------------:|:-------------:|
+|----------------------------|:----------------:|:----------------:|:-------------:|
 | Registro                   |        ❌        |       ✅*        |      ❌       |
 | Login                      |        ❌        |       ✅         |      ❌       |
 | Cambio de contraseña       |        ✅        |       ❌         |      ❌       |
@@ -25,49 +30,119 @@
 🔜 Siguiente a implementar  
 🟡 Pendiente    
 ⏳ En progreso 
-
+❌ No implementado o no requerido
 ---
 
 ## Resumen Actualizado de Estado de Implementación
 
-| Caso de Uso | Estado |
-|-------------|--------|
-| 1. Almacenamiento Seguro | ✅ Completado |
-| 2. Registro de Usuario | ✅ Completado |
-| 3. Autenticación de Usuario | ⏳ En progreso |
-| 4. Gestión de Token Expirado | 🔜 Siguiente a implementar |
-| 5. Recuperación de Contraseña | 🔄 Pendiente |
-| 6. Gestión de Sesiones | 🔄 Pendiente |
-| 7. Cambio de Contraseña | 🔄 Pendiente |
-| 8. Verificación de Cuenta | 🔄 Pendiente |
-| 9. Autenticación con Proveedores Externos | 🔄 Pendiente |
-| 10. Métricas de Seguridad | 🔄 Pendiente |
+| Caso de Uso                                 | Estado             | Comentario                                       |
+|---------------------------------------------|--------------------|--------------------------------------------------|
+| 1. Almacenamiento Seguro                    | ✅ Completado      | Totalmente cubierto por tests automatizados      |
+| 2. Registro de Usuario                      | ✅ Completado      | Todos los caminos (happy/sad) cubiertos por tests|
+| 3. Autenticación de Usuario                 | ⏳ En progreso     | Solo cubiertos: token seguro y error credenciales|
+| 4. Gestión de Token Expirado                | 🔜 Siguiente       | Sin tests, pendiente de implementar              |
+| 5. Recuperación de Contraseña               | 🟡 Pendiente       | Sin tests, pendiente de implementar              |
+| 6. Gestión de Sesiones                      | 🟡 Pendiente       | Sin tests, pendiente de implementar              |
+| 7. Cambio de Contraseña                     | 🟡 Pendiente       | Sin tests, pendiente de implementar              |
+| 8. Verificación de Cuenta                   | 🟡 Pendiente       | Sin tests, pendiente de implementar              |
+| 9. Autenticación con Proveedores Externos   | 🟡 Pendiente       | Sin tests, pendiente de implementar              |
+| 10. Métricas de Seguridad                   | 🟡 Pendiente       | Sin tests, pendiente de implementar              |
+
+> Solo se marca como completado lo que está cubierto por tests automatizados reales. El resto debe implementarse y testearse antes de marcar como hecho.
+
+---
+
+### Tabla de trazabilidad (próximos casos de uso)
+
+| Caso de Uso                   | Test presente | Cobertura |
+|-------------------------------|--------------|-----------|
+| Gestión de Token Expirado     | No           |   🟡      |
+| Recuperación de Contraseña    | No           |   🟡      |
+| Gestión de Sesiones           | No           |   🟡      |
+| Cambio de Contraseña          | No           |   🟡      |
+| Verificación de Cuenta        | No           |   🟡      |
+| Proveedores Externos          | No           |   🟡      |
+| Métricas de Seguridad         | No           |   🟡      |
 
 # Casos de Uso
 
-## 1. ✅ Almacenamiento Seguro (SecureStorage)
+## 1. Almacenamiento Seguro (SecureStorage)
 
-### Caso de Uso: Almacenamiento Seguro
+### Narrativa funcional
+Como usuario de la aplicación,
+quiero que mi información sensible se almacene de forma segura,
+para garantizar la privacidad y la integridad de mis datos.
 
-**Datos:**
-- ✅ Información sensible a proteger
-- ✅ Nivel de protección requerido
+---
 
-**Curso Principal (happy path):**
-- ✅ Sistema determina el nivel de protección necesario.
-- ✅ Sistema encripta la información si es necesario.
-- ✅ Sistema almacena en el Keychain con configuración adecuada.
-- ✅ Sistema verifica el almacenamiento correcto.
+### Escenarios (Criterios de aceptación)
+_(Solo referencia para QA/negocio. El avance se marca únicamente en el checklist técnico)_
+- Almacenar información sensible de forma segura
+- Encriptar la información si es necesario
+- Verificar almacenamiento correcto
+- Notificar error si falla el almacenamiento
+- Limpiar datos corruptos y solicitar nueva autenticación
 
-**Curso de error - error de Keychain (sad path):**
-- ✅ Sistema intenta estrategia alternativa de almacenamiento.
-- ✅ Sistema notifica error si persiste.
-- ✅ Sistema registra error para diagnóstico.
+---
 
-**Curso de error - datos corruptos (sad path):**
-- ✅ Sistema detecta inconsistencia en datos.
-- ✅ Sistema limpia los datos corruptos.
-- ✅ Sistema solicita nueva autenticación si es necesario.
+### Checklist técnico de almacenamiento seguro
+- ✅ Determinar el nivel de protección necesario para cada dato
+- ✅ Encriptar la información antes de almacenar si es necesario
+- ✅ Almacenar en Keychain con configuración adecuada
+- ✅ Verificar que la información se almacena correctamente
+- ✅ Intentar almacenamiento alternativo si falla el Keychain
+- ✅ Notificar error si persiste el fallo
+- ✅ Limpiar datos corruptos y solicitar nueva autenticación
+
+---
+
+### Cursos técnicos (happy/sad path)
+
+**Happy path:**
+- El sistema determina el nivel de protección necesario
+- El sistema encripta la información si es necesario
+- El sistema almacena en el Keychain
+- El sistema verifica el almacenamiento correcto
+
+**Sad path:**
+- Error de Keychain: el sistema intenta almacenamiento alternativo, notifica error si persiste y registra para diagnóstico
+- Datos corruptos: el sistema detecta inconsistencia, limpia los datos y solicita nueva autenticación
+
+---
+
+### Diagrama técnico del flujo de almacenamiento seguro
+
+```mermaid
+flowchart TD
+    A[Component requests to store sensitive data] --> B[Determine protection level]
+    B --> C{Requires encryption?}
+    C -- Yes --> D[Encrypt data]
+    C -- No --> E[Data without encryption]
+    D --> F[Store in Keychain]
+    E --> F
+    F --> G{Storage successful?}
+    G -- Yes --> H[End: Data securely stored]
+    G -- No --> I[Try alternative storage]
+    I --> J{Alternative storage successful?}
+    J -- Yes --> H
+    J -- No --> K[Notify error and log for diagnostics]
+    F --> L{Corrupted data?}
+    L -- Yes --> M[Clean data and request new authentication]
+    L -- No --> H
+```
+
+### Trazabilidad checklist <-> tests
+| Ítem checklist almacenamiento seguro | Test presente | Cobertura |
+|:-------------------------------------------:|:-------------:|:---------:|
+| Nivel de protección determinado | Sí | ✅ |
+| Encriptación previa al almacenamiento | Sí | ✅ |
+| Almacenamiento en Keychain | Sí | ✅ |
+| Verificación de almacenamiento | Sí | ✅ |
+| Estrategia alternativa si falla Keychain | Sí | ✅ |
+| Notificación de error de almacenamiento | Sí | ✅ |
+| Limpieza de datos corruptos | Sí | ✅ |
+| Solicitud de nueva autenticación | Sí | ✅ |
+> Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
 
 **Implementación:**
 - ✅ Protocolo SecureStorage que define operaciones de guardado, recuperación y eliminación
@@ -75,455 +150,502 @@
 - ✅ Implementación KeychainSecureStorage usando el Keychain de iOS
 - ✅ Pruebas unitarias para happy path y error de Keychain
 
-## 2. 🔄 Registro de Usuario
+## 2. Registro de Usuario
 
-### Historia: Usuario nuevo solicita registrarse en la aplicación
-
-**Narrativa:**  
-Como nuevo usuario  
-Quiero poder registrarme en la aplicación  
-Para crear una cuenta y acceder a las funcionalidades  
-Y recibir un **token de autenticación (OAuth/JWT)** tras el registro para poder acceder a recursos protegidos
-
-### Escenarios (Criterios de aceptación)
-
-_(Solo referencia para QA y negocio. El avance se marca únicamente en los cursos técnicos de abajo)_
-
-**Escenario 1: Registro exitoso**
-Dado que el usuario introduce datos válidos (nombre, correo electrónico, contraseña)
-Cuando el usuario envía el formulario de registro
-Entonces la aplicación debe crear una cuenta
-Y enviar un correo de verificación
-Y redirigir al usuario a la pantalla de confirmación
-Y almacenar las credenciales de forma segura en el Keychain
-Y **almacenar el token de autenticación recibido (OAuth/JWT) de forma segura**
-
-**Escenario 2: Error de datos inválidos**  
-Dado que el usuario introduce datos inválidos  
-Cuando el usuario intenta registrarse  
-Entonces la aplicación debe mostrar mensajes de error apropiados  
-
-**Escenario 3: Error de correo ya registrado**  
-Dado que el usuario introduce un correo electrónico ya registrado  
-Cuando el usuario intenta registrarse  
-Entonces la aplicación debe mostrar un mensaje indicando que el correo ya está en uso  
-Y sugerir iniciar sesión o recuperar contraseña  
-
-**Escenario 4: Error de conexión**  
-Dado que el usuario no tiene conexión a internet  
-Cuando el usuario intenta registrarse  
-Entonces la aplicación debe mostrar un mensaje de error de conectividad  
-Y guardar los datos de forma segura para reintentarlo cuando la conexión se restablezca  
-Y ofrecer la opción de notificar cuando se complete  
+### Narrativa funcional
+Como nuevo usuario, quiero poder registrarme en la aplicación para acceder a las funcionalidades y recibir un token de autenticación tras el registro.
 
 ---
 
-### Registro de usuario
-#### Narrativa funcional
-**Curso Principal (happy path):**  
-- Ejecutar comando "Registrar Usuario" con los datos proporcionados.  
-- Sistema valida el formato de los datos.  
-- Sistema envía solicitud de registro al servidor.  
-- Sistema recibe confirmación de creación de cuenta.  
-- Sistema almacena credenciales iniciales de forma segura.  
-- Sistema almacena el token de autenticación recibido (OAuth/JWT) de forma segura.  
-- Sistema notifica éxito de registro.
+### Escenarios (Criterios de aceptación)
+_(Solo referencia para QA/negocio. El avance se marca únicamente en el checklist técnico)_
+- Registro exitoso (token y credenciales almacenadas de forma segura)
+- Error de datos inválidos
+- Error de correo ya registrado
+- Error de conexión
 
-**Curso de error - datos inválidos (sad path):**  
-- Sistema notifica errores de validación específicos.
+---
+### Checklist técnico de registro
+- ✅ Almacenar credenciales iniciales de forma segura (Keychain)
+  - Cubierto por test: `test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely`
+- ✅ Almacenar el token de autenticación recibido (OAuth/JWT) de forma segura tras registro
+  - Cubierto por test: `test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely`
+- ✅ Notificar éxito de registro
+  - Cubierto por test: `test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely`
+- ✅ Notificar que el correo ya está en uso
+  - Cubierto por test: `test_registerUser_withAlreadyRegisteredEmail_returnsEmailAlreadyInUseError_andDoesNotStoreCredentials`
+- ✅ Mostrar mensajes de error apropiados y específicos
+  - Cubierto por test: `test_registerUser_withInvalidEmail_returnsValidationError_andDoesNotCallHTTPOrKeychain`, `test_registerUser_withWeakPassword_returnsValidationError_andDoesNotCallHTTPOrKeychain`
+- ✅ Guardar datos para reintento si no hay conexión y notificar error
+  - Cubierto por test: `test_registerUser_withNoConnectivity_returnsConnectivityError_andDoesNotStoreCredentials`
+- ✅ Tests unitarios y de integración para todos los caminos (happy/sad path)
+- ✅ Refactor: helper de tests usa KeychainSpy concreto para asserts claros
+- ✅ Documentación y arquitectura alineada (ver AUTH-ARCHITECTURE-GUIDE.md, sección 2)
 
-**Curso de error - correo ya registrado (sad path):**  
-- Sistema notifica que el correo ya está en uso.  
-- Sistema sugiere recuperación de contraseña.
+---
 
-**Curso de error - sin conectividad (sad path):**  
-- Sistema almacena la solicitud para reintentar.  
-- Sistema notifica error de conectividad.  
-- Sistema ofrece la opción de notificar cuando se complete.
+#### Trazabilidad checklist <-> tests
 
-#### Checklist técnico
+| Ítem checklist registro                       | Test presente                                                                                                                                                                      | Cobertura  |
+|-----------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|
+| Credenciales seguras (Keychain)               | `test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely`                                                                                                          |    ✅      |
+| Token seguro tras registro                    | `test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely`                                                                                                          |    ✅      |
+| Notificar éxito de registro                   | `test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely`                                                                                                          |    ✅      |
+| Notificar correo ya en uso                    | `test_registerUser_withAlreadyRegisteredEmail_returnsEmailAlreadyInUseError_andDoesNotStoreCredentials`                                                                            |    ✅      |
+| Mensajes de error apropiados                  | `test_registerUser_withInvalidEmail_returnsValidationError_andDoesNotCallHTTPOrKeychain`, `test_registerUser_withWeakPassword_returnsValidationError_andDoesNotCallHTTPOrKeychain` |    ✅      |
+| Guardar datos para reintento y notificar error| `test_registerUser_withNoConnectivity_returnsConnectivityError_andDoesNotStoreCredentials`                                                                                         |    ✅      |
 
+> Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
+
+---
+
+### Cursos técnicos (happy/sad path)
 **Happy path:**
-- ✅ Ejecutar comando "Registrar Usuario" con los datos proporcionados
-- ✅ Validar el formato de los datos
-- ✅ Enviar solicitud de registro al servidor  
-- ✅ Recibir confirmación de creación de cuenta
+- Ejecutar comando "Registrar Usuario" con los datos proporcionados
+- Validar el formato de los datos
+- Enviar solicitud de registro al servidor
+- Recibir confirmación de creación de cuenta
+- Almacenar credenciales y token de forma segura
+- Notificar éxito de registro
 
 **Sad path:**
-- ✅ Datos inválidos: sistema no envía solicitud ni guarda credenciales
-- ✅ Email ya registrado (409): sistema devuelve error de dominio y no guarda credenciales
-
-**Notas técnicas:**
-- Refactor: helper de tests usa KeychainSpy concreto para asserts claros
-- Todos los tests pasan (**TEST SUCCEEDED**)
-
-**Siguiente:**
-- Preparar sad path: error de conectividad (almacenar solicitud para reintentar, notificar error y ofrecer opción de notificación al usuario)
+- Datos inválidos: sistema no envía solicitud ni guarda credenciales
+- Email ya registrado (409): sistema devuelve error de dominio y no guarda credenciales, notifica y sugiere recuperación
+- Sin conectividad: sistema almacena la solicitud para reintentar, notifica error y ofrece opción de notificación al usuario
 
 ---
 
-- ✅ Almacenar credenciales iniciales de forma segura
-- 🟡 Almacenar el token de autenticación recibido (OAuth/JWT) de forma segura
-- ✅ Notificar éxito de registro
+### Diagrama técnico del flujo de registro
 
-**Sad path - datos inválidos:**
-- ✅ Mostrar mensajes de error apropiados
-- ✅ Notificar errores de validación específicos
+```mermaid
+flowchart TD
+    A[UI Layer] --> B[RegistrationViewModel]
+    B --> C[UserRegistrationUseCase]
+    C --> D[HTTPClient]
+    C --> E[RegistrationValidator]
+    C --> F[SecureStorage/Keychain]
+    D -- 201 Created --> G[Token almacenado]
+    D -- 409 Conflict --> H[Notificar email ya registrado]
+    D -- Error --> I[Notificar error de conectividad o dominio]
+```
 
-**Sad path - correo ya registrado:**
-- ✅ Notificar que el correo ya está en uso
-- 🔜 Sugerir iniciar sesión o recuperación de contraseña
+---
 
-**Sad path - sin conectividad:**
-- ✅ Guardar los datos de registro para reintentar cuando haya conexión
-- ✅ Notificar error de conectividad
-- ✅ Ofrecer la opción de notificar cuando se complete el registro pendiente
+## 3. Autenticación de Usuario
 
-> Nota: El avance de subtareas sigue el flujo BDD: solo se inicia la siguiente cuando la anterior está completamente validada y cerrada.
+### Narrativa funcional
+Como usuario registrado,
+quiero poder iniciar sesión en la aplicación,
+para acceder a mis recursos protegidos.
 
-## 3. 🔄 Autenticación de Usuario
-
-### Historia: Usuario solicita autenticarse en la aplicación
-
-**Narrativa:**  
-Como usuario registrado  
-Quiero poder iniciar sesión en la aplicación  
-Para acceder a mis recursos protegidos
+---
 
 ### Escenarios (Criterios de aceptación)
-- 🟡 Recibir confirmación de autenticación
-- 🟡 Almacenar el token de autenticación recibido (OAuth/JWT) de forma segura
-- 🟡 Registrar sesión activa en SessionManager
-- 🟡 Notificar éxito de login
-- 🟡 Notificar errores de validación específicos
-- 🟡 Notificar error de credenciales
-- 🟡 Ofrecer recuperación de contraseña
-- 🟡 Almacenar la solicitud para reintentar (sin conexión)
-- 🟡 Notificar error de conectividad
-- 🟡 Aplicar retardo/bloqueo tras múltiples intentos fallidos
+_(Solo referencia para QA/negocio. El avance se marca únicamente en el checklist técnico)_
+- Login exitoso (token almacenado de forma segura)
+- Error de datos inválidos
+- Error de credenciales
+- Error de conexión
+- Registrar sesión activa en SessionManager
+- Notificar éxito de login
+- Notificar errores de validación específicos
+- Notificar error de credenciales
+- Ofrecer recuperación de contraseña
+- Almacenar la solicitud para reintentar (sin conexión)
+- Notificar error de conectividad
+- Aplicar retardo/bloqueo tras múltiples intentos fallidos
 
 ---
 
-### 3. Cambio de contraseña
-#### Narrativa funcional
-**Curso Principal (happy path):**
-- Como usuario autenticado
-- Quiero cambiar mi contraseña
-- Para mantener la seguridad de mi cuenta
-  
-**Flujo:**
-- El usuario introduce nueva contraseña válida
-- El sistema valida el formato
-- El sistema incluye token en cabecera Authorization
-- El sistema envía solicitud de cambio
-- El sistema recibe confirmación
-- El sistema gestiona expiración de token
-- El sistema notifica éxito
-
-**Cursos de error:**
-- Datos inválidos: El sistema notifica errores de validación
-- Credenciales incorrectas: El sistema notifica error
-- Sin conectividad: El sistema almacena la solicitud y notifica error
-
-#### Checklist técnico
-- 🔜 Incluir token en cabecera Authorization
-- 🟡 Validar el formato de los datos
-- 🟡 Enviar solicitud de cambio de contraseña al servidor
-- 🟡 Recibir confirmación de cambio
-- 🟡 Gestionar expiración de token
-- 🟡 Notificar éxito de cambio
-- 🟡 Notificar errores de validación específicos
-- 🟡 Notificar error de credenciales
-- 🟡 Almacenar la solicitud para reintentar (sin conexión)
-- 🟡 Notificar error de conectividad
+### Checklist técnico de login
+- ✅ Almacenar token de autenticación de forma segura tras login exitoso
+  - Cubierto por test: `test_login_succeeds_onValidCredentialsAndServerResponse`
+- ❌ Registrar sesión activa en SessionManager
+- 🟡 Notificar éxito de login (parcial, falta integración UI)
+- ❌ Notificar errores de validación específicos (formato)
+- ✅ Notificar error de credenciales
+  - Cubierto por test: `test_login_fails_onInvalidCredentialsAndNotifiesFailure`
+- ❌ Ofrecer recuperación de contraseña
+- ❌ Almacenar la solicitud para reintentar (sin conexión)
+- ❌ Notificar error de conectividad
+- ❌ Aplicar retardo/bloqueo tras múltiples intentos fallidos
 
 ---
-**Escenario 2: Error de credenciales incorrectas**  
-Dado que el usuario introduce credenciales incorrectas  
-Cuando el usuario intenta iniciar sesión  
-Entonces la aplicación debe mostrar un mensaje de error  
-Y permitir al usuario intentarlo nuevamente  
-Y registrar el intento fallido para métricas de seguridad  
 
-**Escenario 3: Error de conexión**  
-Dado que el usuario no tiene conexión a internet  
-Cuando el usuario intenta iniciar sesión  
-Entonces la aplicación debe mostrar un mensaje de error de conectividad  
-Y permitir reintentar cuando la conexión se restablezca  
-Y almacenar la solicitud para reintento automático  
+### Cursos técnicos (happy/sad path)
 
-**Escenario 4: Cierre de sesión exitoso**  
-Dado que el usuario está autenticado  
-Cuando el usuario selecciona la opción de cerrar sesión  
-Entonces la aplicación debe invalidar el token de autenticación  
-Y eliminar el token del Keychain  
-Y cerrar la sesión actual  
-Y redirigir al usuario a la pantalla de inicio de sesión  
+**Happy path:**
+- El usuario introduce credenciales válidas
+- El sistema valida el formato de los datos
+- El sistema envía solicitud de autenticación al servidor
+- El sistema recibe el token y lo almacena de forma segura
+- El sistema registra la sesión activa
+- El sistema notifica éxito de login
 
-**Escenario 5: Restauración de sesión al inicio de aplicación**  
-Dado que el usuario tenía una sesión activa al cerrar la aplicación  
-Cuando el usuario abre la aplicación nuevamente  
-Entonces la aplicación debe validar el token almacenado  
-Y restaurar la sesión automáticamente si el token es válido  
-Y redirigir al usuario a la pantalla principal  
+**Sad path:**
+- Credenciales incorrectas: sistema notifica error y permite reintentar, registra intento fallido para métricas
+- Sin conectividad: sistema almacena la solicitud y notifica error, permite reintentar cuando haya conexión
+- Errores de validación: sistema muestra mensajes claros y no envía solicitud
+- Múltiples intentos fallidos: sistema aplica retardo/bloqueo y sugiere recuperación de contraseña
 
-**Escenario 6: Detección de token expirado durante uso**  
-Dado que el usuario está utilizando la aplicación  
-Cuando el token de autenticación expira  
-Entonces la aplicación debe detectar el token expirado  
-Y intentar renovarlo automáticamente con el refresh token  
-Y mantener la sesión del usuario sin interrupciones  
-Y notificar en caso de fallo en la renovación  
+---
 
-**Escenario 7: Múltiples intentos fallidos de autenticación**  
-Dado que se han producido 5 intentos fallidos de autenticación  
-Cuando el usuario intenta iniciar sesión nuevamente  
-Entonces la aplicación debe mostrar un mensaje de bloqueo temporal  
-Y aplicar un retardo incremental antes de permitir un nuevo intento  
-Y ofrecer la opción de recuperación de contraseña  
+### Trazabilidad checklist <-> tests
 
-### Caso de Uso Técnico: Autenticación de Usuario
+| Ítem checklist login              | Test presente                                                       | Cobertura  |
+|-----------------------------------|---------------------------------------------------------------------|------------|
+| Token seguro tras login           | `test_login_succeeds_onValidCredentialsAndServerResponse`           |    ✅      |
+| Registrar sesión activa           | No                                                                  |    ❌      |
+| Notificar éxito login             | Parcial (`test_login_succeeds_onValidCredentialsAndServerResponse`) |   🟡/✅    |
+| Errores de validación específicos | No                                                                  |    ❌      |
+| Error de credenciales             | `test_login_fails_onInvalidCredentialsAndNotifiesFailure`           |    ✅      |
+| Recuperación de contraseña        | No                                                                  |    ❌      |
+| Reintento sin conexión            | No                                                                  |    ❌      |
+| Error de conectividad             | No                                                                  |    ❌      |
+| Retardo/bloqueo tras fallos       | No                                                                  |    ❌      |
 
-**Datos:**  
-- Correo electrónico  
-- Contraseña  
+> Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
 
-**Curso Principal (happy path):**  
-- 🔄 Ejecutar comando "Autenticar Usuario" con los datos proporcionados.  
-- 🔄 Sistema valida el formato de los datos.  
-- 🔄 Sistema envía solicitud de autenticación al servidor.  
-- 🔄 Sistema recibe y valida token de autenticación.  
-- 🔄 Sistema almacena token de forma segura en el Keychain.  
-- 🔄 Sistema registra la sesión activa en el SessionManager.  
-- 🔄 Sistema notifica éxito de autenticación.  
-
-**Curso de error - datos inválidos (sad path):**  
-- 🔄 Sistema notifica error de validación específico.  
-
-**Curso de error - credenciales incorrectas (sad path):**  
-- 🔄 Sistema registra el intento fallido.  
-- 🔄 Sistema notifica error de credenciales.  
-- 🔄 Sistema verifica si se debe aplicar restricción temporal por intentos excesivos.  
-
-**Curso de error - sin conectividad (sad path):**  
-- 🔄 Sistema almacena la solicitud para reintentar.  
-- 🔄 Sistema notifica error de conectividad.  
-- 🔄 Sistema monitoriza la conexión para reintentar automáticamente.
+---
 
 ## 4. 🔄 Gestión de Token Expirado
 
-### Historia: Sistema maneja tokens expirados y actualización automática
+### Narrativa funcional
+Como usuario autenticado,
+quiero que el sistema gestione automáticamente la expiración de mi token,
+para mantener la sesión activa y segura sin interrupciones innecesarias.
 
-**Narrativa:**  
-Como sistema de autenticación  
-Quiero manejar correctamente los tokens expirados  
-Para ofrecer una experiencia fluida al usuario manteniendo la seguridad  
+---
 
 ### Escenarios (Criterios de aceptación)
+_(Solo referencia para QA/negocio. El avance se marca únicamente en el checklist técnico)_
+- Detectar token expirado en cualquier operación protegida
+- Renovar el token automáticamente si es posible (refresh token)
+- Notificar al usuario si la renovación falla
+- Redirigir a login si no es posible renovar
+- Registrar el evento de expiración para métricas
 
-**Escenario 1: Renovación automática del token**  
-Dado que el token de acceso del usuario ha expirado  
-Cuando la aplicación intenta realizar una operación autenticada  
-Entonces el sistema debe detectar la expiración  
-Y utilizar el refresh token para obtener un nuevo token de acceso  
-Y continuar la operación sin intervención del usuario  
+---
 
-**Escenario 2: Error en renovación de token**  
-Dado que el token de acceso ha expirado  
-Cuando el refresh token también ha expirado o es inválido  
-Entonces el sistema debe solicitar al usuario iniciar sesión nuevamente  
-Y preservar el estado de la operación interrumpida  
-Y restaurar la operación tras la nueva autenticación  
+### Checklist técnico de gestión de token expirado
+- ❌ Detectar expiración de token en cada petición protegida
+- ❌ Solicitar refresh token al backend si el token está expirado
+- ❌ Almacenar el nuevo token de forma segura tras la renovación
+- ❌ Notificar al usuario si la renovación falla
+- ❌ Redirigir a login si no es posible renovar
+- ❌ Registrar el evento de expiración para métricas
 
-**Escenario 3: Revocación preventiva de tokens**  
-Dado que se detecta una actividad sospechosa  
-Cuando el sistema lo identifica como un riesgo de seguridad  
-Entonces el sistema debe revocar todos los tokens activos  
-Y solicitar una nueva autenticación  
-Y notificar al usuario sobre la acción realizada  
+---
 
-### Caso de Uso Técnico: Gestión de Token Expirado
+### Cursos técnicos (happy/sad path)
 
-**Datos:**  
-- Token de acceso expirado  
-- Refresh token  
+**Happy path:**
+- El sistema detecta que el token ha expirado
+- El sistema solicita un refresh token al backend
+- El sistema almacena el nuevo token de forma segura
+- El usuario continúa usando la app sin interrupciones
 
-**Curso Principal (happy path):**  
-- 🔄 Sistema detecta token de acceso expirado.  
-- 🔄 Sistema ejecuta comando "Renovar Token" con el refresh token.  
-- 🔄 Sistema recibe nuevo token de acceso.  
-- 🔄 Sistema actualiza el token almacenado.  
-- 🔄 Sistema continúa la operación original sin interrupción para el usuario.  
+**Sad path:**
+- El refresh token es inválido o ha expirado: el sistema notifica al usuario y redirige a login
+- Falla de red: el sistema notifica al usuario y permite reintentar
+- Error inesperado: el sistema registra el evento para métricas y notifica al usuario
 
-**Curso de error - refresh token expirado (sad path):**  
-- 🔄 Sistema notifica necesidad de nueva autenticación.  
-- 🔄 Sistema preserva el estado de la operación en curso.  
-- 🔄 Sistema dirige al usuario al flujo de inicio de sesión.  
-- 🔄 Sistema restaura operación después de autenticación exitosa.  
+---
 
-**Curso de error - error de servidor (sad path):**  
-- 🔄 Sistema intenta reintento con backoff exponencial.  
-- 🔄 Si persiste, notifica al usuario del problema.  
-- 🔄 Sistema ofrece opción de reintento manual.
+### Technical diagram of expired token management flow
+
+```mermaid
+flowchart TD
+    A[Protected operation requested] --> B[Check token validity]
+    B -- Expired --> C[Request refresh token]
+    C --> D{Refresh successful?}
+    D -- Yes --> E[Store new token securely]
+    E --> F[Continue operation]
+    D -- No --> G[Notify user and redirect to login]
+    C -- Network error --> H[Notify user, allow retry]
+    B -- Valid --> F
+    C -- Unexpected error --> I[Log event for metrics]
+```
+
+---
+
+### Trazabilidad checklist <-> tests
+
+| Ítem checklist gestión token expirado         | Test presente | Cobertura |
+|-----------------------------------------------|---------------|-----------|
+| Detectar expiración de token                  | No            |    ❌     |
+| Solicitar refresh token al backend            | No            |    ❌     |
+| Almacenar nuevo token tras renovación         | No            |    ❌     |
+| Notificar usuario si renovación falla         | No            |    ❌     |
+| Redirigir a login si no se puede renovar      | No            |    ❌     |
+| Registrar evento de expiración para métricas  | No            |    ❌     |
+
+> Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
+
+---
+### Narrativa funcional
 
 ## 5. 🔄 Recuperación de Contraseña
 
-### Historia: Usuario solicita recuperar su contraseña
+### Narrativa funcional
+Como usuario que ha olvidado su contraseña,
+quiero poder restablecerla de manera segura,
+para recuperar el acceso a mi cuenta.
 
-**Narrativa:**  
-Como usuario que ha olvidado su contraseña  
-Quiero poder restablecerla de manera segura  
-Para recuperar el acceso a mi cuenta  
+---
 
 ### Escenarios (Criterios de aceptación)
+_(Solo referencia para QA/negocio. El avance se marca únicamente en el checklist técnico)_
+- Solicitud de recuperación exitosa
+- Error de correo no registrado (respuesta neutra)
+- Restablecimiento exitoso con nueva contraseña válida
+- Error de enlace expirado o inválido
+- Registro de intentos fallidos para métricas de seguridad
+- Notificación por correo tras cambio de contraseña
 
-**Escenario 1: Solicitud de recuperación exitosa**  
-Dado que el usuario introduce un correo electrónico registrado  
-Cuando solicita restablecer su contraseña  
-Entonces la aplicación debe enviar un enlace de restablecimiento al correo  
-Y mostrar un mensaje de confirmación  
-Y registrar la solicitud en los logs de seguridad  
+---
 
-**Escenario 2: Error de correo no registrado**  
-Dado que el usuario introduce un correo electrónico no registrado  
-Cuando intenta solicitar un restablecimiento de contraseña  
-Entonces la aplicación debe mostrar un mensaje indicando que se han enviado instrucciones si el correo existe  
-Sin revelar si el correo existe o no por razones de seguridad  
-Y aplicar el mismo tiempo de respuesta que una solicitud exitosa  
+### Checklist técnico de recuperación de contraseña
+- ❌ Enviar enlace de restablecimiento al correo registrado
+- ❌ Mostrar mensaje neutro si el correo no está registrado
+- ❌ Permitir establecer nueva contraseña si el enlace es válido
+- ❌ Mostrar error y permitir solicitar nuevo enlace si el enlace es inválido o expirado
+- ❌ Registrar todos los intentos y cambios para métricas de seguridad
+- ❌ Notificar por correo el cambio de contraseña
 
-**Escenario 3: Restablecimiento de contraseña exitoso**  
-Dado que el usuario ha recibido un enlace de restablecimiento válido  
-Cuando introduce una nueva contraseña que cumple con los requisitos  
-Entonces la aplicación debe actualizar la contraseña  
-Y redirigir al usuario a la pantalla de inicio de sesión con un mensaje de éxito  
-Y notificar al usuario por correo sobre el cambio de contraseña  
+---
 
-**Escenario 4: Error de enlace expirado o inválido**  
-Dado que el usuario intenta usar un enlace expirado o inválido  
-Cuando accede al enlace de restablecimiento  
-Entonces la aplicación debe mostrar un mensaje de error  
-Y permitir solicitar un nuevo enlace  
-Y registrar el intento fallido para detección de ataques  
+### Cursos técnicos (happy/sad path)
 
-### Caso de Uso Técnico: Recuperación de Contraseña
+**Happy path:**
+- El usuario solicita recuperación con correo registrado
+- El sistema envía enlace de restablecimiento
+- El usuario accede al enlace válido y establece nueva contraseña
+- El sistema actualiza la contraseña y notifica por correo
 
-**Datos:**  
-- Correo electrónico  
+**Sad path:**
+- Correo no registrado: el sistema responde con mensaje neutro
+- Enlace expirado/inválido: el sistema muestra error y permite solicitar nuevo enlace
+- Intento fallido: el sistema registra el evento para métricas
 
-**Curso Principal (happy path):**  
-- 🔄 Ejecutar comando "Solicitar Recuperación" con el correo proporcionado.  
-- 🔄 Sistema valida el formato del correo.  
-- 🔄 Sistema envía solicitud al servidor.  
-- 🔄 Sistema registra la solicitud en logs de seguridad.  
-- 🔄 Sistema notifica envío exitoso de instrucciones.  
+---
 
-**Curso de error - correo inválido (sad path):**  
-- 🔄 Sistema notifica error de formato de correo.  
+### Technical diagram of password recovery flow
 
-**Curso de error - sin conectividad (sad path):**  
-- 🔄 Sistema almacena la solicitud para reintentar.  
-- 🔄 Sistema notifica error de conectividad.  
-- 🔄 Sistema ofrece opción de reintentar más tarde.
+```mermaid
+flowchart TD
+    A[User requests password recovery] --> B[Check if email is registered]
+    B -- Yes --> C[Send reset link to email]
+    B -- No --> D[Show neutral confirmation message]
+    C --> E[User clicks valid reset link]
+    E --> F[User enters new valid password]
+    F --> G[Update password and notify by email]
+    E --> H{Link expired or invalid?}
+    H -- Yes --> I[Show error, allow request new link]
+    H -- No --> F
+    I --> J[Log failed attempt for metrics]
+```
+
+---
+
+### Trazabilidad checklist <-> tests
+
+| Ítem checklist recuperación de contraseña     | Test presente | Cobertura |
+|----------------------------------------------|---------------|-----------|
+| Enviar enlace de restablecimiento            | No            |    ❌     |
+| Mensaje neutro si correo no registrado       | No            |    ❌     |
+| Permitir nueva contraseña con enlace válido  | No            |    ❌     |
+| Error y nuevo enlace si enlace inválido      | No            |    ❌     |
+| Registro de intentos/cambios para métricas   | No            |    ❌     |
+| Notificación por correo tras cambio          | No            |    ❌     |
+
+> Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
+
+---
+
 
 ## 6. 🔄 Gestión de Sesiones
 
-### Historia: Usuario quiere gestionar sus sesiones activas
+### Narrativa funcional
+Como usuario preocupado por la seguridad,
+quiero poder ver y gestionar mis sesiones activas,
+para detectar y cerrar accesos no autorizados.
 
-**Narrativa:**  
-Como usuario preocupado por la seguridad  
-Quiero poder ver y gestionar mis sesiones activas  
-Para detectar y cerrar accesos no autorizados  
-
-### Escenarios (Criterios de aceptación)
-
-**Escenario 1: Visualización de sesiones activas**  
-Dado que el usuario está autenticado  
-Cuando accede a la sección "Mis sesiones"  
-Entonces la aplicación debe mostrar una lista de todas las sesiones activas  
-Con información de dispositivo, ubicación y fecha de último acceso  
-Y destacar la sesión actual del usuario  
-
-**Escenario 2: Cierre de sesión remota**  
-Dado que el usuario visualiza sus sesiones activas  
-Cuando selecciona "Cerrar sesión" para una sesión específica  
-Entonces la aplicación debe invalidar esa sesión  
-Y mostrar la lista actualizada de sesiones  
-Y enviar una notificación al dispositivo afectado  
-
-**Escenario 3: Cierre de todas las sesiones**  
-Dado que el usuario visualiza sus sesiones activas  
-Cuando selecciona "Cerrar todas las sesiones"  
-Entonces la aplicación debe invalidar todas las sesiones excepto la actual  
-Y mostrar confirmación de la acción  
-Y actualizar la lista de sesiones  
-
-**Escenario 4: Detección de acceso sospechoso**  
-Dado que se detecta un inicio de sesión desde una ubicación inusual  
-Cuando el sistema lo identifica como potencialmente sospechoso  
-Entonces la aplicación debe notificar al usuario  
-Y ofrecer la opción de verificar o cerrar esa sesión  
-Y sugerir cambiar la contraseña por seguridad  
-
-### Caso de Uso Técnico: Gestión de Sesiones
-
-**Datos:**  
-- ID de sesión (opcional para cierre específico)  
-
-**Curso Principal (happy path):**  
-- 🔄 Ejecutar comando "Listar Sesiones".  
-- 🔄 Sistema obtiene lista de sesiones del servidor.  
-- 🔄 Sistema procesa y formatea la información.  
-- 🔄 Sistema entrega lista de sesiones activas.  
-
-**Curso alternativo - cerrar sesión específica:**  
-- 🔄 Ejecutar comando "Cerrar Sesión" con ID específico.  
-- 🔄 Sistema envía solicitud de invalidación al servidor.  
-- 🔄 Sistema notifica al dispositivo afectado si es posible.  
-- 🔄 Sistema notifica cierre exitoso.  
-
-**Curso alternativo - cerrar todas las sesiones:**  
-- 🔄 Ejecutar comando "Cerrar Todas las Sesiones".  
-- 🔄 Sistema envía solicitud de invalidación masiva al servidor.  
-- 🔄 Sistema excluye la sesión actual.  
-- 🔄 Sistema notifica cierre exitoso.  
-
-**Curso de error - sin conectividad (sad path):**  
-- 🔄 Sistema almacena la solicitud para reintentar.  
-- 🔄 Sistema notifica error de conectividad.  
-- 🔄 Sistema ofrece reintentar cuando la conexión se restablezca.
-
-## 7. 🔄 Cambio de Contraseña
-
-### Historia: Usuario autenticado desea cambiar su contraseña
-
-**Narrativa:**  
-Como usuario autenticado  
-Quiero poder cambiar mi contraseña  
-Para mantener la seguridad de mi cuenta  
+---
 
 ### Escenarios (Criterios de aceptación)
+_(Solo referencia para QA/negocio. El avance se marca únicamente en el checklist técnico)_
+- Visualización de todas las sesiones activas
+- Información de dispositivo, ubicación y último acceso
+- Destacar la sesión actual
+- Cierre de sesión remota
+- Cierre de todas las sesiones excepto la actual
+- Notificación al dispositivo afectado
+- Detección y notificación de acceso sospechoso
+- Opción de verificar/cerrar sesión sospechosa
+- Sugerencia de cambio de contraseña ante sospecha
 
-**Escenario 1: Cambio de contraseña exitoso**  
-Dado que el usuario está autenticado  
-Cuando introduce correctamente su contraseña actual y una nueva contraseña válida  
-Entonces la aplicación debe actualizar la contraseña  
-Y mostrar un mensaje de confirmación  
-Y actualizar el token de autenticación  
-Y notificar al usuario por correo sobre el cambio realizado  
+---
 
-**Escenario 2: Error de contraseña actual incorrecta**  
-Dado que el usuario introduce una contraseña actual incorrecta  
-Cuando intenta cambiar su contraseña  
-Entonces la aplicación debe mostrar un mensaje de error  
-Y permitir al usuario intentarlo nuevamente  
-Y registrar el intento fallido para métricas de seguridad  
+### Checklist técnico de gestión de sesiones
+- ❌ Mostrar lista de sesiones activas con detalles relevantes
+- ❌ Destacar la sesión actual
+- ❌ Permitir cierre remoto de una sesión
+- ❌ Permitir cierre de todas las sesiones excepto la actual
+- ❌ Notificar al dispositivo afectado tras cierre remoto
+- ❌ Detectar acceso sospechoso y notificar al usuario
+- ❌ Permitir verificar o cerrar sesión sospechosa
+- ❌ Sugerir cambio de contraseña si corresponde
 
-**Escenario 3: Error de nueva contraseña débil**  
-Dado que el usuario introduce una nueva contraseña que no cumple con los requisitos de seguridad  
-Cuando intenta cambiar su contraseña  
-Entonces la aplicación debe mostrar los requisitos no cumplidos  
-Y no permitir el cambio hasta que se cumpla con todos los requisitos  
-Y ofrecer sugerencias para crear una contraseña segura  
+---
+
+### Cursos técnicos (happy/sad path)
+
+**Happy path:**
+- El usuario accede a la sección de sesiones y visualiza todas sus sesiones activas
+- El usuario cierra una sesión remota y la lista se actualiza correctamente
+- El usuario cierra todas las sesiones excepto la actual y recibe confirmación
+
+**Sad path:**
+- Error al cerrar sesión: el sistema notifica el fallo y permite reintentar
+- Acceso sospechoso: el sistema notifica al usuario y ofrece acciones de seguridad
+- Falla de red: el sistema muestra mensaje de error y permite reintentar
+
+---
+
+### Technical diagram of session management flow
+
+```mermaid
+flowchart TD
+    A[User accesses session management] --> B[Display list of active sessions]
+    B --> C[User selects session to close]
+    C --> D[Invalidate selected session]
+    D --> E[Update session list and notify affected device]
+    B --> F[User selects 'close all except current']
+    F --> G[Invalidate all sessions except current]
+    G --> E
+    B --> H[System detects suspicious login]
+    H --> I[Notify user, offer verify or close]
+    I --> J{User chooses to close?}
+    J -- Yes --> D
+    J -- No --> K[Suggest password change if needed]
+    D -- Error --> L[Show error, allow retry]
+```
+
+---
+
+### Trazabilidad checklist <-> tests
+
+| Ítem checklist gestión de sesiones            | Test presente | Cobertura |
+|----------------------------------------------|---------------|-----------|
+| Mostrar lista de sesiones activas            | No            |    ❌     |
+| Destacar sesión actual                      | No            |    ❌     |
+| Cierre remoto de sesión                     | No            |    ❌     |
+| Cierre de todas excepto la actual            | No            |    ❌     |
+| Notificar dispositivo tras cierre remoto     | No            |    ❌     |
+| Detección y notificación de acceso sospechoso| No            |    ❌     |
+| Verificar/cerrar sesión sospechosa          | No            |    ❌     |
+| Sugerir cambio de contraseña                | No            |    ❌     |
+
+> Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
+
+---
+
+## 7. Verificación de Cuenta
+
+### Historia: Usuario debe verificar su cuenta tras el registro
+
+**Narrativa:**  
+Como usuario recién registrado  
+Quiero verificar mi correo electrónico  
+Para confirmar mi identidad y activar completamente mi cuenta
+
+---
+
+### Escenarios (Criterios de aceptación)
+_(Solo referencia para QA/negocio. El avance se marca únicamente en el checklist técnico)_
+- Verificación de correo electrónico tras registro
+- Reenvío de correo de verificación
+- Manejo de enlace inválido, expirado o ya usado
+- Mensaje de éxito tras verificación
+- Permitir inicio de sesión solo con cuenta verificada
+- Actualización de estado en todos los dispositivos
+- Opción de reenviar correo en caso de error
+
+---
+
+### Checklist técnico de verificación de cuenta
+
+- ❌ Enviar correo de verificación tras registro
+- ❌ Procesar enlace de verificación y actualizar estado de cuenta
+- ❌ Mostrar mensaje de éxito tras verificación
+- ❌ Permitir inicio de sesión solo si la cuenta está verificada
+- ❌ Actualizar estado de verificación en todos los dispositivos
+- ❌ Permitir reenvío de correo de verificación
+- ❌ Invalidar enlaces de verificación anteriores tras reenvío
+- ❌ Mostrar mensaje de error en caso de enlace inválido/expirado
+- ❌ Ofrecer opción de reenviar correo en caso de error
+
+> Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
+
+---
+
+### Diagrama técnico del flujo de verificación de cuenta
+
+```mermaid
+flowchart TD
+    A[User registers] --> B[Send verification email]
+    B --> C[User receives email]
+    C --> D{Did user click the link?}
+    D -- Yes --> E[Validate link]
+    E --> F{Is the link valid and not expired?}
+    F -- Yes --> G[Mark account as verified]
+    G --> H[Show success message]
+    G --> I[Allow full login]
+    G --> J[Update verification status on all devices]
+    F -- No --> K[Show error message]
+    K --> L[Offer to resend email]
+    L --> B
+    D -- No --> M[Wait for user action]
+```
+
+---
+
+### Cursos técnicos (happy/sad path)
+
+**Happy path:**
+- Usuario se registra correctamente
+- Sistema envía correo de verificación
+- Usuario accede al enlace de verificación
+- Sistema valida el enlace y marca la cuenta como verificada
+- Sistema muestra mensaje de éxito y permite acceso completo
+
+**Sad path 1:**
+- Usuario accede a enlace inválido/expirado
+- Sistema muestra mensaje de error y ofrece reenviar correo
+
+**Sad path 2:**
+- Usuario no recibe el correo
+- Usuario solicita reenvío
+- Sistema envía nuevo correo e invalida enlaces anteriores
+
+---
+
+### Trazabilidad checklist <-> tests
+
+| Ítem checklist verificación de cuenta      | Test presente | Cobertura |
+|:------------------------------------------:|:-------------:|:---------:|
+| Enviar correo de verificación              | No            |    ❌     |
+| Procesar enlace y actualizar estado        | No            |    ❌     |
+| Mensaje de éxito tras verificación         | No            |    ❌     |
+| Inicio de sesión solo con cuenta verificada| No            |    ❌     |
+| Actualizar estado en todos los dispositivos| No            |    ❌     |
+| Permitir reenvío de correo                 | No            |    ❌     |
+| Invalidar enlaces anteriores               | No            |    ❌     |
+| Mensaje de error en enlace inválido        | No            |    ❌     |
+| Opción de reenviar en error                | No            |    ❌     |
+
+---
 
 ### Caso de Uso Técnico: Cambio de Contraseña
 
@@ -532,352 +654,279 @@ Y ofrecer sugerencias para crear una contraseña segura
 - Nueva contraseña  
 
 **Curso Principal (happy path):**  
-- 🔄 Ejecutar comando "Cambiar Contraseña" con los datos proporcionados.  
-- 🔄 Sistema valida el formato de las contraseñas.  
-- 🔄 Sistema envía solicitud al servidor.  
-- 🔄 Sistema actualiza las credenciales almacenadas.  
-- 🔄 Sistema actualiza token de sesión si es necesario.  
-- 🔄 Sistema notifica cambio exitoso.  
+- Ejecutar comando "Cambiar Contraseña" con los datos proporcionados.  
+- Sistema valida el formato de las contraseñas.  
+- Sistema envía solicitud al servidor.  
+- Sistema actualiza las credenciales almacenadas.  
+- Sistema actualiza token de sesión si es necesario.  
+- Sistema notifica cambio exitoso.  
 
 **Curso de error - contraseña actual incorrecta (sad path):**  
-- 🔄 Sistema registra el intento fallido.  
-- 🔄 Sistema notifica error de autenticación.  
-- 🔄 Sistema verifica si se debe aplicar restricción temporal.  
+- Sistema registra el intento fallido.  
+- Sistema notifica error de autenticación.  
+- Sistema verifica si se debe aplicar restricción temporal.  
 
 **Curso de error - nueva contraseña inválida (sad path):**  
-- 🔄 Sistema notifica requisitos de contraseña no cumplidos.  
-- 🔄 Sistema ofrece recomendaciones para contraseña segura.  
+- Sistema notifica requisitos de contraseña no cumplidos.  
+- Sistema ofrece recomendaciones para contraseña segura.  
 
 **Curso de error - sin conectividad (sad path):**  
-- 🔄 Sistema almacena la solicitud para reintentar.  
-- 🔄 Sistema notifica error de conectividad.  
-- 🔄 Sistema ofrece opción de reintentar más tarde.
+- Sistema almacena la solicitud para reintentar.  
+- Sistema notifica error de conectividad.  
+- Sistema ofrece opción de reintentar más tarde.
 
-## 8. 🔄 Verificación de Cuenta
+## 8. Visualización de Feed Público
 
-### Historia: Usuario nuevo debe verificar su cuenta
+### Historia: Usuario no autenticado desea ver contenido público
 
 **Narrativa:**  
-Como usuario recién registrado  
-Quiero verificar mi correo electrónico  
-Para confirmar mi identidad y activar completamente mi cuenta  
+Como visitante o usuario no autenticado  
+Quiero poder visualizar el feed público  
+Para explorar el contenido disponible sin necesidad de iniciar sesión
+
+---
 
 ### Escenarios (Criterios de aceptación)
+_(Solo referencia para QA/negocio. El avance se marca únicamente en el checklist técnico)_
+- Visualización de feed público para usuarios no autenticados
+- Ocultación de información sensible en modo público
+- Solicitud de autenticación al acceder a contenido restringido
+- Manejo de errores de conectividad
+- Permitir recarga manual del feed
+- Mostrar placeholders o estados vacíos cuando no hay contenido
 
-**Escenario 1: Verificación de correo exitosa**  
-Dado que el usuario ha recibido un correo con un enlace de verificación  
-Cuando hace clic en el enlace  
-Entonces la aplicación debe marcar la cuenta como verificada  
-Y mostrar un mensaje de éxito  
-Y permitir el inicio de sesión completo  
-Y actualizar el estado de verificación en todos los dispositivos  
+---
 
-**Escenario 2: Reenvío de correo de verificación**  
-Dado que el usuario no ha recibido o ha perdido el correo de verificación  
-Cuando solicita reenviar el correo de verificación  
-Entonces la aplicación debe enviar un nuevo correo  
-Y mostrar un mensaje de confirmación  
-Y invalidar los enlaces anteriores  
+### Checklist técnico de visualización de feed público
 
-**Escenario 3: Error de verificación**  
-Dado que el usuario intenta verificar su cuenta  
-Cuando el enlace de verificación ha expirado o es inválido  
-Entonces la aplicación debe mostrar un mensaje de error  
-Y permitir solicitar un nuevo enlace de verificación  
-Y registrar el intento fallido  
+- ❌ Mostrar feed público para usuarios no autenticados
+- ❌ Ocultar información sensible o privada en modo público
+- ❌ Solicitar autenticación al acceder a contenido restringido
+- ❌ Manejar errores de conectividad y mostrar mensajes claros
+- ❌ Permitir recarga manual del feed
+- ❌ Mostrar placeholders o estados vacíos cuando no hay contenido
 
-**Escenario 4: Intento de acceso a funciones restringidas sin verificación**  
-Dado que el usuario ha iniciado sesión pero no ha verificado su cuenta  
-Cuando intenta acceder a funciones que requieren verificación  
-Entonces la aplicación debe mostrar un recordatorio para verificar la cuenta  
-Y ofrecer la opción de reenviar el correo de verificación  
-Y permitir continuar con funcionalidades básicas  
+> Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
 
-### Caso de Uso Técnico: Verificación de Cuenta
+---
 
-**Datos:**  
-- Token de verificación  
+### Diagrama técnico del flujo de visualización de feed público
 
-**Curso Principal (happy path):**  
-- 🔄 Ejecutar comando "Verificar Cuenta" con el token proporcionado.  
-- 🔄 Sistema valida el token con el servidor.  
-- 🔄 Sistema actualiza estado de cuenta a verificada.  
-- 🔄 Sistema actualiza estado en el SessionManager.  
-- 🔄 Sistema notifica verificación exitosa.  
+```mermaid
+flowchart TD
+    A[Unauthenticated user accesses the app] --> B[Request public feed from server]
+    B --> C{Successful response?}
+    C -- Yes --> D[Show list of public items]
+    D --> E{Access to restricted detail?}
+    E -- Yes --> F[Request authentication]
+    E -- No --> G[Show allowed detail]
+    C -- No --> H[Show connectivity error message]
+    H --> I[Offer retry]
+```
 
-**Curso de error - token inválido o expirado (sad path):**  
-- 🔄 Sistema registra el intento fallido.  
-- 🔄 Sistema notifica error específico del token.  
-- 🔄 Sistema ofrece solicitar nuevo token.  
+---
 
-**Curso de error - sin conectividad (sad path):**  
-- 🔄 Sistema almacena la verificación para reintentar.  
-- 🔄 Sistema notifica error de conectividad.  
-- 🔄 Sistema reintenta automáticamente cuando la conexión se restablezca.
+### Cursos técnicos (happy/sad path)
 
-### 9. Verificación de Cuenta
-#### Narrativa funcional
-**Curso Principal (happy path):**
-- Como usuario registrado
-- Quiero verificar mi cuenta mediante un enlace/token recibido por email
-- Para poder acceder a todas las funcionalidades protegidas
+**Happy path:**
+- Usuario no autenticado accede a la app
+- Sistema solicita y recibe el feed público
+- Sistema muestra la lista de elementos públicos
+- Usuario navega por el feed y accede a detalles permitidos
 
-**Flujo:**
-- El usuario recibe el correo de verificación
-- El usuario accede al enlace/token
-- El sistema valida el token con el servidor
-- El sistema actualiza el estado de la cuenta a verificada
-- El sistema actualiza el estado en SessionManager
-- El sistema notifica verificación exitosa
-- El sistema permite el inicio de sesión completo y acceso a funcionalidades avanzadas
+**Sad path 1:**
+- Usuario intenta acceder a detalle restringido
+- Sistema solicita autenticación
 
-**Cursos de error:**
-- Token inválido o expirado: El sistema notifica error, registra intento fallido y ofrece solicitar nuevo token
-- Sin conectividad: El sistema almacena la verificación para reintentar y notifica error
+**Sad path 2:**
+- Falla la conexión al cargar el feed
+- Sistema muestra mensaje de error y permite reintentar
 
-#### Checklist técnico
-- 🔜 Ejecutar comando "Verificar Cuenta" con el token proporcionado
-- 🟡 Validar el token con el servidor
-- 🟡 Actualizar estado de cuenta a verificada
-- 🟡 Actualizar estado en SessionManager
-- 🟡 Notificar verificación exitosa
-- 🟡 Permitir inicio de sesión completo y acceso a funciones avanzadas
-- 🟡 Notificar error de token inválido o expirado
-- 🟡 Ofrecer solicitar nuevo token
-- 🟡 Registrar intento fallido
-- 🟡 Almacenar la verificación para reintentar (sin conexión)
-- 🟡 Notificar error de conectividad
+---
+
+### Trazabilidad checklist <-> tests
+
+| Ítem checklist feed público                    | Test presente | Cobertura |
+|:----------------------------------------------:|:-------------:|:---------:|
+| Mostrar feed público                           | No            |    ❌     |
+| Ocultar información sensible                   | No            |    ❌     |
+| Solicitar autenticación en acceso restringido  | No            |    ❌     |
+| Manejar error de conectividad                  | No            |    ❌     |
+| Permitir recarga manual                        | No            |    ❌     |
+| Mostrar placeholders/estados vacíos            | No            |    ❌     |
+
+---
+  
+## 9. Autenticación con Proveedores Externos
+
+### Historia: Usuario desea autenticarse con proveedores externos
 
 **Narrativa:**  
 Como usuario  
-Quiero poder iniciar sesión con mi cuenta de Google, Facebook o Apple  
-Para acceder rápidamente sin recordar credenciales adicionales  
+Quiero poder iniciar sesión utilizando proveedores externos (Google, Apple, etc.)  
+Para acceder de forma rápida y segura a la aplicación sin crear una nueva contraseña
+
+---
 
 ### Escenarios (Criterios de aceptación)
+_(Solo referencia para QA/negocio. El avance se marca únicamente en el checklist técnico)_
+- Autenticación exitosa con proveedor externo
+- Creación automática de cuenta si es primer acceso
+- Asociación de cuenta existente si el email ya está registrado
+- Manejo de errores de autenticación externa
+- Desvinculación de proveedor externo
+- Manejo de revocación de permisos desde el proveedor
+- Actualización de sesión y permisos tras autenticación externa
 
-**Escenario 1: Inicio de sesión con Google exitoso**  
-Dado que el usuario selecciona "Iniciar sesión con Google"  
-Cuando completa la autenticación con Google correctamente  
-Entonces la aplicación debe autenticar al usuario  
-Y crear una cuenta vinculada si es la primera vez  
-Y almacenar el token de autenticación de forma segura  
-Y mostrar la pantalla principal  
+---
 
-**Escenario 2: Inicio de sesión con Facebook exitoso**  
-Dado que el usuario selecciona "Iniciar sesión con Facebook"  
-Cuando completa la autenticación con Facebook correctamente  
-Entonces la aplicación debe autenticar al usuario  
-Y crear una cuenta vinculada si es la primera vez  
-Y almacenar el token de autenticación de forma segura  
-Y mostrar la pantalla principal  
+### Checklist técnico de autenticación con proveedores externos
 
-**Escenario 3: Inicio de sesión con Apple exitoso**  
-Dado que el usuario selecciona "Iniciar sesión con Apple"  
-Cuando completa la autenticación con Apple correctamente  
-Entonces la aplicación debe autenticar al usuario  
-Y crear una cuenta vinculada si es la primera vez  
-Y almacenar el token de autenticación de forma segura  
-Y mostrar la pantalla principal  
+- ❌ Permitir autenticación con Google
+- ❌ Permitir autenticación con Apple
+- ❌ Crear cuenta automáticamente si es primer acceso
+- ❌ Asociar cuenta existente si el email ya existe
+- ❌ Manejar errores de autenticación y mostrar mensajes claros
+- ❌ Permitir desvinculación de proveedor externo
+- ❌ Manejar revocación de permisos desde el proveedor
+- ❌ Actualizar sesión y permisos tras autenticación externa
 
-**Escenario 4: Error de autenticación con proveedor externo**  
-Dado que el usuario intenta iniciar sesión con un proveedor externo  
-Cuando ocurre un error durante el proceso  
-Entonces la aplicación debe mostrar un mensaje de error específico  
-Y permitir intentar con otro método de autenticación  
-Y registrar el error para diagnóstico  
+> Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
 
-**Escenario 5: Vinculación de cuenta existente con proveedor**  
-Dado que el usuario ya tiene una cuenta tradicional  
-Cuando vincula su cuenta con un proveedor externo  
-Entonces la aplicación debe asociar ambas identidades  
-Y permitir iniciar sesión con cualquiera de los métodos  
-Y mostrar un mensaje de confirmación  
+---
 
-### Caso de Uso Técnico: Autenticación con Proveedor Externo
+### Diagrama técnico del flujo de autenticación con proveedores externos
 
-**Datos:**  
-- Proveedor seleccionado (Google, Facebook, Apple)  
-- Tokens o credenciales del proveedor  
+```mermaid
+flowchart TD
+    A[Select provider] --> B[Redirect]
+    B --> C{Auth OK?}
+    C -- Yes --> D{Email registered?}
+    D -- Yes --> E[Link account]
+    E --> F[Access]
+    D -- No --> G[Create account]
+    G --> F
+    C -- No --> H[Error]
+    H --> I[Retry/Other method]
+```
 
-**Curso Principal (happy path):**  
-- 🔄 Ejecutar comando "Autenticar con Proveedor" con el proveedor seleccionado.  
-- 🔄 Sistema inicia flujo de autenticación del proveedor.  
-- 🔄 Sistema recibe tokens de autorización.  
-- 🔄 Sistema valida tokens con el servidor.  
-- 🔄 Sistema almacena token de autenticación propio en el Keychain.  
-- 🔄 Sistema registra la sesión en el SessionManager.  
-- 🔄 Sistema notifica éxito de autenticación.  
+---
 
-**Curso de error - autenticación cancelada (sad path):**  
-- 🔄 Sistema notifica que el proceso fue cancelado.  
-- 🔄 Sistema limpia cualquier token parcial.  
+### Cursos técnicos (happy/sad path)
 
-**Curso de error - autenticación fallida (sad path):**  
-- 🔄 Sistema registra el error específico.  
-- 🔄 Sistema notifica error específico de autenticación.  
-- 🔄 Sistema sugiere método alternativo.  
+**Happy path:**
+- Usuario selecciona proveedor externo
+- Es redirigido y completa la autenticación
+- El sistema asocia o crea la cuenta y actualiza la sesión
+- Usuario accede a la aplicación con permisos completos
 
-**Curso de error - sin conectividad (sad path):**  
-- 🔄 Sistema notifica error de conectividad.  
-- 🔄 Sistema ofrece reintentar cuando la conexión se restablezca.
+**Sad path 1:**
+- Fallo en la autenticación externa
+- El sistema muestra mensaje de error y permite reintentar
 
-## 10. 🔄 Métricas de Seguridad
+**Sad path 2:**
+- Usuario revoca permisos desde el proveedor
+- El sistema detecta la revocación y desvincula la cuenta, cerrando sesión
+
+---
+
+### Trazabilidad checklist <-> tests
+
+| Ítem checklist autenticación externa           | Test presente | Cobertura |
+|:----------------------------------------------:|:-------------:|:---------:|
+| Permitir autenticación con Google              | No            |    ❌     |
+| Permitir autenticación con Apple               | No            |    ❌     |
+| Crear cuenta automáticamente                  | No            |    ❌     |
+| Asociar cuenta existente                      | No            |    ❌     |
+| Manejar errores de autenticación              | No            |    ❌     |
+| Permitir desvinculación de proveedor externo  | No            |    ❌     |
+| Manejar revocación de permisos                | No            |    ❌     |
+| Actualizar sesión y permisos                  | No            |    ❌     |
+
+---
+
+
+## 10. Métricas de Seguridad
 
 ### Historia: Sistema monitoriza eventos de seguridad
 
 **Narrativa:**  
 Como sistema de autenticación  
 Quiero registrar y analizar eventos de seguridad  
-Para detectar amenazas y proteger las cuentas de usuarios  
-
-### Escenarios (Criterios de aceptación)
-
-**Escenario 1: Registro de eventos de seguridad**  
-Dado que ocurre un evento relacionado con seguridad  
-Cuando el sistema lo detecta  
-Entonces debe registrarlo con nivel de severidad apropiado  
-Y almacenar información de contexto relevante  
-Y notificar a administradores si es crítico  
-
-**Escenario 2: Análisis de patrones de intentos fallidos**  
-Dado que se registran múltiples intentos fallidos de autenticación  
-Cuando el sistema detecta un patrón sospechoso  
-Entonces debe aplicar medidas de protección automáticas  
-Y registrar el incidente para análisis  
-Y notificar al usuario afectado  
-
-**Escenario 3: Generación de informes de seguridad**  
-Dado que se ha configurado el período de informe  
-Cuando se alcanza la fecha programada  
-Entonces el sistema debe generar informes de actividad sospechosa  
-Y destacar incidentes prioritarios  
-Y proporcionar recomendaciones de mitigación  
-
-### Caso de Uso Técnico: Métricas de Seguridad
-
-**Datos:**  
-- Eventos de seguridad  
-- Información de intentos fallidos  
-
-**Curso Principal (happy path):**  
-- 🔄 Sistema registra eventos de seguridad.  
-- 🔄 Sistema analiza patrones de intentos fallidos.  
-- 🔄 Sistema aplica políticas de protección según umbrales.  
-- 🔄 Sistema reporta eventos críticos si es necesario.  
+Para detectar amenazas y proteger las cuentas de usuarios
 
 ---
 
-# Cómo usar este documento
-- Utiliza este documento como guía para priorizar el desarrollo y los tests.
-- Marca los escenarios como completados a medida que avances.
-- Amplía los escenarios con ejemplos Gherkin si lo deseas (puedo ayudarte a generarlos).
+### Escenarios (Criterios de aceptación)
+_(Solo referencia para QA/negocio. El avance se marca únicamente en el checklist técnico)_
+- Registro de eventos de seguridad relevantes
+- Análisis de patrones de intentos fallidos
+- Notificación a administradores en eventos críticos
+- Almacenamiento seguro y trazable de eventos
+- Medidas automáticas ante patrones sospechosos
+- Visualización y consulta de métricas de seguridad
 
-7.- Lleva siempre un control de versionado con git.
-8.- Para la implementación, como usamos TDD (Red-Green-Refactor). crearas la estructura de carpetas dentro del proyecto que tenemos, y arrancaremos con un fichero XCTestCase, en el cual se irán generando, tanto las pruebas como el código de producción que dichas pruebas nos generará, así podemos hacer un seguimiento correcto tanto de las pruebas como del código de producción que estás generan. Una vez terminado el punto del curso, probadas las pruebas, pasaremos ese código de producción a su fichero correspondiente fuera de los test.
-9.- Aunque está especificado en las "rules" actualiza siempre los ficheros de configuración del proyecto(xcodeproj/xcconfig/xcworkspace, o el que corresponda, para que al ejecutarlos en Xcode aparezcan reflejados y dentro de sus correspondientes targets
+---
 
+### Checklist técnico de métricas de seguridad
 
-Seguiré exactamente este enfoque:
-TDD/BBD y Clean Architecture.
-Spies, SOLID, desacoplamiento y testabilidad.
-Actualización automática del BDD y documentación.
-Commits cortos, atómicos y descriptivos tras cada avance relevante.
-Nada de acumulación de funcionalidades en un solo commit.
-Siempre priorizando la trazabilidad y la calidad del historial.
+- ❌ Registrar eventos de seguridad relevantes
+- ❌ Analizar patrones de intentos fallidos
+- ❌ Notificar a administradores en eventos críticos
+- ❌ Almacenar eventos de forma segura y trazable
+- ❌ Aplicar medidas automáticas ante patrones sospechosos
+- ❌ Permitir visualización y consulta de métricas
 
- 
-Apartir de aquí, seguiré este flujo SIEMPRE:
+> Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
 
-Añadir test → comprobar que falla → implementar código de producción → comprobar que pasa → actualizar fichero de configuración () → actualizar BDD/documentación → commit atómico.
-No preguntaré si avanzar, simplemente seguiré el ciclo profesional y ágil pactado.
+---
 
+### Diagrama técnico del flujo de métricas de seguridad
 
-Estructura profesional de un Caso de Uso BDD
-1. Historia
-Breve descripción del objetivo funcional y de seguridad del caso de uso. Explica qué se busca lograr y por qué es relevante para el sistema o el usuario.
+```mermaid
+flowchart TD
+    A[Security event occurs] --> B[Register event in the system]
+    B --> C{Is it a critical event?}
+    C -- Yes --> D[Notify administrators]
+    C -- No --> E[Store event]
+    B --> F{Is it a failed attempt?}
+    F -- Yes --> G[Analyze failure pattern]
+    G --> H{Suspicious pattern detected?}
+    H -- Yes --> I[Apply automatic measure]
+    H -- No --> J[Continue monitoring]
+    F -- No --> J
+```
 
-2. Historia de usuario
-Narrativa en primera persona que describe la necesidad del usuario final:
+---
 
-Formato: “Como [tipo de usuario], quiero [acción/funcionalidad], para [beneficio/objetivo]”.
-Propósito: Centrar el desarrollo en la experiencia y valor para el usuario.
-3. Escenarios (Criterios de aceptación)
-Lista de situaciones que deben cumplirse para considerar el caso implementado correctamente:
+### Cursos técnicos (happy/sad path)
 
-Formato: Breves frases que resumen los requisitos funcionales y no funcionales.
-Propósito: Servir de checklist para desarrollo, QA y validación.
-4. Implementación
-Resumen técnico de los componentes, protocolos, patrones y pruebas requeridas:
+**Happy path:**
+- Ocurre evento de seguridad
+- El sistema lo registra correctamente
+- Si es crítico, notifica a administradores
+- Si es intento fallido, analiza patrones y aplica medidas si es sospechoso
+- Los eventos quedan almacenados y son consultables
 
-Incluye: Interfaces, clases, servicios, pruebas unitarias/integración, patrones de diseño aplicados, etc.
-Propósito: Guiar la construcción técnica y asegurar la trazabilidad entre requisitos y código.
-5. Happy path
-Descripción del flujo ideal cuando todo sale bien:
+**Sad path 1:**
+- Falla el registro del evento
+- El sistema muestra mensaje de error y reintenta
 
-Propósito: Definir el comportamiento esperado en condiciones normales.
-6. Sad path
-Descripción de los flujos alternativos ante errores, fallos o condiciones inesperadas:
+**Sad path 2:**
+- No se detecta patrón sospechoso a tiempo
+- El sistema lo registra como incidente para análisis posterior
 
-Propósito: Asegurar la resiliencia, seguridad y experiencia ante problemas.
-7. Escenarios BDD
-Desglose detallado en formato Given/When/Then de los principales flujos (happy y sad path):
+---
 
-Formato:
-Dado que [contexto inicial]
-Cuando [acción o evento]
-Entonces [resultado esperado]
-Propósito: Facilitar el desarrollo guiado por comportamiento (BDD) y la automatización de pruebas.
-8. Notas técnicas
-Aclaraciones, restricciones, recomendaciones de seguridad, detalles de integración, logs, métricas, etc.:
+### Trazabilidad checklist <-> tests
 
-Propósito: Ayudar a la implementación, mantenimiento y auditoría futura.
+| Ítem checklist métricas de seguridad         | Test presente | Cobertura |
+|:--------------------------------------------:|:-------------:|:---------:|
+| Registrar eventos de seguridad               | No            |    ❌     |
+| Analizar patrones de intentos fallidos       | No            |    ❌     |
+| Notificar a administradores                  | No            |    ❌     |
+| Almacenar eventos de forma segura            | No            |    ❌     |
+| Aplicar medidas automáticas                  | No            |    ❌     |
+| Visualización y consulta de métricas         | No            |    ❌     |
 
-Aquí tienes una plantilla profesional y reutilizable para documentar cualquier caso de uso en tu flujo BDD, TDD y Clean Architecture, adaptada a tus estándares y buenas prácticas:
-
-[N]. [Nombre del Caso de Uso] Use Case
-Historia:
-Breve descripción del objetivo funcional y de seguridad de este caso.
-
-Historia de usuario
-Como [tipo de usuario]
-Quiero [acción/funcionalidad]
-Para [beneficio/objetivo]
-
-Escenarios (Criterios de aceptación)
-[ ] Escenario 1: [Descripción breve]
-[ ] Escenario 2: [Descripción breve]
-[ ] Escenario 3: [Descripción breve]
-[ ] ... (añade tantos como sean necesarios)
-Implementación
-[ ] Protocolo/interfaz: [Nombre y propósito]
-[ ] Clases/servicios principales: [Nombre y propósito]
-[ ] Pruebas unitarias/integración: [Cobertura esperada]
-[ ] Patrones de diseño aplicados: [Ej: SOLID, desacoplamiento, etc.]
-[ ] Otros requisitos técnicos: [Logs, métricas, seguridad, etc.]
-Happy path:
-
-[ ] Descripción del flujo ideal (pasos principales)
-Sad path:
-
-[ ] Descripción de los flujos alternativos ante errores o condiciones inesperadas
-Escenarios BDD:
-
-[Nombre del escenario] (happy/sad path)
-[ ] Dado que [contexto inicial]
-[ ] Cuando [acción o evento]
-[ ] Entonces [resultado esperado]
-[Nombre del escenario] (happy/sad path)
-[ ] Dado que ...
-[ ] Cuando ...
-[ ] Entonces ...
-... (añade tantos escenarios como sean relevantes)
-
-Notas técnicas:
-
-[ ] Restricciones, recomendaciones, detalles de integración, logs, métricas, etc.
-Instrucciones de uso:
-
-Rellena cada apartado de forma clara y profesional.
-Marca los escenarios y tareas como completados ([x]) o pendientes ([ ]) según avances.
-Añade comentarios aclaratorios para facilitar el mantenimiento y la trazabilidad.
-Utiliza siempre este formato para todos los casos de uso de seguridad y gestión de usuario.
+---

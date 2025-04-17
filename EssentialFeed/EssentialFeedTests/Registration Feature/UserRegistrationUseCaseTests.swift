@@ -47,7 +47,7 @@ final class UserRegistrationUseCaseTests: XCTestCase {
         )
     }
 
-    func test_registerUser_withAlreadyRegisteredEmail_notifiesUserThatEmailIsAlreadyInUse() async {
+    func test_registerUser_withAlreadyRegisteredEmail_notifiesEmailAlreadyInUsePresenter() async {
         let httpClient = HTTPClientSpy()
         httpClient.statusCode = 409 // Simula respuesta de correo ya registrado
         let notifier = UserRegistrationNotifierSpy()
@@ -55,8 +55,8 @@ final class UserRegistrationUseCaseTests: XCTestCase {
         
         let result = await sut.register(name: name, email: email, password: password)
         
-        // Assert: Se notifica al usuario
-        XCTAssertEqual(notifier.notifiedEvents, [.emailAlreadyInUse])
+        // Assert: Se notifica al notifier
+        XCTAssertTrue(notifier.notified)
         // Assert: No se guardan credenciales
         XCTAssertEqual(keychain.saveCallCount, 0)
         // Assert: El resultado es el error esperado
@@ -102,10 +102,11 @@ final class UserRegistrationUseCaseTests: XCTestCase {
 
 
 // MARK: - Notifier Spy
+// MARK: - Presenter Spies (SRP & ISP)
+
 final class UserRegistrationNotifierSpy: UserRegistrationNotifier {
-    private(set) var notifiedEvents: [Event] = []
-    enum Event { case emailAlreadyInUse }
-    func notifyEmailAlreadyInUse() { notifiedEvents.append(.emailAlreadyInUse) }
+    private(set) var notified = false
+    func notifyEmailAlreadyInUse() { notified = true }
 }
 
 // MARK: - Tests
@@ -135,7 +136,10 @@ final class UserRegistrationNotifierSpy: UserRegistrationNotifier {
         XCTAssertEqual(keychain.saveCallCount, 0, "No Keychain save should occur if validation fails", file: #file, line: #line)
     }
 
-    private func makeSUTWithDefaults(httpClient: HTTPClientSpy? = nil, notifier: UserRegistrationNotifier? = nil) -> (UserRegistrationUseCase, KeychainSpy, String, String, String, HTTPClientSpy) {
+    private func makeSUTWithDefaults(
+    httpClient: HTTPClientSpy? = nil,
+    notifier: UserRegistrationNotifier? = nil
+) -> (UserRegistrationUseCase, KeychainSpy, String, String, String, HTTPClientSpy) {
     let keychain = KeychainSpy()
     let name = "Carlos"
     let email = "carlos@email.com"

@@ -101,9 +101,11 @@ public actor UserRegistrationUseCase {
                             await self?.saveCredentials(email: email, password: password)
                             continuation.resume(returning: .success(User(name: name, email: email)))
                         }
-                    case 409:
-                        self?.notifier?.notifyEmailAlreadyInUse()
-                        continuation.resume(returning: .failure(UserRegistrationError.emailAlreadyInUse))
+											case 409:
+												Task { [weak self] in
+													await self?.notifier?.notifyEmailAlreadyInUse()
+												}
+												continuation.resume(returning: .failure(UserRegistrationError.emailAlreadyInUse))
                     case 400..<500:
                         continuation.resume(returning: .failure(NetworkError.clientError(statusCode: httpResponse.statusCode)))
                     case 500..<600:

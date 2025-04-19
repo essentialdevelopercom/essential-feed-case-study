@@ -94,4 +94,7 @@ fastlane/test_output
 !*.xcworkspace/contents.xcworkspacedata
 /*.gcno
 
+/coverage-reports/*
+!/coverage-reports/README.md
+
 # End of https://www.gitignore.io/api/swift,xcode

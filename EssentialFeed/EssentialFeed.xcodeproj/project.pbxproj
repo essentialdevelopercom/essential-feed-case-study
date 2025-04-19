@@ -133,12 +133,16 @@
 		08EFE6BD22D6384100DA417A /* FeedImageCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EFE6BC22D6384100DA417A /* FeedImageCellController.swift */; };
 		08F8822D236499B200CAEE16 /* FeedCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8822C236499B200CAEE16 /* FeedCache.swift */; };
 		B40098352DB022350081699A /* UserRegistrationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D71EF12DAF1D34003A1316 /* UserRegistrationUseCase.swift */; };
-		B42EB7062DAEBAA8002FBC51 /* KeychainSecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EB7052DAEBAA8002FBC51 /* KeychainSecureStorageTests.swift */; };
 		B442B75C2DAED51A00284B91 /* SystemKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EB7002DAEBA17002FBC51 /* SystemKeychain.swift */; };
+		B47D59722DB39E2900034806 /* UserLoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47D596F2DB39E0200034806 /* UserLoginUseCase.swift */; };
+		B47D59752DB39E8900034806 /* UserLoginUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47D59732DB39E4A00034806 /* UserLoginUseCaseTests.swift */; };
+		B47D597B2DB3D67F00034806 /* SystemKeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47D59772DB3D67F00034806 /* SystemKeychainTests.swift */; };
+		B47D597C2DB3D67F00034806 /* SecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47D59792DB3D67F00034806 /* SecureStorageTests.swift */; };
+		B47D597D2DB3D67F00034806 /* KeychainSecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47D59762DB3D67F00034806 /* KeychainSecureStorageTests.swift */; };
+		B47D59822DB3DC1500034806 /* KeychainSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47D59812DB3DC1500034806 /* KeychainSpy.swift */; };
 		B4D71EEF2DAF1643003A1316 /* KeychainProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B442B75D2AB3451700284B92 /* KeychainProtocol.swift */; };
 		B4D71EF72DAF1DE5003A1316 /* UserRegistrationUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D71EF22DAF1D34003A1316 /* UserRegistrationUseCaseTests.swift */; };
 		B4D71EF82DAF1DE5003A1316 /* RecordingKeychainSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D71EF02DAF1D34003A1316 /* RecordingKeychainSpy.swift */; };
-		B4F6AFE52DAE9D8A00D46FA8 /* SecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F6AFE12DAE99A900D46FA8 /* SecureStorageTests.swift */; };
 		B4F6AFE82DAE9DDA00D46FA8 /* SecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4F6AFE62DAE9DDA00D46FA8 /* SecureStorage.swift */; };
 /* End PBXBuildFile section */
 
@@ -309,12 +313,16 @@
 		08F8822C236499B200CAEE16 /* FeedCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCache.swift; sourceTree = "<group>"; };
 		08FC5AA922D5F47900148E12 /* FeedImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataLoader.swift; sourceTree = "<group>"; };
 		B42EB7002DAEBA17002FBC51 /* SystemKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SystemKeychain.swift; path = "EssentialFeed/Security Feature/Keychain/SystemKeychain.swift"; sourceTree = SOURCE_ROOT; };
-		B42EB7052DAEBAA8002FBC51 /* KeychainSecureStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeychainSecureStorageTests.swift; path = Keychain/KeychainSecureStorageTests.swift; sourceTree = "<group>"; };
 		B442B75D2AB3451700284B92 /* KeychainProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeychainProtocol.swift; path = "EssentialFeed/Security Feature/Keychain/KeychainProtocol.swift"; sourceTree = SOURCE_ROOT; };
+		B47D596F2DB39E0200034806 /* UserLoginUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginUseCase.swift; sourceTree = "<group>"; };
+		B47D59732DB39E4A00034806 /* UserLoginUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginUseCaseTests.swift; sourceTree = "<group>"; };
+		B47D59762DB3D67F00034806 /* KeychainSecureStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSecureStorageTests.swift; sourceTree = "<group>"; };
+		B47D59772DB3D67F00034806 /* SystemKeychainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemKeychainTests.swift; sourceTree = "<group>"; };
+		B47D59792DB3D67F00034806 /* SecureStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageTests.swift; sourceTree = "<group>"; };
+		B47D59812DB3DC1500034806 /* KeychainSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSpy.swift; sourceTree = "<group>"; };
 		B4D71EF02DAF1D34003A1316 /* RecordingKeychainSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingKeychainSpy.swift; sourceTree = "<group>"; };
 		B4D71EF12DAF1D34003A1316 /* UserRegistrationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRegistrationUseCase.swift; sourceTree = "<group>"; };
 		B4D71EF22DAF1D34003A1316 /* UserRegistrationUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRegistrationUseCaseTests.swift; sourceTree = "<group>"; };
-		B4F6AFE12DAE99A900D46FA8 /* SecureStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageTests.swift; sourceTree = "<group>"; };
 		B4F6AFE62DAE9DDA00D46FA8 /* SecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -476,6 +484,7 @@
 		080EDEE721B6DA7E00813479 = {
 			isa = PBXGroup;
 			children = (
+				B47D59702DB39E0200034806 /* Authentication Feature */,
 				080EDEF321B6DA7E00813479 /* EssentialFeed */,
 				080EDEFE21B6DA7E00813479 /* EssentialFeedTests */,
 				0899395D220359C50031B03D /* EssentialFeedAPIEndToEndTests */,
@@ -524,9 +533,10 @@
 		080EDEFE21B6DA7E00813479 /* EssentialFeedTests */ = {
 			isa = PBXGroup;
 			children = (
+				B47D597A2DB3D67F00034806 /* Security Feature */,
+				B47D59742DB39E4A00034806 /* Authentication Feature */,
 				B4D71EF32DAF1D34003A1316 /* Registration Feature */,
 				080EDF0121B6DA7E00813479 /* Info.plist */,
-				B4F6AFE22DAE99A900D46FA8 /* Security Feature */,
 				0844768D21FCB23900439BE9 /* Helpers */,
 				08EF9D15250BB0C2004539C2 /* Shared Presentation */,
 				08346CF724F9430500A9F17C /* Shared API Infra */,
@@ -915,6 +925,49 @@
 			path = "Registration Feature";
 			sourceTree = "<group>";
 		};
+		B47D59702DB39E0200034806 /* Authentication Feature */ = {
+			isa = PBXGroup;
+			children = (
+				B47D596F2DB39E0200034806 /* UserLoginUseCase.swift */,
+			);
+			path = "Authentication Feature";
+			sourceTree = SOURCE_ROOT;
+		};
+		B47D59742DB39E4A00034806 /* Authentication Feature */ = {
+			isa = PBXGroup;
+			children = (
+				B47D59732DB39E4A00034806 /* UserLoginUseCaseTests.swift */,
+			);
+			path = "Authentication Feature";
+			sourceTree = "<group>";
+		};
+		B47D59782DB3D67F00034806 /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				B47D59762DB3D67F00034806 /* KeychainSecureStorageTests.swift */,
+				B47D59772DB3D67F00034806 /* SystemKeychainTests.swift */,
+			);
+			path = Keychain;
+			sourceTree = "<group>";
+		};
+		B47D597A2DB3D67F00034806 /* Security Feature */ = {
+			isa = PBXGroup;
+			children = (
+				B47D597E2DB3D9A300034806 /* Helpers */,
+				B47D59782DB3D67F00034806 /* Keychain */,
+				B47D59792DB3D67F00034806 /* SecureStorageTests.swift */,
+			);
+			path = "Security Feature";
+			sourceTree = "<group>";
+		};
+		B47D597E2DB3D9A300034806 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B47D59812DB3DC1500034806 /* KeychainSpy.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		B4D71EF32DAF1D34003A1316 /* Registration Feature */ = {
 			isa = PBXGroup;
 			children = (
@@ -922,15 +975,6 @@
 				B4D71EF22DAF1D34003A1316 /* UserRegistrationUseCaseTests.swift */,
 			);
 			path = "Registration Feature";
-			sourceTree = "<group>";
-		};
-		B4F6AFE22DAE99A900D46FA8 /* Security Feature */ = {
-			isa = PBXGroup;
-			children = (
-				B4F6AFE12DAE99A900D46FA8 /* SecureStorageTests.swift */,
-				B42EB7052DAEBAA8002FBC51 /* KeychainSecureStorageTests.swift */,
-			);
-			path = "Security Feature";
 			sourceTree = "<group>";
 		};
 		B4F6AFE72DAE9DDA00D46FA8 /* Security Feature */ = {
@@ -1232,6 +1276,7 @@
 				0889B0FA2530B0AA00FEAB5A /* ImageCommentsEndpoint.swift in Sources */,
 				0804862E236345A40087ED48 /* FeedImageDataCache.swift in Sources */,
 				08C4E988233E13CC00D939F8 /* FeedImageDataStore.swift in Sources */,
+				B47D59722DB39E2900034806 /* UserLoginUseCase.swift in Sources */,
 				087148B6232BEAAF00D6BE1A /* FeedPresenter.swift in Sources */,
 				0844769121FCBE7D00439BE9 /* URLSessionHTTPClient.swift in Sources */,
 				08EF9D27250BBC1B004539C2 /* ResourceLoadingView.swift in Sources */,
@@ -1255,9 +1300,9 @@
 			files = (
 				081C0DB122491E1200AC754E /* FeedCacheTestHelpers.swift in Sources */,
 				08EF9D25250BBA25004539C2 /* SharedLocalizationTestHelpers.swift in Sources */,
-				B4F6AFE52DAE9D8A00D46FA8 /* SecureStorageTests.swift in Sources */,
 				080F9A2F2531DD6200EAD475 /* ImageCommentsEndpointTests.swift in Sources */,
 				08805A19233A9F8600509F19 /* URLProtocolStub.swift in Sources */,
+				B47D59822DB3DC1500034806 /* KeychainSpy.swift in Sources */,
 				081C0DAF22491A2400AC754E /* ValidateFeedCacheUseCaseTests.swift in Sources */,
 				087148AC232BDF6900D6BE1A /* FeedPresenterTests.swift in Sources */,
 				08897BE8233910040029F5E4 /* FeedImageDataMapperTests.swift in Sources */,
@@ -1273,19 +1318,22 @@
 				08C4E984233E037200D939F8 /* LoadFeedImageDataFromCacheUseCaseTests.swift in Sources */,
 				08346CEB24F93B0A00A9F17C /* ImageCommentsMapperTests.swift in Sources */,
 				086BE4842232725E004CDC26 /* FeedStoreSpy.swift in Sources */,
-				B42EB7062DAEBAA8002FBC51 /* KeychainSecureStorageTests.swift in Sources */,
 				081C0DB322491EEF00AC754E /* SharedTestHelpers.swift in Sources */,
 				089C40D42216C37400DE552E /* CacheFeedUseCaseTests.swift in Sources */,
 				08EF9D1E250BB77A004539C2 /* SharedLocalizationTests.swift in Sources */,
 				086044FC233E1A3B005ECD22 /* FeedImageDataStoreSpy.swift in Sources */,
 				08EF9D33250BCA28004539C2 /* ImageCommentsLocalizationTests.swift in Sources */,
 				08604500233E2294005ECD22 /* CoreDataFeedImageDataStoreTests.swift in Sources */,
+				B47D59752DB39E8900034806 /* UserLoginUseCaseTests.swift in Sources */,
 				087546942272387900542C32 /* XCTestCase+FailableDeleteFeedStoreSpecs.swift in Sources */,
 				08754690227237C900542C32 /* XCTestCase+FailableRetrieveFeedStoreSpecs.swift in Sources */,
 				086BE481223270A3004CDC26 /* LoadFeedFromCacheUseCaseTests.swift in Sources */,
 				080F9A3F2531DDFB00EAD475 /* FeedEndpointTests.swift in Sources */,
 				0875468C2272340500542C32 /* FeedStoreSpecs.swift in Sources */,
 				08EF9D17250BB0E4004539C2 /* LoadResourcePresenterTests.swift in Sources */,
+				B47D597B2DB3D67F00034806 /* SystemKeychainTests.swift in Sources */,
+				B47D597C2DB3D67F00034806 /* SecureStorageTests.swift in Sources */,
+				B47D597D2DB3D67F00034806 /* KeychainSecureStorageTests.swift in Sources */,
 				0844768F21FCB24E00439BE9 /* XCTestCase+MemoryLeakTracking.swift in Sources */,
 				08285AEF228BF7E3000A8987 /* CoreDataFeedStoreTests.swift in Sources */,
 				0875468E227234AB00542C32 /* XCTestCase+FeedStoreSpecs.swift in Sources */,

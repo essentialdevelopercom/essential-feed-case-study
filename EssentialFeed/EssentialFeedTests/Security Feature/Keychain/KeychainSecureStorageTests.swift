@@ -1,6 +1,8 @@
 import XCTest
 import EssentialFeed
 
+// CU: Seguridad de almacenamiento en Keychain
+// Checklist: Validar operaciones seguras en Keychain
 final class KeychainSecureStorageTests: XCTestCase {
     func test_saveData_succeeds_whenKeychainSavesSuccessfully() {
         let (sut, keychain, _, _) = makeSUT()

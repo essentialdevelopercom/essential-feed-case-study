@@ -1,8 +1,11 @@
 import XCTest
 import EssentialFeed
+import Security
 
 final class UserRegistrationUseCaseTests: XCTestCase {
-    func test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely() async throws {
+    // CU: Registro de Usuario
+// Checklist: Crear usuario y almacenar credenciales de forma segura
+func test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely() async throws {
         let httpClient = HTTPClientSpy()
         let url = URL(string: "https://test-register-endpoint.com")!
         let response201 = HTTPURLResponse(url: url, statusCode: 201, httpVersion: nil, headerFields: nil)!
@@ -20,7 +23,9 @@ final class UserRegistrationUseCaseTests: XCTestCase {
         }
     }
 
-    func test_registerUser_withEmptyName_returnsValidationError_andDoesNotCallHTTPOrKeychain() async {
+    // CU: Registro de Usuario
+// Checklist: Validar nombre vacío y no llamar a HTTP ni Keychain si es inválido
+func test_registerUser_withEmptyName_returnsValidationError_andDoesNotCallHTTPOrKeychain() async {
         await assertRegistrationValidation(
             name: "",
             email: "test@email.com",
@@ -29,7 +34,10 @@ final class UserRegistrationUseCaseTests: XCTestCase {
         )
     }
     
-    func test_registerUser_withInvalidEmail_returnsValidationError_andDoesNotCallHTTPOrKeychain() async {
+    // Checklist: Validar email y no llamar a Keychain si es inválido
+    // CU: Registro de Usuario
+// Checklist: Validar email y no llamar a Keychain si es inválido
+func test_registerUser_withInvalidEmail_returnsValidationError_andDoesNotCallHTTPOrKeychain() async {
         await assertRegistrationValidation(
             name: "Test User",
             email: "invalid-email",
@@ -38,7 +46,10 @@ final class UserRegistrationUseCaseTests: XCTestCase {
         )
     }
     
-    func test_registerUser_withWeakPassword_returnsValidationError_andDoesNotCallHTTPOrKeychain() async {
+    // Checklist: Validar password débil y no llamar a Keychain si es inválido
+    // CU: Registro de Usuario
+// Checklist: Validar password débil y no llamar a Keychain si es inválido
+func test_registerUser_withWeakPassword_returnsValidationError_andDoesNotCallHTTPOrKeychain() async {
         await assertRegistrationValidation(
             name: "Test User",
             email: "test@email.com",
@@ -47,28 +58,37 @@ final class UserRegistrationUseCaseTests: XCTestCase {
         )
     }
 
-    func test_registerUser_withAlreadyRegisteredEmail_notifiesEmailAlreadyInUsePresenter() async {
-        let httpClient = HTTPClientSpy()
-        httpClient.statusCode = 409 // Simula respuesta de correo ya registrado
-        let notifier = UserRegistrationNotifierSpy()
-        let (sut, keychain, name, email, password, _) = makeSUTWithDefaults(httpClient: httpClient, notifier: notifier)
-        
-        let result = await sut.register(name: name, email: email, password: password)
-        
-        // Assert: Se notifica al notifier
-        XCTAssertTrue(notifier.notified)
-        // Assert: No se guardan credenciales
-        XCTAssertEqual(keychain.saveCallCount, 0)
-        // Assert: El resultado es el error esperado
-        switch result {
-        case .failure(let error as UserRegistrationError):
-            XCTAssertEqual(error, .emailAlreadyInUse)
-        default:
-            XCTFail("Expected .emailAlreadyInUse error, got \(result) instead")
-        }
+    // CU: Registro de Usuario
+// Checklist: Manejar error de email ya registrado y no guardar credenciales
+func test_registerUser_withAlreadyRegisteredEmail_notifiesEmailAlreadyInUsePresenter() async {
+    let httpClient = HTTPClientSpy()
+    httpClient.statusCode = 409 // Simula respuesta de correo ya registrado
+    let expectation = expectation(description: "Notifier should be called")
+    let notifier = UserRegistrationNotifierSpy {
+        expectation.fulfill()
     }
+    let (sut, keychain, name, email, password, _) = makeSUTWithDefaults(httpClient: httpClient, notifier: notifier)
 
-    func test_registerUser_withAlreadyRegisteredEmail_returnsEmailAlreadyInUseError_andDoesNotStoreCredentials() async {
+    let result = await sut.register(name: name, email: email, password: password)
+
+    // Assert: Se notifica al notifier (async/await)
+    await fulfillment(of: [expectation], timeout: 1.0)
+    XCTAssertTrue(notifier.notified)
+    // Assert: No se guardan credenciales
+    XCTAssertEqual(keychain.saveCallCount, 0)
+    // Assert: El resultado es el error esperado
+    switch result {
+    case .failure(let error as UserRegistrationError):
+        XCTAssertEqual(error, UserRegistrationError.emailAlreadyInUse)
+    default:
+        XCTFail("Expected .emailAlreadyInUse error, got \(result) instead")
+    }
+}
+
+    // Checklist: Manejar error de email ya registrado y no guardar credenciales
+    // CU: Registro de Usuario
+// Checklist: Manejar error de email ya registrado y no guardar credenciales
+func test_registerUser_withAlreadyRegisteredEmail_returnsEmailAlreadyInUseError_andDoesNotStoreCredentials() async {
         let httpClient = HTTPClientSpy()
         httpClient.statusCode = 409 // Simula respuesta de correo ya registrado
         let (sut, keychain, name, email, password, _) = makeSUTWithDefaults(httpClient: httpClient)
@@ -84,7 +104,10 @@ final class UserRegistrationUseCaseTests: XCTestCase {
         XCTAssertEqual(keychain.saveCallCount, 0, "No Keychain save should occur if email is already registered")
     }
 
-    func test_registerUser_withNoConnectivity_returnsConnectivityError_andDoesNotStoreCredentials() async {
+    // Checklist: Manejar error de conectividad y no guardar credenciales
+    // CU: Registro de Usuario
+// Checklist: Manejar error de conectividad y no guardar credenciales
+func test_registerUser_withNoConnectivity_returnsConnectivityError_andDoesNotStoreCredentials() async {
         let httpClient = HTTPClientSpy()
         httpClient.errorToReturn = NetworkError.noConnectivity
         let (sut, keychain, name, email, password, _) = makeSUTWithDefaults(httpClient: httpClient)
@@ -106,7 +129,14 @@ final class UserRegistrationUseCaseTests: XCTestCase {
 
 final class UserRegistrationNotifierSpy: UserRegistrationNotifier {
     private(set) var notified = false
-    func notifyEmailAlreadyInUse() { notified = true }
+    private let onNotify: (() -> Void)?
+    init(onNotify: (() -> Void)? = nil) {
+        self.onNotify = onNotify
+    }
+    func notifyEmailAlreadyInUse() {
+        notified = true
+        onNotify?()
+    }
 }
 
 // MARK: - Tests
@@ -223,11 +253,3 @@ private class HTTPClientSpy: HTTPClient {
     }
 }
 
-// MARK: - Test Double
-final class KeychainSpy: KeychainProtocol {
-	private(set) var saveCallCount = 0
-	func save(data: Data, forKey key: String) -> Bool {
-		saveCallCount += 1
-		return false
-	}
-}

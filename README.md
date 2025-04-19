@@ -378,3 +378,37 @@ GET /image/{image-id}/comments
 ## App Architecture
 
 ![](architecture.png)
+
+<!-- COVERAGE-REPORT-START -->
+# 📊 Resumen de Cobertura de Código
+
+**Cobertura total:** **91.39%**
+
+---
+
+## Archivos con mayor cobertura
+
+| Archivo | Cobertura | Test que lo cubre |
+|---|---|---|
+| [UserLoginUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Authentication Feature/UserLoginUseCase.swift) | 100.00% | UserLoginUseCaseTests.swift |
+| [SecureStorage.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Security Feature/SecureStorage.swift) | 100.00% | KeychainSecureStorageTests.swift, SecureStorageTests.swift |
+| [UserRegistrationUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Registration Feature/UserRegistrationUseCase.swift) | 97.46% | UserRegistrationUseCaseTests+Server.swift, UserRegistrationUseCaseTests.swift |
+| [SystemKeychain.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Security Feature/Keychain/SystemKeychain.swift) | 51.85% |  |
+
+## Archivos con menor cobertura (>0%)
+
+| Archivo | Cobertura | Test que lo cubre |
+|---|---|---|
+| [SystemKeychain.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Security Feature/Keychain/SystemKeychain.swift) | 51.85% |  |
+| [UserRegistrationUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Registration Feature/UserRegistrationUseCase.swift) | 97.46% | UserRegistrationUseCaseTests+Server.swift, UserRegistrationUseCaseTests.swift |
+| [UserLoginUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Authentication Feature/UserLoginUseCase.swift) | 100.00% | UserLoginUseCaseTests.swift |
+| [SecureStorage.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Security Feature/SecureStorage.swift) | 100.00% | KeychainSecureStorageTests.swift, SecureStorageTests.swift |
+
+---
+### ¿Cómo leer este reporte?
+- **Cobertura total:** Porcentaje de líneas cubiertas por tests en todo el target.
+- **Mayor cobertura:** Archivos mejor cubiertos por los tests.
+- **Menor cobertura:** Archivos con menor cobertura (pero mayor a 0%).
+
+> Para cobertura por clase o función, revisa el archivo `coverage-report.txt`.
+<!-- COVERAGE-REPORT-END -->

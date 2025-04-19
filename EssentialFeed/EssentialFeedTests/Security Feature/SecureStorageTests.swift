@@ -6,7 +6,10 @@
 //
 
 import XCTest
-import EssentialFeed
+@testable import EssentialFeed
+// CU: SystemKeychain
+// CU: Seguridad de almacenamiento
+// Checklist: Verificar operaciones seguras de almacenamiento y recuperación
 final class SecureStorageTests: XCTestCase {
 	
 	// MARK: - Init Tests

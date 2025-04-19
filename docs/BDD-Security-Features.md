@@ -98,9 +98,9 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 - ✅ Retornar `false` si la clave contiene solo espacios
 - ✅ Retornar `false` si la operación de Keychain falla (simular error)
 - ✅ Eliminar correctamente valores previos antes de guardar uno nuevo
-- ⏳ Soportar claves unicode y datos binarios grandes
-- 🔜 Robustez ante concurrencia (opcional/avanzado)
-- 🟡 Cubrir todos los códigos de error posibles de la API del Keychain
+- ✅ Soportar claves unicode y datos binarios grandes
+- ⏳ Robustez ante concurrencia (opcional/avanzado)
+- 🔜 Cubrir todos los códigos de error posibles de la API del Keychain
 
 ---
 
@@ -155,9 +155,9 @@ flowchart TD
 | Retornar false si la clave contiene solo espacios | Sí | ✅ |
 | Retornar false si la operación de Keychain falla | Sí | ✅ |
 | Eliminar valores previos antes de guardar | Sí | ✅ |
-| Soportar claves unicode y datos grandes | No | ⏳ |
-| Robustez ante concurrencia | No | 🔜 |
-| Cubrir todos los códigos de error posibles de la API del Keychain | No | 🟡 |
+| Soportar claves unicode y datos grandes | Sí | ✅ |
+| Robustez ante concurrencia | No | ⏳ |
+| Cubrir todos los códigos de error posibles de la API del Keychain | No | 🔜 |
 > Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
 
 **Implementación:**

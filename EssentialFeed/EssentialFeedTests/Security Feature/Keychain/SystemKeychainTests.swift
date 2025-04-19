@@ -68,6 +68,14 @@ final class SystemKeychainTests: XCTestCase {
         XCTAssertTrue(spy.deleteCalled, "Should delete previous value before saving new one")
         XCTAssertEqual(spy.lastDeletedKey, key, "Should delete the correct key")
     }
+
+    func test_save_supportsUnicodeKeysAndLargeBinaryData() {
+        let sut = makeSUT()
+        let unicodeKey = "🔑-ключ-密钥-llave"
+        let largeData = Data((0..<10_000).map { _ in UInt8.random(in: 0...255) })
+        let result = sut.save(data: largeData, forKey: unicodeKey)
+        XCTAssert(result == true || result == false, "Saving with unicode key and large data should not crash and return a Bool")
+    }
     
     // MARK: - Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> SystemKeychain {

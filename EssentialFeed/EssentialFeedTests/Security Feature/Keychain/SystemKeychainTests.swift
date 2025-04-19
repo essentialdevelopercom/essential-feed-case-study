@@ -1,5 +1,5 @@
 // SystemKeychainTests.swift
-// Pruebas unitarias para SystemKeychain
+// Unit tests for SystemKeychain
 
 import XCTest
 import EssentialFeed
@@ -30,13 +30,13 @@ final class SystemKeychainTests: XCTestCase {
     func test_save_returnsFalse_forEmptyKey() {
         let sut = makeSUT()
         let result = sut.save(data: anyData(), forKey: "")
-        XCTAssertFalse(result, "Guardar con clave vacía debería fallar")
+        XCTAssertFalse(result, "Saving with empty key should fail")
     }
     
     func test_save_returnsFalse_forEmptyData() {
         let sut = makeSUT()
         let result = sut.save(data: Data(), forKey: anyKey())
-        XCTAssertFalse(result, "Guardar datos vacíos debería fallar")
+        XCTAssertFalse(result, "Saving empty data should fail")
     }
     
     func test_save_returnsBool_forVeryLongKey() {
@@ -60,7 +60,8 @@ final class SystemKeychainTests: XCTestCase {
     }
 
     func test_save_deletesPreviousValueBeforeSavingNewOne() {
-        let (sut, spy) = makeSpySUT()
+        let spy = KeychainSpy()
+        let sut = SystemKeychain(keychain: spy)
         spy.saveResult = true
         let key = anyKey()
         let data = anyData()
@@ -84,7 +85,7 @@ final class SystemKeychainTests: XCTestCase {
         return sut
     }
     
-    private func makeSpySUT(file: StaticString = #file, line: UInt = #line) -> (sut: KeychainProtocol, spy: KeychainSpy) {
+    private func makeSpySUT(file: StaticString = #file, line: UInt = #line) -> (sut: KeychainSpy, spy: KeychainSpy) {
         let spy = KeychainSpy()
         trackForMemoryLeaks(spy, file: file, line: line)
         return (spy, spy)
@@ -98,5 +99,5 @@ final class SystemKeychainTests: XCTestCase {
         return "test-key"
     }
     
-    // NOTA: Para mocks reales de Keychain, se recomienda usar dependency injection y wrappers testables del framework Security.
+    // NOTE: For real Keychain mocks, it is recommended to use dependency injection and testable wrappers of the Security framework.
 }

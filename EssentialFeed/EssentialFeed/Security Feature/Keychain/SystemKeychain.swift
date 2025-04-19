@@ -1,22 +1,36 @@
 import Foundation
 import Security
+import EssentialFeed
 
 // MARK: - SystemKeychain
 
 /// Implementación del Keychain usando las APIs del sistema
 public final class SystemKeychain: KeychainProtocol {
-    public init() {}
+    private let keychain: KeychainProtocolWithDelete?
+    
+    public init(keychain: KeychainProtocolWithDelete? = nil) {
+        self.keychain = keychain
+    }
     
     public func save(data: Data, forKey key: String) -> Bool {
         guard !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, !data.isEmpty else { return false }
-        let query: [String: Any] = [
-            kSecClass as String: kSecClassGenericPassword,
-            kSecAttrAccount as String: key,
-            kSecValueData as String: data
-        ]
-        SecItemDelete(query as CFDictionary) // Remove old item if exists
-        let status = SecItemAdd(query as CFDictionary, nil)
-        return status == errSecSuccess
+        if let keychain = keychain {
+            _ = keychain.delete(forKey: key)
+            return keychain.save(data: data, forKey: key)
+        } else {
+            let query: [String: Any] = [
+                kSecClass as String: kSecClassGenericPassword,
+                kSecAttrAccount as String: key
+            ]
+            SecItemDelete(query as CFDictionary)
+            let queryWithData: [String: Any] = [
+                kSecClass as String: kSecClassGenericPassword,
+                kSecAttrAccount as String: key,
+                kSecValueData as String: data
+            ]
+            let status = SecItemAdd(queryWithData as CFDictionary, nil)
+            return status == errSecSuccess
+        }
     }
 }
 

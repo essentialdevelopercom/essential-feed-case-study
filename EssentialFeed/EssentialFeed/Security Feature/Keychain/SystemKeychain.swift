@@ -8,7 +8,7 @@ public final class SystemKeychain: KeychainProtocol {
     public init() {}
     
     public func save(data: Data, forKey key: String) -> Bool {
-        guard !key.isEmpty, !data.isEmpty else { return false }
+        guard !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty, !data.isEmpty else { return false }
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrAccount as String: key,

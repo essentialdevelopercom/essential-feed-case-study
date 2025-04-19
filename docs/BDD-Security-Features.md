@@ -93,6 +93,14 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 - ✅ Intentar almacenamiento alternativo si falla el Keychain
 - ✅ Notificar error si persiste el fallo
 - ✅ Limpiar datos corruptos y solicitar nueva autenticación
+- ✅ Retornar `false` si la clave está vacía
+- ✅ Retornar `false` si los datos están vacíos
+- ✅ Retornar `false` si la clave contiene solo espacios
+- ✅ Retornar `false` si la operación de Keychain falla (simular error)
+- ✅ Eliminar correctamente valores previos antes de guardar uno nuevo
+- ⏳ Soportar claves unicode y datos binarios grandes
+- 🔜 Robustez ante concurrencia (opcional/avanzado)
+- 🟡 Cubrir todos los códigos de error posibles de la API del Keychain
 
 ---
 
@@ -142,6 +150,14 @@ flowchart TD
 | Notificación de error de almacenamiento | Sí | ✅ |
 | Limpieza de datos corruptos | Sí | ✅ |
 | Solicitud de nueva autenticación | Sí | ✅ |
+| Retornar false si la clave está vacía | Sí | ✅ |
+| Retornar false si los datos están vacíos | Sí | ✅ |
+| Retornar false si la clave contiene solo espacios | Sí | ✅ |
+| Retornar false si la operación de Keychain falla | Sí | ✅ |
+| Eliminar valores previos antes de guardar | Sí | ✅ |
+| Soportar claves unicode y datos grandes | No | ⏳ |
+| Robustez ante concurrencia | No | 🔜 |
+| Cubrir todos los códigos de error posibles de la API del Keychain | No | 🟡 |
 > Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
 
 **Implementación:**

@@ -45,6 +45,29 @@ final class SystemKeychainTests: XCTestCase {
         let result = sut.save(data: anyData(), forKey: key)
         XCTAssert(result == true || result == false)
     }
+
+    func test_save_returnsFalse_forKeyWithOnlySpaces() {
+        let sut = makeSUT()
+        let result = sut.save(data: anyData(), forKey: "   ")
+        XCTAssertFalse(result, "Saving with only-spaces key should fail")
+    }
+
+    func test_save_returnsFalse_onKeychainFailure() {
+        let (sut, spy) = makeSpySUT()
+        spy.saveResult = false // Simulate Keychain failure
+        let result = sut.save(data: anyData(), forKey: anyKey())
+        XCTAssertFalse(result, "Saving should return false on Keychain failure")
+    }
+
+    func test_save_deletesPreviousValueBeforeSavingNewOne() {
+        let (sut, spy) = makeSpySUT()
+        spy.saveResult = true
+        let key = anyKey()
+        let data = anyData()
+        _ = sut.save(data: data, forKey: key)
+        XCTAssertTrue(spy.deleteCalled, "Should delete previous value before saving new one")
+        XCTAssertEqual(spy.lastDeletedKey, key, "Should delete the correct key")
+    }
     
     // MARK: - Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> SystemKeychain {

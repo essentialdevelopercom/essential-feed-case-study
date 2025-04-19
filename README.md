@@ -391,8 +391,10 @@ GET /image/{image-id}/comments
 | Archivo | Cobertura | Test que lo cubre |
 |---|---|---|
 | [UserLoginUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Authentication Feature/UserLoginUseCase.swift) | 100.00% | UserLoginUseCaseTests.swift |
-| [SecureStorage.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Security Feature/SecureStorage.swift) | 100.00% | KeychainSecureStorageTests.swift, SecureStorageTests.swift |
-| [UserRegistrationUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Registration Feature/UserRegistrationUseCase.swift) | 97.46% | UserRegistrationUseCaseTests+Server.swift, UserRegistrationUseCaseTests.swift |
+| [SecureStorage.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Security Feature/SecureStorage.swift) | 100.00% | SecureStorageTests.swift
+KeychainSecureStorageTests.swift |
+| [UserRegistrationUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Registration Feature/UserRegistrationUseCase.swift) | 97.46% | UserRegistrationUseCaseTests.swift
+UserRegistrationUseCaseTests+Server.swift |
 | [SystemKeychain.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Security Feature/Keychain/SystemKeychain.swift) | 51.85% | SystemKeychainTests.swift |
 
 ## Archivos con menor cobertura (>0%)
@@ -400,9 +402,11 @@ GET /image/{image-id}/comments
 | Archivo | Cobertura | Test que lo cubre |
 |---|---|---|
 | [SystemKeychain.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Security Feature/Keychain/SystemKeychain.swift) | 51.85% | SystemKeychainTests.swift |
-| [UserRegistrationUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Registration Feature/UserRegistrationUseCase.swift) | 97.46% | UserRegistrationUseCaseTests+Server.swift, UserRegistrationUseCaseTests.swift |
+| [UserRegistrationUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Registration Feature/UserRegistrationUseCase.swift) | 97.46% | UserRegistrationUseCaseTests.swift
+UserRegistrationUseCaseTests+Server.swift |
 | [UserLoginUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Authentication Feature/UserLoginUseCase.swift) | 100.00% | UserLoginUseCaseTests.swift |
-| [SecureStorage.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Security Feature/SecureStorage.swift) | 100.00% | KeychainSecureStorageTests.swift, SecureStorageTests.swift |
+| [SecureStorage.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Security Feature/SecureStorage.swift) | 100.00% | SecureStorageTests.swift
+KeychainSecureStorageTests.swift |
 
 ---
 ### ¿Cómo leer este reporte?

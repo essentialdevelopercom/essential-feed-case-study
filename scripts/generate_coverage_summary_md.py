@@ -62,7 +62,7 @@ test_files = [os.path.relpath(f, REPO_ROOT) for f in test_files]
 unique_test_files = list(dict.fromkeys(test_files))
 
 # Mapeo producción <-> test (convención y CU)
-prod_files = [f[0] for f in files if f[1] > 0 and is_included(f[0])]
+prod_files = [f[0] for f in files if is_included(f[0])]
 cu_map = {}
 for tf in test_files:
     cu_map[tf] = []
@@ -79,22 +79,68 @@ test_map = {}
 for pf in prod_files:
     base = Path(pf).stem.replace("+Server", "")
     # Coincidencia flexible por nombre
-    related_tests = [tf for tf in test_files if base in Path(tf).stem or base in tf]
+    related_tests = set([tf for tf in test_files if base in Path(tf).stem or base in tf])
     # Por CU
-    related_tests += [tf for tf, cu_list in cu_map.items() if any(base in cu for cu in cu_list)]
-    # BONUS: busca si la clase base aparece en el contenido del test
+    related_tests.update([tf for tf, cu_list in cu_map.items() if any(base in cu for cu in cu_list)])
+    # BONUS: busca si la clase base aparece en el contenido del test (por nombre de clase)
     for tf in test_files:
         try:
             with open(tf, encoding="utf-8") as f:
                 content = f.read()
-                if base in content:
-                    related_tests.append(tf)
+                # Busca el nombre de la clase (no solo el base)
+                class_name = base
+                if class_name.endswith(".swift"):
+                    class_name = class_name.replace(".swift", "")
+                if class_name in content:
+                    related_tests.add(tf)
         except Exception:
             pass
-    test_map[pf] = sorted(set(Path(t).name for t in related_tests))
+    # Extra: extraer métodos de test con // Checklist: o // CU: de cada archivo de test
+    method_map = {}
+    for tf in related_tests:
+        method_map[Path(tf).name] = []
+        try:
+            with open(tf, encoding="utf-8") as f:
+                lines = f.readlines()
+                for i, line in enumerate(lines):
+                    checklist = re.search(r'//\s*Checklist:\s*([\w_\-]+)', line)
+                    cu = re.search(r'//\s*CU:\s*([\w_\-]+)', line)
+                    if checklist or cu:
+                        # Busca el nombre del método de test en la siguiente línea
+                        for j in range(i+1, min(i+4, len(lines))):
+                            m = re.search(r'func\s+(test_[\w_\-]+)', lines[j])
+                            if m:
+                                nombre = m.group(1)
+                                if checklist:
+                                    nombre = f'{nombre} [Checklist: {checklist.group(1)}]'
+                                if cu:
+                                    nombre = f'{nombre} [CU: {cu.group(1)}]'
+                                method_map[Path(tf).name].append(nombre)
+                                break
+        except Exception:
+            pass
+    # Siempre incluir el archivo de test como primer elemento, luego los métodos (si existen)
+    final_test_map = {}
+    for tf in set(Path(t).name for t in related_tests):
+        methods = method_map.get(tf, [])
+        # Si hay métodos, archivo + métodos (sin duplicar el archivo)
+        if methods:
+            final_test_map[tf] = [tf] + [m for m in methods if m != tf]
+        else:
+            final_test_map[tf] = [tf]
+    # Combina todos los tests (archivo + métodos) para la columna
+    all_tests = set()
+    for tf in set(Path(t).name for t in related_tests):
+        all_tests.update(final_test_map.get(tf, [tf]))
+    test_map[pf] = list(all_tests)
 
-files_with_coverage = [f for f in files if f[1] > 0 and is_included(f[0])]
-files_with_coverage += [(f, None) for f in unique_test_files if f not in [fwc[0] for fwc in files_with_coverage]]
+# Incluye todos los archivos de producción y test relevantes, aunque tengan 0 o N/A
+all_prod_files = set([f[0] for f in files if is_included(f[0])])
+all_test_files = set(unique_test_files)
+# Añadir archivos de test y producción aunque no tengan cobertura
+files_with_coverage = [f for f in files if is_included(f[0])]
+files_with_coverage += [(f, None) for f in all_test_files if f not in [fwc[0] for fwc in files_with_coverage]]
+files_with_coverage += [(f, None) for f in all_prod_files if f not in [fwc[0] for fwc in files_with_coverage]]
 files_with_coverage.sort(key=lambda x: (-1 if x[1] is None else -x[1]))
 files_with_coverage_min = sorted([f for f in files_with_coverage if f[1] is not None], key=lambda x: x[1])
 
@@ -120,7 +166,11 @@ def md_table(rows, test_map=None):
     for name, cov in rows:
         rel = rel_link(Path(name))
         cov_str = f"{cov:.2f}%" if cov is not None else "N/A"
-        test_str = ", ".join(test_map.get(name, [])) if test_map else ""
+        if test_map and name in test_map:
+            test_items = test_map[name]
+            test_str = "\n".join(test_items)
+        else:
+            test_str = ""
         out += f"| [{rel.name}]({rel}) | {cov_str} | {test_str} |\n"
     return out
 
@@ -132,7 +182,11 @@ def html_table(rows, bars=False, test_map=None):
     for name, cov in rows:
         rel = rel_link(Path(name))
         cov_str = f"{cov:.2f}%" if cov is not None else "N/A"
-        test_str = ", ".join(test_map.get(name, [])) if test_map else ""
+        if test_map and name in test_map:
+            test_items = test_map[name]
+            test_str = "<br>".join(test_items)
+        else:
+            test_str = ""
         bar_html = ""
         if bars and cov is not None:
             if cov >= 90:

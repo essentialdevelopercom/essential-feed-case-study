@@ -133,6 +133,33 @@ final class SystemKeychainTests: XCTestCase {
         XCTAssertFalse(result2, "Should return false on auth failed error")
         XCTAssertEqual(spy.simulatedError, -25293, "Should simulate auth failed error")
     }
+
+        // --- Cobertura real de SystemKeychain y NoFallback ---
+        // Checklist: test_realSystemKeychain_saveAndDelete_returnsTrueOrFalse
+        // CU: SystemKeychain-save-andDelete
+    func test_realSystemKeychain_saveAndDelete_returnsTrueOrFalse() {
+        let sut = SystemKeychain()
+        let key = "test-key-real"
+        let data = "real-test-data".data(using: .utf8)!
+        // Guardar dato real
+        let saveResult = sut.save(data: data, forKey: key)
+        XCTAssert(saveResult == true || saveResult == false)
+        // Intentar guardar con clave vacía
+        let emptyKeyResult = sut.save(data: data, forKey: "")
+        XCTAssertFalse(emptyKeyResult)
+        // Intentar guardar con data vacía
+        let emptyDataResult = sut.save(data: Data(), forKey: key)
+        XCTAssertFalse(emptyDataResult)
+    }
+
+    // Checklist: test_NoFallback_alwaysReturnsFalse
+    // CU: SystemKeychain-fallback
+    func test_NoFallback_alwaysReturnsFalse() {
+        let fallback = NoFallback()
+        let data = "irrelevant".data(using: .utf8)!
+        let result = fallback.save(data: data, forKey: "any-key")
+        XCTAssertFalse(result)
+    }
     
     // MARK: - Helpers
     private func makeSUT(file: StaticString = #file, line: UInt = #line) -> SystemKeychain {

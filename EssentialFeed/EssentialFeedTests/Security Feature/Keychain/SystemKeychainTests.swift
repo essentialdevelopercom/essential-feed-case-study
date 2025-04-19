@@ -99,5 +99,39 @@ final class SystemKeychainTests: XCTestCase {
         return "test-key"
     }
     
+        func test_save_isThreadSafe() {
+        let sut = makeSUT()
+        let key = "thread-safe-key"
+        let iterations = 100
+        let queue = DispatchQueue(label: "concurrent-keychain-test", attributes: .concurrent)
+        let group = DispatchGroup()
+        for i in 0..<iterations {
+            group.enter()
+            queue.async {
+                let data = Data(String(i).utf8)
+                _ = sut.save(data: data, forKey: key)
+                group.leave()
+            }
+        }
+        group.wait()
+        let finalData = sut.load(forKey: key)
+        XCTAssertNotNil(finalData, "Final data should not be nil after concurrent writes")
+    }
+
+    func test_save_handlesSpecificKeychainErrors() {
+        let (sut, spy) = makeSpySUT()
+        // Simulate duplicate item error
+        spy.saveResult = false
+        spy.simulatedError = -25299 // errSecDuplicateItem
+        let result = sut.save(data: anyData(), forKey: anyKey())
+        XCTAssertFalse(result, "Should return false on duplicate item error")
+        XCTAssertEqual(spy.simulatedError, -25299, "Should simulate duplicate item error")
+        // Simulate auth failed error
+        spy.simulatedError = -25293 // errSecAuthFailed
+        let result2 = sut.save(data: anyData(), forKey: anyKey())
+        XCTAssertFalse(result2, "Should return false on auth failed error")
+        XCTAssertEqual(spy.simulatedError, -25293, "Should simulate auth failed error")
+    }
+
     // NOTE: For real Keychain mocks, it is recommended to use dependency injection and testable wrappers of the Security framework.
 }

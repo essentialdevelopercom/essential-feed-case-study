@@ -99,8 +99,8 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 - ✅ Retornar `false` si la operación de Keychain falla (simulado)
 - ✅ Eliminar correctamente valores previos antes de guardar uno nuevo (test integración con spy)
 - ✅ Soportar claves unicode y datos binarios grandes
-- ⏳ Robustez ante concurrencia (pendiente)
-- 🔜 Cubrir todos los códigos de error posibles de la API del Keychain (pendiente)
+- ✅ Robustez ante concurrencia (test_save_isThreadSafe)
+- ✅ Cubrir todos los códigos de error posibles de la API del Keychain (test_save_handlesSpecificKeychainErrors)
 
 #### Trazabilidad checklist <-> tests
 
@@ -112,7 +112,8 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 | Retornar false si falla el Keychain             | test_save_returnsFalse_onKeychainFailure     |    ✅      |
 | Eliminar valores previos antes de guardar       | test_save_deletesPreviousValueBeforeSavingNewOne | ✅      |
 | Soportar claves unicode y datos grandes         | test_save_supportsUnicodeKeysAndLargeBinaryData | ✅      |
-| Robustez ante concurrencia                     | test_save_isThreadSafe (⏳ si está pendiente)|    ⏳      |
+| Robustez ante concurrencia                     | test_save_isThreadSafe                       |    ✅      |
+| Cubrir todos los códigos de error posibles     | test_save_handlesSpecificKeychainErrors      |    ✅      |
 
 ---
 

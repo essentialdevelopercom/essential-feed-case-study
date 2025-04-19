@@ -37,7 +37,7 @@
 
 | Caso de Uso                                 | Estado             | Comentario                                       |
 |---------------------------------------------|--------------------|--------------------------------------------------|
-| 1. Almacenamiento Seguro                    | ✅ Completado      | Totalmente cubierto por tests automatizados      |
+| 1. Almacenamiento Seguro                    | ✅ Completado      | Totalmente cubierto por tests automatizados (incluye integración con borrado previo, soporte unicode y datos grandes, y refactor con inyección de dependencias). |
 | 2. Registro de Usuario                      | ✅ Completado      | Todos los caminos (happy/sad) cubiertos por tests|
 | 3. Autenticación de Usuario                 | ⏳ En progreso     | Solo cubiertos: token seguro y error credenciales|
 | 4. Gestión de Token Expirado                | 🔜 Siguiente       | Sin tests, pendiente de implementar              |
@@ -96,11 +96,23 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 - ✅ Retornar `false` si la clave está vacía
 - ✅ Retornar `false` si los datos están vacíos
 - ✅ Retornar `false` si la clave contiene solo espacios
-- ✅ Retornar `false` si la operación de Keychain falla (simular error)
-- ✅ Eliminar correctamente valores previos antes de guardar uno nuevo
+- ✅ Retornar `false` si la operación de Keychain falla (simulado)
+- ✅ Eliminar correctamente valores previos antes de guardar uno nuevo (test integración con spy)
 - ✅ Soportar claves unicode y datos binarios grandes
-- ⏳ Robustez ante concurrencia (opcional/avanzado)
-- 🔜 Cubrir todos los códigos de error posibles de la API del Keychain
+- ⏳ Robustez ante concurrencia (pendiente)
+- 🔜 Cubrir todos los códigos de error posibles de la API del Keychain (pendiente)
+
+#### Trazabilidad checklist <-> tests
+
+| Ítem checklist almacenamiento seguro            | Test presente                                | Cobertura  |
+|------------------------------------------------|----------------------------------------------|------------|
+| Retornar false si la clave está vacía           | test_save_returnsFalse_forEmptyKey           |    ✅      |
+| Retornar false si los datos están vacíos        | test_save_returnsFalse_forEmptyData          |    ✅      |
+| Retornar false si la clave solo tiene espacios  | test_save_returnsFalse_forKeyWithOnlySpaces  |    ✅      |
+| Retornar false si falla el Keychain             | test_save_returnsFalse_onKeychainFailure     |    ✅      |
+| Eliminar valores previos antes de guardar       | test_save_deletesPreviousValueBeforeSavingNewOne | ✅      |
+| Soportar claves unicode y datos grandes         | test_save_supportsUnicodeKeysAndLargeBinaryData | ✅      |
+| Robustez ante concurrencia                     | test_save_isThreadSafe (⏳ si está pendiente)|    ⏳      |
 
 ---
 

@@ -26,6 +26,9 @@
 
 ---
 
+> **Nota profesional sobre tests de Keychain:**
+> Para garantizar la fiabilidad y reproducibilidad de los tests de integración relacionados con Keychain, se recomienda ejecutar siempre en target **macOS** salvo que sea imprescindible una dependencia de UIKit. En simulador iOS y en CLI (xcodebuild), los tests de Keychain pueden fallar de forma intermitente por problemas de sandboxing y sincronización. Esta preferencia se aplica tanto en CI/CD como en validaciones locales.
+
 ✅ Completado  
 🔜 Siguiente a implementar  
 🟡 Pendiente    

@@ -1,18 +1,18 @@
 import XCTest
 import EssentialFeed
+import Foundation
 // CU: Registro de Usuario en servidor
 // Checklist: Validar integración de registro con servidor y manejo de respuestas
 import Foundation
 
 final class UserRegistrationUseCaseTests: XCTestCase {
-    // ... otros tests ...
 
     // CU: Registro de Usuario
 // Checklist: Enviar request correctamente al endpoint con datos válidos
 func test_registerUser_sendsRequestToServer() async throws {
         let httpClient = HTTPClientSpy()
         let sut = UserRegistrationUseCase(
-            keychain: KeychainSpy(),
+            keychain: makeKeychainFullSpy(),
             validator: RegistrationValidatorStub(),
             httpClient: httpClient,
             registrationEndpoint: URL(string: "https://test-register-endpoint.com")!

@@ -5,70 +5,86 @@ import EssentialFeed
 // Checklist: Validar operaciones seguras en Keychain
 final class KeychainSecureStorageTests: XCTestCase {
     func test_saveData_succeeds_whenKeychainSavesSuccessfully() {
-        let (sut, keychain, _, _) = makeSUT()
+        let (sut, keychain, _, _) = makeDefaultSUT()
         let key = "test-key"
         let data = "test-data".data(using: .utf8)!
-        keychain.saveResult = true
+        keychain.saveResult = KeychainSaveResult.success
 
         let result = sut.save(data: data, forKey: key)
 
-        XCTAssertEqual(keychain.receivedKey, key, "Should pass correct key to keychain")
-        XCTAssertEqual(keychain.receivedData, data, "Should pass correct data to keychain")
-        XCTAssertTrue(result, "Save should succeed with valid input")
+        XCTAssertEqual(keychain.saveSpy.receivedKey, key, "Should pass correct key to keychain")
+        XCTAssertEqual(keychain.saveSpy.receivedData, data, "Should pass correct data to keychain")
+        assertEventuallyEqual(sut.load(forKey: key), data)
+        XCTAssertEqual(result, KeychainSaveResult.success, "Save should succeed with valid input")
     }
 
     func test_saveData_fails_whenKeychainReturnsError() {
-        let (sut, keychain, fallback, alternative) = makeSUT()
+        let (sut, keychain, fallback, alternative) = makeDefaultSUT()
         let key = "test-key"
         let data = "test-data".data(using: .utf8)!
-        keychain.saveResult = false
-        fallback.saveResult = false
-        alternative.saveResult = false
+        keychain.saveResult = KeychainSaveResult.failure
+        fallback.saveResult = KeychainSaveResult.failure
+        alternative.saveResult = KeychainSaveResult.failure
 
         let result = sut.save(data: data, forKey: key)
 
-        XCTAssertEqual(keychain.receivedKey, key, "Should pass correct key to keychain")
-        XCTAssertEqual(keychain.receivedData, data, "Should pass correct data to keychain")
-        XCTAssertFalse(result, "Save should fail with invalid input")
+        XCTAssertEqual(keychain.saveSpy.receivedKey, key, "Should pass correct key to keychain")
+        XCTAssertEqual(keychain.saveSpy.receivedData, data, "Should pass correct data to keychain")
+        assertEventuallyEqual(sut.load(forKey: key), nil)
+        XCTAssertEqual(result, KeychainSaveResult.failure, "Save should fail with invalid input")
     }
 
     func test_saveData_usesFallback_whenKeychainFails() {
-        let (sut, keychain, fallback, _) = makeSUT()
+        let (sut, keychain, fallback, _) = makeDefaultSUT()
         let key = "test-key"
         let data = "test-data".data(using: .utf8)!
-        keychain.saveResult = false
-        fallback.saveResult = true
+        keychain.saveResult = KeychainSaveResult.failure
+        fallback.saveResult = KeychainSaveResult.success
 
         let result = sut.save(data: data, forKey: key)
 
-        XCTAssertEqual(fallback.receivedKey, key, "Should fallback with correct key")
-        XCTAssertEqual(fallback.receivedData, data, "Should fallback with correct data")
-        XCTAssertTrue(result, "Save should succeed with valid input")
+        XCTAssertEqual(fallback.saveSpy.receivedKey, key, "Should fallback with correct key")
+        XCTAssertEqual(fallback.saveSpy.receivedData, data, "Should fallback with correct data")
+        assertEventuallyEqual(sut.load(forKey: key), data)
+        XCTAssertEqual(result, KeychainSaveResult.success, "Save should succeed with valid input")
     }
 
     func test_saveData_usesAlternativeStorage_whenKeychainAndFallbackFail() {
-        let (sut, keychain, fallback, alternative) = makeSUT()
+        let (sut, keychain, fallback, alternative) = makeDefaultSUT()
         let key = "test-key"
         let data = "test-data".data(using: .utf8)!
-        keychain.saveResult = false
-        fallback.saveResult = false
-        alternative.saveResult = true
+        keychain.saveResult = KeychainSaveResult.failure
+        fallback.saveResult = KeychainSaveResult.failure
+        alternative.saveResult = KeychainSaveResult.success
 
         // Simula que Keychain y fallback fallan
         let result = sut.save(data: data, forKey: key)
 
-        XCTAssertEqual(alternative.receivedKey, key, "Should use alternative with correct key")
-        XCTAssertEqual(alternative.receivedData, data, "Should use alternative with correct data")
-        XCTAssertTrue(result, "Save should succeed with valid input")
+        XCTAssertEqual(alternative.saveSpy.receivedKey, key, "Should use alternative with correct key")
+        XCTAssertEqual(alternative.saveSpy.receivedData, data, "Should use alternative with correct data")
+        XCTAssertEqual(result, KeychainSaveResult.success, "Save should succeed with valid input")
     }
 
     // MARK: - Helpers
+    private func makeKeychainFullSpy() -> KeychainFullSpy {
+        return KeychainFullSpy()
+    }
+
+    private func makeDefaultSUT(file: StaticString = #file, line: UInt = #line) -> (KeychainSecureStorage, KeychainFullSpy, KeychainFullSpy, KeychainFullSpy) {
+        return makeSUT(
+            keychain: makeKeychainFullSpy(),
+            fallback: makeKeychainFullSpy(),
+            alternative: makeKeychainFullSpy(),
+            file: file, line: line
+        )
+    }
+
     private func makeSUT(
-        keychain: SystemKeychainSpy = SystemKeychainSpy(),
-        fallback: FallbackSpy = FallbackSpy(),
-        alternative: AlternativeStorageSpy = AlternativeStorageSpy(),
+        keychain: KeychainFullSpy,
+        fallback: KeychainFullSpy,
+        alternative: KeychainFullSpy,
         file: StaticString = #file, line: UInt = #line
-    ) -> (KeychainSecureStorage, SystemKeychainSpy, FallbackSpy, AlternativeStorageSpy) {
+    ) -> (KeychainSecureStorage, KeychainFullSpy, KeychainFullSpy, KeychainFullSpy) {
         let sut = KeychainSecureStorage(keychain: keychain, fallback: fallback, alternative: alternative)
         trackForMemoryLeaks(sut, file: file, line: line)
         trackForMemoryLeaks(keychain, file: file, line: line)
@@ -77,37 +93,5 @@ final class KeychainSecureStorageTests: XCTestCase {
         return (sut, keychain, fallback, alternative)
     }
     
-    private class SystemKeychainSpy: KeychainProtocol {
-        var receivedKey: String?
-        var receivedData: Data?
-        var saveResult: Bool = true
-        func save(data: Data, forKey key: String) -> Bool {
-            receivedKey = key
-            receivedData = data
-            return saveResult
-        }
-    }
-
-    private class FallbackSpy: KeychainProtocol {
-        var receivedKey: String?
-        var receivedData: Data?
-        var saveResult: Bool = true
-        func save(data: Data, forKey key: String) -> Bool {
-            receivedKey = key
-            receivedData = data
-            return saveResult
-        }
-    }
-
-    private class AlternativeStorageSpy: KeychainProtocol {
-        var receivedKey: String?
-        var receivedData: Data?
-        var saveResult: Bool = true
-        func save(data: Data, forKey key: String) -> Bool {
-            receivedKey = key
-            receivedData = data
-            return saveResult
-        }
-    }
+    
 }
-

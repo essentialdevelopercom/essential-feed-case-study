@@ -1,3 +1,6 @@
 Command line invocation:
-    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild test -scheme EssentialFeed -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=18.4"
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -scheme EssentialFeed -workspace EssentialFeed.xcworkspace -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 15" test
+
+Build settings from command line:
+    SDKROOT = iphonesimulator18.4
 

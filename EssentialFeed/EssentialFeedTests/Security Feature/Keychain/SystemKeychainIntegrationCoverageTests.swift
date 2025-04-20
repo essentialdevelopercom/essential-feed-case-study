@@ -156,15 +156,7 @@ final class SystemKeychainIntegrationCoverageTests: XCTestCase {
       sut.save(data: second, forKey: key), .success, "Saving second value should overwrite first")
 
     // El Keychain en simulador/CLI puede no reflejar inmediatamente los cambios tras un save. Por eso, reintentamos la lectura varias veces antes de fallar el test.
-    let maxAttempts = 10
-    let retryDelay: useconds_t = 50000  // 50ms
-    var loaded: Data? = nil
-    for _ in 0..<maxAttempts {
-      loaded = sut.load(forKey: key)
-      if loaded == second { break }
-      usleep(retryDelay)
-    }
-    assertEventuallyEqual(loaded, second)
+    assertEventuallyEqual(sut.load(forKey: key), second)
   }
 
   // Checklist: test_update_branch_coverage
@@ -249,31 +241,29 @@ final class SystemKeychainIntegrationCoverageTests: XCTestCase {
     _ = sut.save(data: data1, forKey: key)  // primer save puede fallar, pero si pasa, el segundo fuerza update
     let result = sut.save(data: data2, forKey: key)
     if result == .success {
-      XCTContext.runActivity(
-        named:
-          "Environment allowed saving/updating an invalid key. Full coverage is provided in unit tests with a mock."
-      ) { _ in }
+        XCTContext.runActivity(
+            named: "Environment allowed saving/updating an invalid key. Full coverage is provided in unit tests with a mock."
+        ) { _ in }
     } else {
-      XCTAssertEqual(
-        result, .failure, "Should return .failure when update fails after duplicate item error")
+        XCTAssertEqual(
+            result, .failure, "Should return .failure when update fails after duplicate item error")
     }
-  }
+}
 
-  // Checklist: test_delete_returnsFalse_forKeyWithNullCharacters
-  // CU: SystemKeychain-delete-invalidKeyNullChars
-  func test_delete_returnsFalse_forKeyWithNullCharacters() {
+// Checklist: test_delete_returnsFalse_forKeyWithNullCharacters
+// CU: SystemKeychain-delete-invalidKeyNullChars
+func test_delete_returnsFalse_forKeyWithNullCharacters() {
     let sut = makeSUT()
     let key = "invalid\0key"
     let result = sut.delete(forKey: key)
     if result {
-      XCTContext.runActivity(
-        named:
-          "Environment allowed deleting a key with null characters. Full coverage is provided in unit tests with a mock."
-      ) { _ in }
+        XCTContext.runActivity(
+            named: "Environment allowed deleting a key with null characters. Full coverage is provided in unit tests with a mock."
+        ) { _ in }
     } else {
-      XCTAssertFalse(result, "Deleting with key containing null characters should fail")
+        XCTAssertFalse(result, "Deleting with key containing null characters should fail")
     }
-  }
+}
 
   // Mark: - Helpers
 

@@ -113,7 +113,8 @@ public final class KeychainFullSpy: KeychainFull, KeychainSpyAux {
         set { deleteSpy.lastDeletedKey = newValue }
     }
 
-    public var storage: [String: Data] = [:]
+    private var storage: [String: Data] = [:]
+    private let storageLock = NSLock()
     private var errorByKey: [String: Int] = [:]
     public var deleteSpy = KeychainDeleteSpy()
     public var saveSpy = KeychainSaveSpy()
@@ -130,16 +131,65 @@ public final class KeychainFullSpy: KeychainFull, KeychainSpyAux {
         set { updateSpy.updateResult = newValue }
     }
 
+    /// Closure hook para permitir manipulación antes de la validación post-save (solo para tests, inyectable)
+    public var willValidateAfterSave: ((String) -> Void)?
+
     public func save(data: Data, forKey key: String) -> KeychainSaveResult {
-        return saveSpy.save(data: data, forKey: key)
+        if !delete(forKey: key) {
+            return .failure
+        }
+        storageLock.lock()
+        defer { storageLock.unlock() }
+        let result = saveSpy.save(data: data, forKey: key)
+        switch result {
+        case .success:
+            storage[key] = data
+            var stillThere = storage[key]
+            storageLock.unlock()
+            willValidateAfterSave?(key)
+            storageLock.lock()
+            stillThere = storage[key]
+            return stillThere == nil ? .failure : .success
+        case .duplicateItem:
+            let didUpdate = update(data: data, forKey: key)
+            if didUpdate {
+                storage[key] = data
+                let stillThere = storage[key]
+                storageLock.unlock()
+                willValidateAfterSave?(key)
+                storageLock.lock()
+                return stillThere == nil ? .failure : .success
+            } else {
+                // No modificar ni validar storage si update falla
+                return .duplicateItem
+            }
+        case .failure:
+            return .failure
+        }
     }
     public func load(forKey key: String) -> Data? {
-        return saveSpy.load(forKey: key)
+        storageLock.lock()
+        let data = storage[key]
+        storageLock.unlock()
+        return data
     }
     public func delete(forKey key: String) -> Bool {
-        return deleteSpy.delete(forKey: key)
+        let deleted = deleteSpy.delete(forKey: key)
+        if deleted {
+            storageLock.lock()
+            storage.removeValue(forKey: key)
+            storageLock.unlock()
+        }
+        return deleted
     }
     public func update(data: Data, forKey key: String) -> Bool {
         return updateSpy.update(data: data, forKey: key)
+    }
+
+    /// Permite a los tests simular corrupción del almacenamiento de forma segura
+    public func simulateCorruption(forKey key: String) {
+        storageLock.lock()
+        storage[key] = nil
+        storageLock.unlock()
     }
 }

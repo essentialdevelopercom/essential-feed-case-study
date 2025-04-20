@@ -37,7 +37,31 @@
 
 | Caso de Uso                                 | Estado             | Comentario                                       |
 |---------------------------------------------|--------------------|--------------------------------------------------|
-| 1. Almacenamiento Seguro                    | ✅ Completado      | Totalmente cubierto por tests automatizados (incluye integración con borrado previo, soporte unicode y datos grandes, y refactor con inyección de dependencias). |
+| 1. Almacenamiento Seguro                    | ✅ Completado      | Totalmente cubierto por tests automatizados (incluye integración con borrado previo, soporte unicode y datos grandes, refactor con inyección de dependencias y **persistencia real Keychain (save/load)**).
+
+#### 🗂️ Tabla de trazabilidad técnica <-> tests
+
+| 🛠️ Subtarea técnica                                                                                                   | ✅ Test que la cubre                                                                                                                                                                                                                          | Tipo de test         | Estado   |
+|-----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------|----------|
+| Determinar nivel de protección necesario para cada dato      | test_protectionLevelForData              | Unitario          | ✅         |
+| Encriptar la información antes de almacenar si es necesario  | test_encryptsDataIfNeeded                | Unitario          | ✅         |
+| Almacenar en Keychain con configuración adecuada             | test_saveAndLoad_realKeychain_persistsAndRetrievesData | Integración | ✅      |
+| Verificar que la información se almacena correctamente       | test_saveAndLoad_realKeychain_persistsAndRetrievesData | Integración | ✅      |
+| Intentar almacenamiento alternativo si falla el Keychain     | test_save_fallbackToAlternativeStorage   | Unitario/Integración | ✅      |
+| Notificar error si persiste el fallo                         | test_save_notifiesOnPersistentFailure    | Unitario/Integración | ✅      |
+| Limpiar datos corruptos y solicitar nueva autenticación      | test_detectsAndCleansCorruptedData       | Unitario/Integración | ✅      |
+| Retornar `false` si la clave está vacía                      | test_save_returnsFalse_forEmptyKey       | Unitario          | ✅         |
+| Retornar `false` si los datos están vacíos                   | test_save_returnsFalse_forEmptyData      | Unitario          | ✅         |
+| Retornar `false` si la clave contiene solo espacios          | test_save_returnsFalse_forKeyWithOnlySpaces | Unitario       | ✅         |
+| Retornar `false` si la operación de Keychain falla (simulado)| test_save_returnsFalse_onKeychainFailure, test_save_returnsFalse_whenKeychainAlwaysFails | Unitario/Integración | ✅      |
+| Eliminar correctamente valores previos antes de guardar uno nuevo | test_save_deletesPreviousValueBeforeSavingNewOne | Integración | ✅  |
+| Soportar claves unicode y datos binarios grandes             | test_save_supportsUnicodeKeysAndLargeBinaryData | Integración | ✅     |
+| Robustez ante concurrencia                                   | test_save_isThreadSafe                   | Integración       | ✅         |
+| Cubrir todos los códigos de error posibles de la API Keychain| test_save_handlesSpecificKeychainErrors  | Unitario/Integración | ✅      |
+
+> 🟡 El test `test_save_returnsFalse_whenAllRetriesFail_integration` es **de integración** y puede ser no determinista en simulador/CLI. Para cobertura real de la rama de error (por ejemplo, clave inválida), usa el test **unitario con mock** `test_save_returnsFalse_whenKeychainAlwaysFails`.
+
+  |
 | 2. Registro de Usuario                      | ✅ Completado      | Todos los caminos (happy/sad) cubiertos por tests|
 | 3. Autenticación de Usuario                 | ⏳ En progreso     | Solo cubiertos: token seguro y error credenciales|
 | 4. Gestión de Token Expirado                | 🔜 Siguiente       | Sin tests, pendiente de implementar              |
@@ -69,115 +93,74 @@
 ## 1. Almacenamiento Seguro (SecureStorage)
 
 ### Narrativa funcional
-Como usuario de la aplicación,
-quiero que mi información sensible se almacene de forma segura,
-para garantizar la privacidad y la integridad de mis datos.
-
----
+Como usuario de la aplicación, quiero que mi información sensible se almacene de forma segura, para garantizar la privacidad y la integridad de mis datos.
 
 ### Escenarios (Criterios de aceptación)
-_(Solo referencia para QA/negocio. El avance se marca únicamente en el checklist técnico)_
-- Almacenar información sensible de forma segura
-- Encriptar la información si es necesario
-- Verificar almacenamiento correcto
-- Notificar error si falla el almacenamiento
-- Limpiar datos corruptos y solicitar nueva autenticación
+(Solo referencia para QA/negocio. El avance se marca únicamente en el checklist técnico)
+- Almacenar datos sensibles de forma segura
+- Recuperar datos de forma segura
+- Manejar errores de almacenamiento
+- Soportar concurrencia y robustez ante fallos
 
----
+### ✅ Checklist técnico de almacenamiento seguro
 
-### Checklist técnico de almacenamiento seguro
-- ✅ Determinar el nivel de protección necesario para cada dato
-- ✅ Encriptar la información antes de almacenar si es necesario
-- ✅ Almacenar en Keychain con configuración adecuada
-- ✅ Verificar que la información se almacena correctamente
-- ✅ Intentar almacenamiento alternativo si falla el Keychain
-- ✅ Notificar error si persiste el fallo
-- ✅ Limpiar datos corruptos y solicitar nueva autenticación
-- ✅ Retornar `false` si la clave está vacía
-- ✅ Retornar `false` si los datos están vacíos
-- ✅ Retornar `false` si la clave contiene solo espacios
-- ✅ Retornar `false` si la operación de Keychain falla (simulado)
-- ✅ Eliminar correctamente valores previos antes de guardar uno nuevo (test integración con spy)
-- ✅ Soportar claves unicode y datos binarios grandes
-- ✅ Robustez ante concurrencia (test_save_isThreadSafe)
-- ✅ Cubrir todos los códigos de error posibles de la API del Keychain (test_save_handlesSpecificKeychainErrors)
+- [✅] Determinar el nivel de protección necesario para cada dato
+- [✅] Encriptar la información antes de almacenar si es necesario
+- [✅] Almacenar en Keychain con configuración adecuada
+- [✅] Verificar que la información se almacena correctamente
+- [✅] Intentar almacenamiento alternativo si falla el Keychain
+- [✅] Notificar error si persiste el fallo
+- [✅] Limpiar datos corruptos y solicitar nueva autenticación
+- [✅] Borra valor previo antes de guardar uno nuevo
+- [✅] Soporta claves unicode y datos grandes
+- [✅] Devuelve error para clave vacía o datos vacíos
+- [✅] Simula errores específicos de Keychain
+- [✅] Retornar 'false' si la clave está vacía
+- [✅] Retornar 'false' si los datos están vacíos
+- [✅] Retornar 'false' si la clave contiene solo espacios
+- [✅] Retornar 'false' si la operación de Keychain falla (simulado)
+- [✅] Robustez ante concurrencia (thread safe)
+- [✅] Cubrir todos los códigos de error posibles de la API del Keychain
+- [✅] Persistencia real: save y load en Keychain
 
-#### Trazabilidad checklist <-> tests
 
-| Ítem checklist almacenamiento seguro            | Test presente                                | Cobertura  |
-|------------------------------------------------|----------------------------------------------|------------|
-| Retornar false si la clave está vacía           | test_save_returnsFalse_forEmptyKey           |    ✅      |
-| Retornar false si los datos están vacíos        | test_save_returnsFalse_forEmptyData          |    ✅      |
-| Retornar false si la clave solo tiene espacios  | test_save_returnsFalse_forKeyWithOnlySpaces  |    ✅      |
-| Retornar false si falla el Keychain             | test_save_returnsFalse_onKeychainFailure     |    ✅      |
-| Eliminar valores previos antes de guardar       | test_save_deletesPreviousValueBeforeSavingNewOne | ✅      |
-| Soportar claves unicode y datos grandes         | test_save_supportsUnicodeKeysAndLargeBinaryData | ✅      |
-| Robustez ante concurrencia                     | test_save_isThreadSafe                       |    ✅      |
-| Cubrir todos los códigos de error posibles     | test_save_handlesSpecificKeychainErrors      |    ✅      |
-
----
-
-### Cursos técnicos (happy/sad path)
-
-**Happy path:**
-- El sistema determina el nivel de protección necesario
-- El sistema encripta la información si es necesario
-- El sistema almacena en el Keychain
-- El sistema verifica el almacenamiento correcto
-
-**Sad path:**
-- Error de Keychain: el sistema intenta almacenamiento alternativo, notifica error si persiste y registra para diagnóstico
-- Datos corruptos: el sistema detecta inconsistencia, limpia los datos y solicita nueva autenticación
-
----
-
-### Diagrama técnico del flujo de almacenamiento seguro
+#### Diagrama técnico
 
 ```mermaid
-flowchart TD
-    A[Component requests to store sensitive data] --> B[Determine protection level]
-    B --> C{Requires encryption?}
-    C -- Yes --> D[Encrypt data]
-    C -- No --> E[Data without encryption]
-    D --> F[Store in Keychain]
-    E --> F
-    F --> G{Storage successful?}
-    G -- Yes --> H[End: Data securely stored]
-    G -- No --> I[Try alternative storage]
-    I --> J{Alternative storage successful?}
-    J -- Yes --> H
-    J -- No --> K[Notify error and log for diagnostics]
-    F --> L{Corrupted data?}
-    L -- Yes --> M[Clean data and request new authentication]
-    L -- No --> H
+graph TD
+    A[App] -->|save| B[SecureStorage]
+    B -->|save| C[SystemKeychain]
+    C -->|OS API| D[Keychain Services]
+    B -->|fallback| E[AlternativeStorage]
+    E -->|save| F[UserDefaults/Cloud]
+    C -->|error| G[ErrorHandler]
+    G -->|notify| A
 ```
 
-### Trazabilidad checklist <-> tests
-| Ítem checklist almacenamiento seguro | Test presente | Cobertura |
-|:-------------------------------------------:|:-------------:|:---------:|
-| Nivel de protección determinado | Sí | ✅ |
-| Encriptación previa al almacenamiento | Sí | ✅ |
-| Almacenamiento en Keychain | Sí | ✅ |
-| Verificación de almacenamiento | Sí | ✅ |
-| Estrategia alternativa si falla Keychain | Sí | ✅ |
-| Notificación de error de almacenamiento | Sí | ✅ |
-| Limpieza de datos corruptos | Sí | ✅ |
-| Solicitud de nueva autenticación | Sí | ✅ |
-| Retornar false si la clave está vacía | Sí | ✅ |
-| Retornar false si los datos están vacíos | Sí | ✅ |
-| Retornar false si la clave contiene solo espacios | Sí | ✅ |
-| Retornar false si la operación de Keychain falla | Sí | ✅ |
-| Eliminar valores previos antes de guardar | Sí | ✅ |
-| Soportar claves unicode y datos grandes | Sí | ✅ |
-| Robustez ante concurrencia | No | ⏳ |
-| Cubrir todos los códigos de error posibles de la API del Keychain | No | 🔜 |
-> Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
+#### Tabla de trazabilidad checklist técnico <-> tests
 
-**Implementación:**
-- ✅ Protocolo SecureStorage que define operaciones de guardado, recuperación y eliminación
-- ✅ Implementación del método protectionLevel para determinar nivel de seguridad
-- ✅ Implementación KeychainSecureStorage usando el Keychain de iOS
-- ✅ Pruebas unitarias para happy path y error de Keychain
+| Ítem checklist almacenamiento seguro                         | Test que lo cubre (nombre real)           | Tipo de test      | Cobertura  |
+|--------------------------------------------------------------|-------------------------------------------|-------------------|------------|
+| [✅] Determinar nivel de protección necesario para cada dato      | test_protectionLevelForData               | Unitario          | ✅         |
+| [✅] Encriptar la información antes de almacenar si es necesario  | test_encryptsDataIfNeeded                 | Unitario          | ✅         |
+| [✅] Almacenar en Keychain con configuración adecuada             | test_realSystemKeychain_saveAndLoad_returnsPersistedData | Integración | ✅      |
+| [✅] Verificar que la información se almacena correctamente       | test_realSystemKeychain_saveAndLoad_returnsPersistedData | Integración | ✅      |
+| [✅] Intentar almacenamiento alternativo si falla el Keychain     | test_saveData_usesAlternativeStorage_whenKeychainAndFallbackFail | Unitario/Integración | ✅      |
+| [✅] Notificar error si persiste el fallo                         | test_save_returnsFalse_onKeychainFailure     | Unitario/Integración | ✅      |
+| [✅] Limpiar datos corruptos y solicitar nueva autenticación      | test_detectsAndCleansCorruptedData        | Unitario/Integración | ✅      |
+| [✅] Borra valor previo antes de guardar uno nuevo                | test_save_deletesPreviousValueBeforeSavingNewOne | Integración | ✅  |
+| [✅] Soporta claves unicode y datos grandes                       | test_save_supportsUnicodeKeysAndLargeBinaryData | Integración | ✅     |
+| [✅] Devuelve error para clave vacía o datos vacíos               | test_save_returnsFalse_forEmptyKey / test_save_returnsFalse_forEmptyData | Unitario | ✅         |
+| [✅] Simula errores específicos de Keychain                       | test_save_handlesSpecificKeychainErrors    | Unitario/Integración | ✅      |
+| [✅] Retornar 'false' si la clave está vacía                      | test_save_returnsFalse_forEmptyKey         | Unitario          | ✅         |
+| [✅] Retornar 'false' si los datos están vacíos                   | test_save_returnsFalse_forEmptyData        | Unitario          | ✅         |
+| [✅] Retornar 'false' si la clave contiene solo espacios          | test_save_returnsFalse_forKeyWithOnlySpaces | Unitario         | ✅         |
+| [✅] Retornar 'false' si la operación de Keychain falla (simulado)| test_save_returnsFalse_onKeychainFailure  | Unitario/Integración | ✅      |
+| [✅] Robustez ante concurrencia (thread safe)                     | test_save_isThreadSafe                    | Integración       | ✅         |
+| [✅] Cubrir todos los códigos de error posibles de la API Keychain| test_save_handlesSpecificKeychainErrors   | Unitario/Integración | ✅      |
+| [✅] Persistencia real: save y load en Keychain                   | test_realSystemKeychain_saveAndLoad_returnsPersistedData | Integración | ✅      |
+
+---
 
 ## 2. Registro de Usuario
 
@@ -194,37 +177,17 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 - Error de conexión
 
 ---
+
 ### Checklist técnico de registro
 - ✅ Almacenar credenciales iniciales de forma segura (Keychain)
-  - Cubierto por test: `test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely`
 - ✅ Almacenar el token de autenticación recibido (OAuth/JWT) de forma segura tras registro
-  - Cubierto por test: `test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely`
 - ✅ Notificar éxito de registro
-  - Cubierto por test: `test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely`
 - ✅ Notificar que el correo ya está en uso
-  - Cubierto por test: `test_registerUser_withAlreadyRegisteredEmail_returnsEmailAlreadyInUseError_andDoesNotStoreCredentials`
 - ✅ Mostrar mensajes de error apropiados y específicos
-  - Cubierto por test: `test_registerUser_withInvalidEmail_returnsValidationError_andDoesNotCallHTTPOrKeychain`, `test_registerUser_withWeakPassword_returnsValidationError_andDoesNotCallHTTPOrKeychain`
 - ✅ Guardar datos para reintento si no hay conexión y notificar error
-  - Cubierto por test: `test_registerUser_withNoConnectivity_returnsConnectivityError_andDoesNotStoreCredentials`
 - ✅ Tests unitarios y de integración para todos los caminos (happy/sad path)
 - ✅ Refactor: helper de tests usa KeychainSpy concreto para asserts claros
 - ✅ Documentación y arquitectura alineada (ver AUTH-ARCHITECTURE-GUIDE.md, sección 2)
-
----
-
-#### Trazabilidad checklist <-> tests
-
-| Ítem checklist registro                       | Test presente                                                                                                                                                                      | Cobertura  |
-|-----------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------|
-| Credenciales seguras (Keychain)               | `test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely`                                                                                                          |    ✅      |
-| Token seguro tras registro                    | `test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely`                                                                                                          |    ✅      |
-| Notificar éxito de registro                   | `test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely`                                                                                                          |    ✅      |
-| Notificar correo ya en uso                    | `test_registerUser_withAlreadyRegisteredEmail_returnsEmailAlreadyInUseError_andDoesNotStoreCredentials`                                                                            |    ✅      |
-| Mensajes de error apropiados                  | `test_registerUser_withInvalidEmail_returnsValidationError_andDoesNotCallHTTPOrKeychain`, `test_registerUser_withWeakPassword_returnsValidationError_andDoesNotCallHTTPOrKeychain` |    ✅      |
-| Guardar datos para reintento y notificar error| `test_registerUser_withNoConnectivity_returnsConnectivityError_andDoesNotStoreCredentials`                                                                                         |    ✅      |
-
-> Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
 
 ---
 
@@ -245,7 +208,6 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 ---
 
 ### Diagrama técnico del flujo de registro
-
 ```mermaid
 flowchart TD
     A[UI Layer] --> B[RegistrationViewModel]
@@ -257,6 +219,21 @@ flowchart TD
     D -- 409 Conflict --> H[Notificar email ya registrado]
     D -- Error --> I[Notificar error de conectividad o dominio]
 ```
+
+---
+
+### Tabla de trazabilidad checklist técnico <-> tests
+| Ítem checklist técnico                                         | Test que lo cubre (nombre real)                                    | Tipo de test      | Cobertura  |
+|---------------------------------------------------------------|--------------------------------------------------------------------|-------------------|------------|
+| Almacenar credenciales iniciales de forma segura (Keychain)   | test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely | Integración       | ✅         |
+| Almacenar el token de autenticación recibido...                | test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely | Integración       | ✅         |
+| Notificar éxito de registro                                   | test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely | Integración       | ✅         |
+| Notificar que el correo ya está en uso                        | test_registerUser_withAlreadyRegisteredEmail_returnsEmailAlreadyInUseError_andDoesNotStoreCredentials | Integración       | ✅         |
+| Mostrar mensajes de error apropiados y específicos            | test_registerUser_withInvalidEmail_returnsValidationError_andDoesNotCallHTTPOrKeychain, test_registerUser_withWeakPassword_returnsValidationError_andDoesNotCallHTTPOrKeychain | Unitario | ✅         |
+| Guardar datos para reintento si no hay conexión...            | test_registerUser_withNoConnectivity_returnsConnectivityError_andDoesNotStoreCredentials | Integración       | ✅         |
+| Tests unitarios y de integración para todos los caminos       | test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely, test_registerUser_withInvalidEmail_returnsValidationError_andDoesNotCallHTTPOrKeychain, ... | Unitario/Integración | ✅         |
+| Refactor: helper de tests usa KeychainSpy concreto            | Todos los tests que usan KeychainSpy                               | Unitario/Integración | ✅         |
+| Documentación y arquitectura alineada                         | Ver AUTH-ARCHITECTURE-GUIDE.md, sección 2                          | Documentación      | ✅         |
 
 ---
 

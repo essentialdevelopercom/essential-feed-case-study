@@ -23,8 +23,10 @@ func test_registerUser_sendsRequestToServer() async throws {
 
         _ = try? await sut.register(name: name, email: email, password: password)
 
-        XCTAssertEqual(httpClient.requestedURLs, [URL(string: "https://test-register-endpoint.com")!])
+        XCTAssertEqual(httpClient.requestedURLs, [URL(string: "https://test-register-endpoint.com")!], "Should send request to correct registration endpoint")
         XCTAssertEqual(httpClient.lastHTTPBody, [
+            // Should send correct registration data in HTTP body
+        
             "name": name,
             "email": email,
             "password": password

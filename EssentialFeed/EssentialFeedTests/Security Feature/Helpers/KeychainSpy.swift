@@ -5,6 +5,7 @@ import Foundation
 import EssentialFeed
 
 final class KeychainSpy: KeychainProtocolWithDelete {
+    var simulatedError: Int?
     private(set) var saveCalled = false
     private(set) var saveCallCount = 0
     private(set) var lastData: Data?
@@ -17,6 +18,9 @@ final class KeychainSpy: KeychainProtocolWithDelete {
     var deleteResult: Bool = true
 
     func save(data: Data, forKey key: String) -> Bool {
+        if let _ = simulatedError {
+            return false
+        }
         saveCalled = true
         saveCallCount += 1
         lastData = data

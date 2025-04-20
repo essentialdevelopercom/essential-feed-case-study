@@ -12,9 +12,9 @@ final class KeychainSecureStorageTests: XCTestCase {
 
         let result = sut.save(data: data, forKey: key)
 
-        XCTAssertEqual(keychain.receivedKey, key)
-        XCTAssertEqual(keychain.receivedData, data)
-        XCTAssertTrue(result)
+        XCTAssertEqual(keychain.receivedKey, key, "Should pass correct key to keychain")
+        XCTAssertEqual(keychain.receivedData, data, "Should pass correct data to keychain")
+        XCTAssertTrue(result, "Save should succeed with valid input")
     }
 
     func test_saveData_fails_whenKeychainReturnsError() {
@@ -27,9 +27,9 @@ final class KeychainSecureStorageTests: XCTestCase {
 
         let result = sut.save(data: data, forKey: key)
 
-        XCTAssertEqual(keychain.receivedKey, key)
-        XCTAssertEqual(keychain.receivedData, data)
-        XCTAssertFalse(result)
+        XCTAssertEqual(keychain.receivedKey, key, "Should pass correct key to keychain")
+        XCTAssertEqual(keychain.receivedData, data, "Should pass correct data to keychain")
+        XCTAssertFalse(result, "Save should fail with invalid input")
     }
 
     func test_saveData_usesFallback_whenKeychainFails() {
@@ -41,9 +41,9 @@ final class KeychainSecureStorageTests: XCTestCase {
 
         let result = sut.save(data: data, forKey: key)
 
-        XCTAssertEqual(fallback.receivedKey, key)
-        XCTAssertEqual(fallback.receivedData, data)
-        XCTAssertTrue(result)
+        XCTAssertEqual(fallback.receivedKey, key, "Should fallback with correct key")
+        XCTAssertEqual(fallback.receivedData, data, "Should fallback with correct data")
+        XCTAssertTrue(result, "Save should succeed with valid input")
     }
 
     func test_saveData_usesAlternativeStorage_whenKeychainAndFallbackFail() {
@@ -57,9 +57,9 @@ final class KeychainSecureStorageTests: XCTestCase {
         // Simula que Keychain y fallback fallan
         let result = sut.save(data: data, forKey: key)
 
-        XCTAssertEqual(alternative.receivedKey, key)
-        XCTAssertEqual(alternative.receivedData, data)
-        XCTAssertTrue(result)
+        XCTAssertEqual(alternative.receivedKey, key, "Should use alternative with correct key")
+        XCTAssertEqual(alternative.receivedData, data, "Should use alternative with correct data")
+        XCTAssertTrue(result, "Save should succeed with valid input")
     }
 
     // MARK: - Helpers

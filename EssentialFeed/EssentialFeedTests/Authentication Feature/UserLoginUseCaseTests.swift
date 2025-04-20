@@ -15,8 +15,8 @@ final class UserLoginUseCaseTests: XCTestCase {
     let result = await sut.login(with: credentials)
     switch result {
     case let .success(response):
-      XCTAssertEqual(response.token, expectedToken)
-      XCTAssertTrue(successObserver.didNotifySuccess)
+      XCTAssertEqual(response.token, expectedToken, "Returned token should match expected token")
+      XCTAssertTrue(successObserver.didNotifySuccess, "Success observer should be notified on successful login")
     case .failure:
       XCTFail("Expected success, got failure")
     }
@@ -35,8 +35,8 @@ final class UserLoginUseCaseTests: XCTestCase {
     case .success:
       XCTFail("Expected failure, got success")
     case let .failure(error):
-      XCTAssertEqual(error, .invalidCredentials)
-      XCTAssertTrue(failureObserver.didNotifyFailure)
+      XCTAssertEqual(error, .invalidCredentials, "Should return invalid credentials error on failure")
+      XCTAssertTrue(failureObserver.didNotifyFailure, "Failure observer should be notified on failed login")
     }
   }
 

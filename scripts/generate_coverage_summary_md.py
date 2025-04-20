@@ -61,28 +61,49 @@ test_files = [os.path.relpath(f, REPO_ROOT) for f in test_files]
 # Eliminar duplicados
 unique_test_files = list(dict.fromkeys(test_files))
 
+import logging
+logging.basicConfig(level=logging.WARNING)
+
 # Mapeo producción <-> test (convención y CU)
 prod_files = [f[0] for f in files if is_included(f[0])]
 cu_map = {}
-for tf in test_files:
-    cu_map[tf] = []
-    try:
-        with open(tf, encoding="utf-8") as f:
-            for line in f:
-                m = re.search(r'//\s*CU:\s*(.+)', line)
-                if m:
-                    cu_map[tf].append(m.group(1).strip())
-    except Exception:
-        pass
+
+# Extrae los CU de cada archivo de test, logueando errores si los hay
+def extract_cu_map(test_files):
+    cu_map = {}
+    for tf in test_files:
+        cu_map[tf] = []
+        try:
+            with open(tf, encoding="utf-8") as f:
+                for line in f:
+                    m = re.search(r'//\s*CU:\s*(.+)', line)
+                    if m:
+                        cu_map[tf].append(m.group(1).strip())
+        except Exception as e:
+            logging.warning(f"Error leyendo {tf}: {e}")
+    return cu_map
+
+cu_map = extract_cu_map(test_files)
+
+def is_related_by_name(base, tf):
+    test_stem = Path(tf).stem
+    # Coincidencia estricta: nombre igual o termina en BaseTests
+    return test_stem == base or test_stem.endswith(f"{base}Tests")
+
+# Construye el mapeo producción <-> tests usando matching robusto
+# 1. Por nombre base de archivo
+# 2. Por CU declarado en comentarios
+# 3. (Opcional) Por aparición de la clase base en el contenido del test
 
 test_map = {}
 for pf in prod_files:
     base = Path(pf).stem.replace("+Server", "")
-    # Coincidencia flexible por nombre
-    related_tests = set([tf for tf in test_files if base in Path(tf).stem or base in tf])
+    related_tests = set([tf for tf in test_files if is_related_by_name(base, tf)])
     # Por CU
     related_tests.update([tf for tf, cu_list in cu_map.items() if any(base in cu for cu in cu_list)])
-    # BONUS: busca si la clase base aparece en el contenido del test (por nombre de clase)
+    # (Opcional) Aquí puedes añadir lógica para buscar la clase base en el contenido del test
+    test_map[pf] = sorted(related_tests)
+
     for tf in test_files:
         try:
             with open(tf, encoding="utf-8") as f:
@@ -205,6 +226,20 @@ def html_table(rows, bars=False, test_map=None):
     out += "</table>"
     return out
 
+# Identifica archivos de producción sin ningún test asociado
+prod_without_tests = [name for name in prod_files if not test_map.get(name)]
+
+def md_table_no_tests(files, cov_map):
+    if not files:
+        return "Todos los archivos de producción tienen al menos un test asociado.\n"
+    out = "| Archivo | Cobertura |\n|---|---|\n"
+    for name in files:
+        cov = cov_map.get(name, None)
+        cov_str = f"{cov:.2f}%" if cov is not None else "N/A"
+        rel = rel_link(Path(name))
+        out += f"| [{rel.name}]({rel}) | {cov_str} |\n"
+    return out
+
 with MD_REPORT.open("w") as f:
     f.write("# 📊 Resumen de Cobertura de Código\n\n")
     if total_coverage is not None:
@@ -216,6 +251,9 @@ with MD_REPORT.open("w") as f:
     f.write("\n## Archivos con menor cobertura (>0%)\n\n")
     f.write(md_table(bottom5, test_map=test_map))
     f.write("\n---\n")
+    f.write("## Archivos de producción **sin ningún test asociado**\n\n")
+    f.write(md_table_no_tests(prod_without_tests, cov_map))
+    f.write("\n> Estos archivos no tienen ningún test directo asociado según el mapeo por nombre y CU. Revisa si requieren cobertura o si son candidatos a refactorización.\n\n")
     f.write("### ¿Cómo leer este reporte?\n")
     f.write("- **Cobertura total:** Porcentaje de líneas cubiertas por tests en todo el target.\n")
     f.write("- **Mayor cobertura:** Archivos mejor cubiertos por los tests.\n")

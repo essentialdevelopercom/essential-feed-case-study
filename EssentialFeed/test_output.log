@@ -1,0 +1,468 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -scheme EssentialFeed -destination "platform=iOS Simulator,name=iPhone 16 Pro,OS=18.4" test
+
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (2 targets)
+    Target 'EssentialFeedTests' in project 'EssentialFeed'
+        ➜ Explicit dependency on target 'EssentialFeed' in project 'EssentialFeed'
+    Target 'EssentialFeed' in project 'EssentialFeed' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator18.4-22E235-71825a6d136aa4733edcbe86ece5525b.sdkstatcache
+    cd /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk -o /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator18.4-22E235-71825a6d136aa4733edcbe86ece5525b.sdkstatcache
+
+SwiftDriver EssentialFeed normal arm64 com.apple.xcode.tools.swift.compiler (in target 'EssentialFeed' from project 'EssentialFeed')
+    cd /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name EssentialFeed -Onone -enforce-exclusivity\=checked @/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk -target arm64-apple-ios14.0-simulator -g -module-cache-path /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Index.noindex/DataStore -swift-version 5 -I /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator -F /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator -c -j8 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator18.4-22E235-71825a6d136aa4733edcbe86ece5525b.sdkstatcache -output-file-map /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed_const_extract_protocols.json -Xcc -iquote -Xcc /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/EssentialFeed-generated-files.hmap -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/EssentialFeed-own-target-headers.hmap -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/EssentialFeed-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed-c8b471981eef3cb2085165d19959ade7-VFS-iphonesimulator/all-product-headers.yaml -Xcc -iquote -Xcc /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/EssentialFeed-project-headers.hmap -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/DerivedSources-normal/arm64 -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/DerivedSources/arm64 -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed-Swift.h -working-directory /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed -experimental-emit-module-separately -disable-cmo
+
+SwiftEmitModule normal arm64 Emitting\ module\ for\ EssentialFeed (in target 'EssentialFeed' from project 'EssentialFeed')
+
+EmitSwiftModule normal arm64 (in target 'EssentialFeed' from project 'EssentialFeed')
+    cd /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed
+    
+
+SwiftDriverJobDiscovery normal arm64 Emitting module for EssentialFeed (in target 'EssentialFeed' from project 'EssentialFeed')
+
+SwiftDriver\ Compilation\ Requirements EssentialFeed normal arm64 com.apple.xcode.tools.swift.compiler (in target 'EssentialFeed' from project 'EssentialFeed')
+    cd /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name EssentialFeed -Onone -enforce-exclusivity\=checked @/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk -target arm64-apple-ios14.0-simulator -g -module-cache-path /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Index.noindex/DataStore -swift-version 5 -I /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator -F /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator -c -j8 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator18.4-22E235-71825a6d136aa4733edcbe86ece5525b.sdkstatcache -output-file-map /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed_const_extract_protocols.json -Xcc -iquote -Xcc /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/EssentialFeed-generated-files.hmap -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/EssentialFeed-own-target-headers.hmap -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/EssentialFeed-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed-c8b471981eef3cb2085165d19959ade7-VFS-iphonesimulator/all-product-headers.yaml -Xcc -iquote -Xcc /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/EssentialFeed-project-headers.hmap -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/DerivedSources-normal/arm64 -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/DerivedSources/arm64 -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed-Swift.h -working-directory /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed -experimental-emit-module-separately -disable-cmo
+
+SwiftCompile normal arm64 Compiling\ SystemKeychain.swift /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Security\ Feature/Keychain/SystemKeychain.swift (in target 'EssentialFeed' from project 'EssentialFeed')
+
+SwiftCompile normal arm64 /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Security\ Feature/Keychain/SystemKeychain.swift (in target 'EssentialFeed' from project 'EssentialFeed')
+    cd /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed
+    
+
+SwiftDriverJobDiscovery normal arm64 Compiling SystemKeychain.swift (in target 'EssentialFeed' from project 'EssentialFeed')
+
+SwiftDriver\ Compilation EssentialFeed normal arm64 com.apple.xcode.tools.swift.compiler (in target 'EssentialFeed' from project 'EssentialFeed')
+    cd /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed
+    builtin-Swift-Compilation -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name EssentialFeed -Onone -enforce-exclusivity\=checked @/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk -target arm64-apple-ios14.0-simulator -g -module-cache-path /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -profile-coverage-mapping -profile-generate -enable-testing -index-store-path /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Index.noindex/DataStore -swift-version 5 -I /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator -F /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator -c -j8 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/iphonesimulator18.4-22E235-71825a6d136aa4733edcbe86ece5525b.sdkstatcache -output-file-map /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed_const_extract_protocols.json -Xcc -iquote -Xcc /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/EssentialFeed-generated-files.hmap -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/EssentialFeed-own-target-headers.hmap -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/EssentialFeed-all-non-framework-target-headers.hmap -Xcc -ivfsoverlay -Xcc /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed-c8b471981eef3cb2085165d19959ade7-VFS-iphonesimulator/all-product-headers.yaml -Xcc -iquote -Xcc /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/EssentialFeed-project-headers.hmap -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/include -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/DerivedSources-normal/arm64 -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/DerivedSources/arm64 -Xcc -I/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed-Swift.h -working-directory /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed -experimental-emit-module-separately -disable-cmo
+
+Ld /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeed.framework/EssentialFeed normal (in target 'EssentialFeed' from project 'EssentialFeed')
+    cd /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-ios14.0-simulator -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk -O0 -L/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -L/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator -F/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator -F/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator -filelist /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed.LinkFileList -install_name @rpath/EssentialFeed.framework/EssentialFeed -Xlinker -rpath -Xlinker /usr/lib/swift -Xlinker -rpath -Xlinker @executable_path/../Frameworks -Xlinker -rpath -Xlinker @loader_path/Frameworks -dead_strip -Xlinker -object_path_lto -Xlinker /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed_lto.o -rdynamic -Xlinker -no_deduplicate -Xlinker -objc_abi_version -Xlinker 2 -Xlinker -debug_variant -Xlinker -dependency_info -Xlinker /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed_dependency_info.dat -fprofile-instr-generate -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed.swiftmodule -Xlinker -no_adhoc_codesign -compatibility_version 1 -current_version 1 -o /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeed.framework/EssentialFeed
+
+Copy /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeed.framework/Modules/EssentialFeed.swiftmodule/arm64-apple-ios-simulator.abi.json /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed.abi.json (in target 'EssentialFeed' from project 'EssentialFeed')
+    cd /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed.abi.json /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeed.framework/Modules/EssentialFeed.swiftmodule/arm64-apple-ios-simulator.abi.json
+
+Copy /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeed.framework/Modules/EssentialFeed.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed.swiftsourceinfo (in target 'EssentialFeed' from project 'EssentialFeed')
+    cd /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed.swiftsourceinfo /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeed.framework/Modules/EssentialFeed.swiftmodule/Project/arm64-apple-ios-simulator.swiftsourceinfo
+
+ExtractAppIntentsMetadata (in target 'EssentialFeed' from project 'EssentialFeed')
+    cd /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsmetadataprocessor --toolchain-dir /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --module-name EssentialFeed --sdk-root /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk --xcode-version 16E140 --platform-family iOS --deployment-target 14.0 --bundle-identifier com.essentialdeveloper.EssentialFeed --output /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeed.framework --target-triple arm64-apple-ios14.0-simulator --binary-file /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeed.framework/EssentialFeed --dependency-file /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed_dependency_info.dat --stringsdata-file /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/ExtractedAppShortcutsMetadata.stringsdata --source-file-list /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed.SwiftFileList --metadata-file-list /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/EssentialFeed.DependencyMetadataFileList --static-metadata-file-list /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/EssentialFeed.DependencyStaticMetadataFileList --swift-const-vals-list /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeed.build/Objects-normal/arm64/EssentialFeed.SwiftConstValuesFileList --compile-time-extraction --deployment-aware-processing --validate-assistant-intents --no-app-shortcuts-localization
+2025-04-19 18:48:58.579 appintentsmetadataprocessor[88037:13655095] Starting appintentsmetadataprocessor export
+2025-04-19 18:48:58.582 appintentsmetadataprocessor[88037:13655095] warning: Metadata extraction skipped. No AppIntents.framework dependency found.
+
+GenerateTAPI /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator/EssentialFeed.framework/EssentialFeed.tbd (in target 'EssentialFeed' from project 'EssentialFeed')
+    cd /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/tapi stubify -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator18.4.sdk -F/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator -L/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeed.framework/EssentialFeed -o /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EagerLinkingTBDs/Debug-iphonesimulator/EssentialFeed.framework/EssentialFeed.tbd
+
+CodeSign /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeed.framework (in target 'EssentialFeed' from project 'EssentialFeed')
+    cd /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeed.framework
+
+CopySwiftLibs /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeedTests.xctest (in target 'EssentialFeedTests' from project 'EssentialFeed')
+    cd /Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeedTests.xctest/EssentialFeedTests --scan-folder /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeedTests.xctest/Frameworks --scan-folder /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeedTests.xctest/PlugIns --scan-folder /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeedTests.xctest/SystemExtensions --scan-folder /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeedTests.xctest/Extensions --scan-folder /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeed.framework --platform iphonesimulator --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Products/Debug-iphonesimulator/EssentialFeedTests.xctest/Frameworks --strip-bitcode --scan-executable /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/lib/libXCTestSwiftSupport.dylib --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Build/Intermediates.noindex/EssentialFeed.build/Debug-iphonesimulator/EssentialFeedTests.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os
+
+Test Suite 'All tests' started at 2025-04-19 18:49:07.461.
+Test Suite 'EssentialFeedTests.xctest' started at 2025-04-19 18:49:07.464.
+Test Suite 'FeedImageDataMapperTests' started at 2025-04-19 18:49:07.464.
+Test Case '-[EssentialFeedTests.FeedImageDataMapperTests test_map_deliversReceivedNonEmptyDataOn200HTTPResponse]' started.
+Test Case '-[EssentialFeedTests.FeedImageDataMapperTests test_map_deliversReceivedNonEmptyDataOn200HTTPResponse]' passed (0.007 seconds).
+Test Case '-[EssentialFeedTests.FeedImageDataMapperTests test_map_throwsErrorOnNon200HTTPResponse]' started.
+Test Case '-[EssentialFeedTests.FeedImageDataMapperTests test_map_throwsErrorOnNon200HTTPResponse]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.FeedImageDataMapperTests test_map_deliversInvalidDataErrorOn200HTTPResponseWithEmptyData]' started.
+Test Case '-[EssentialFeedTests.FeedImageDataMapperTests test_map_deliversInvalidDataErrorOn200HTTPResponseWithEmptyData]' passed (0.001 seconds).
+Test Suite 'FeedImageDataMapperTests' passed at 2025-04-19 18:49:07.487.
+	 Executed 3 tests, with 0 failures (0 unexpected) in 0.011 (0.023) seconds
+Test Suite 'ImageCommentsMapperTests' started at 2025-04-19 18:49:07.489.
+Test Case '-[EssentialFeedTests.ImageCommentsMapperTests test_map_throwsErrorOnNon2xxHTTPResponse]' started.
+Test Case '-[EssentialFeedTests.ImageCommentsMapperTests test_map_throwsErrorOnNon2xxHTTPResponse]' passed (0.010 seconds).
+Test Case '-[EssentialFeedTests.ImageCommentsMapperTests test_map_throwsErrorOn2xxHTTPResponseWithInvalidJSON]' started.
+Test Case '-[EssentialFeedTests.ImageCommentsMapperTests test_map_throwsErrorOn2xxHTTPResponseWithInvalidJSON]' passed (0.006 seconds).
+Test Case '-[EssentialFeedTests.ImageCommentsMapperTests test_map_deliversNoItemsOn2xxHTTPResponseWithEmptyJSONList]' started.
+Test Case '-[EssentialFeedTests.ImageCommentsMapperTests test_map_deliversNoItemsOn2xxHTTPResponseWithEmptyJSONList]' passed (0.005 seconds).
+Test Case '-[EssentialFeedTests.ImageCommentsMapperTests test_map_deliversItemsOn2xxHTTPResponseWithJSONItems]' started.
+Test Case '-[EssentialFeedTests.ImageCommentsMapperTests test_map_deliversItemsOn2xxHTTPResponseWithJSONItems]' passed (0.040 seconds).
+Test Suite 'ImageCommentsMapperTests' passed at 2025-04-19 18:49:07.551.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.061 (0.062) seconds
+Test Suite 'LoadFeedImageDataFromCacheUseCaseTests' started at 2025-04-19 18:49:07.552.
+Test Case '-[EssentialFeedTests.LoadFeedImageDataFromCacheUseCaseTests test_loadImageDataFromURL_deliversStoredDataOnFoundData]' started.
+Test Case '-[EssentialFeedTests.LoadFeedImageDataFromCacheUseCaseTests test_loadImageDataFromURL_deliversStoredDataOnFoundData]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedImageDataFromCacheUseCaseTests test_loadImageDataFromURL_requestsStoredDataForURL]' started.
+Test Case '-[EssentialFeedTests.LoadFeedImageDataFromCacheUseCaseTests test_loadImageDataFromURL_requestsStoredDataForURL]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedImageDataFromCacheUseCaseTests test_loadImageDataFromURL_failsOnStoreError]' started.
+Test Case '-[EssentialFeedTests.LoadFeedImageDataFromCacheUseCaseTests test_loadImageDataFromURL_failsOnStoreError]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedImageDataFromCacheUseCaseTests test_init_doesNotMessageStoreUponCreation]' started.
+Test Case '-[EssentialFeedTests.LoadFeedImageDataFromCacheUseCaseTests test_init_doesNotMessageStoreUponCreation]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedImageDataFromCacheUseCaseTests test_loadImageDataFromURL_deliversNotFoundErrorOnNotFound]' started.
+Test Case '-[EssentialFeedTests.LoadFeedImageDataFromCacheUseCaseTests test_loadImageDataFromURL_deliversNotFoundErrorOnNotFound]' passed (0.001 seconds).
+Test Suite 'LoadFeedImageDataFromCacheUseCaseTests' passed at 2025-04-19 18:49:07.559.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.007 (0.008) seconds
+Test Suite 'KeychainSecureStorageTests' started at 2025-04-19 18:49:07.559.
+Test Case '-[EssentialFeedTests.KeychainSecureStorageTests test_saveData_usesFallback_whenKeychainFails]' started.
+Test Case '-[EssentialFeedTests.KeychainSecureStorageTests test_saveData_usesFallback_whenKeychainFails]' passed (0.004 seconds).
+Test Case '-[EssentialFeedTests.KeychainSecureStorageTests test_saveData_usesAlternativeStorage_whenKeychainAndFallbackFail]' started.
+Test Case '-[EssentialFeedTests.KeychainSecureStorageTests test_saveData_usesAlternativeStorage_whenKeychainAndFallbackFail]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.KeychainSecureStorageTests test_saveData_fails_whenKeychainReturnsError]' started.
+Test Case '-[EssentialFeedTests.KeychainSecureStorageTests test_saveData_fails_whenKeychainReturnsError]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.KeychainSecureStorageTests test_saveData_succeeds_whenKeychainSavesSuccessfully]' started.
+Test Case '-[EssentialFeedTests.KeychainSecureStorageTests test_saveData_succeeds_whenKeychainSavesSuccessfully]' passed (0.001 seconds).
+Test Suite 'KeychainSecureStorageTests' passed at 2025-04-19 18:49:07.569.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.009 (0.010) seconds
+Test Suite 'UserLoginUseCaseTests' started at 2025-04-19 18:49:07.569.
+Test Case '-[EssentialFeedTests.UserLoginUseCaseTests test_login_fails_onInvalidCredentials]' started.
+Test Case '-[EssentialFeedTests.UserLoginUseCaseTests test_login_fails_onInvalidCredentials]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.UserLoginUseCaseTests test_login_succeeds_onValidCredentialsAndServerResponse]' started.
+Test Case '-[EssentialFeedTests.UserLoginUseCaseTests test_login_succeeds_onValidCredentialsAndServerResponse]' passed (0.001 seconds).
+Test Suite 'UserLoginUseCaseTests' passed at 2025-04-19 18:49:07.572.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.002 (0.003) seconds
+Test Suite 'CacheFeedImageDataUseCaseTests' started at 2025-04-19 18:49:07.572.
+Test Case '-[EssentialFeedTests.CacheFeedImageDataUseCaseTests test_init_doesNotMessageStoreUponCreation]' started.
+Test Case '-[EssentialFeedTests.CacheFeedImageDataUseCaseTests test_init_doesNotMessageStoreUponCreation]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.CacheFeedImageDataUseCaseTests test_saveImageDataFromURL_failsOnStoreInsertionError]' started.
+Test Case '-[EssentialFeedTests.CacheFeedImageDataUseCaseTests test_saveImageDataFromURL_failsOnStoreInsertionError]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.CacheFeedImageDataUseCaseTests test_saveImageDataForURL_requestsImageDataInsertionForURL]' started.
+Test Case '-[EssentialFeedTests.CacheFeedImageDataUseCaseTests test_saveImageDataForURL_requestsImageDataInsertionForURL]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.CacheFeedImageDataUseCaseTests test_saveImageDataFromURL_succeedsOnSuccessfulStoreInsertion]' started.
+Test Case '-[EssentialFeedTests.CacheFeedImageDataUseCaseTests test_saveImageDataFromURL_succeedsOnSuccessfulStoreInsertion]' passed (0.001 seconds).
+Test Suite 'CacheFeedImageDataUseCaseTests' passed at 2025-04-19 18:49:07.580.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.003 (0.008) seconds
+Test Suite 'CoreDataFeedStoreTests' started at 2025-04-19 18:49:07.581.
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_insert_deliversNoErrorOnNonEmptyCache]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_insert_deliversNoErrorOnNonEmptyCache]' passed (0.066 seconds).
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_retrieve_hasNoSideEffectsOnEmptyCache]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_retrieve_hasNoSideEffectsOnEmptyCache]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_delete_deliversNoErrorOnNonEmptyCache]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_delete_deliversNoErrorOnNonEmptyCache]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_insert_deliversNoErrorOnEmptyCache]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_insert_deliversNoErrorOnEmptyCache]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_retrieve_hasNoSideEffectsOnNonEmptyCache]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_retrieve_hasNoSideEffectsOnNonEmptyCache]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_retrieve_deliversEmptyOnEmptyCache]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_retrieve_deliversEmptyOnEmptyCache]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_delete_deliversNoErrorOnEmptyCache]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_delete_deliversNoErrorOnEmptyCache]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_insert_overridesPreviouslyInsertedCacheValues]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_insert_overridesPreviouslyInsertedCacheValues]' passed (0.004 seconds).
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_retrieve_deliversFoundValuesOnNonEmptyCache]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_retrieve_deliversFoundValuesOnNonEmptyCache]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_delete_emptiesPreviouslyInsertedCache]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_delete_emptiesPreviouslyInsertedCache]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_delete_hasNoSideEffectsOnEmptyCache]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedStoreTests test_delete_hasNoSideEffectsOnEmptyCache]' passed (0.002 seconds).
+Test Suite 'CoreDataFeedStoreTests' passed at 2025-04-19 18:49:07.674.
+	 Executed 11 tests, with 0 failures (0 unexpected) in 0.092 (0.094) seconds
+Test Suite 'FeedLocalizationTests' started at 2025-04-19 18:49:07.675.
+Test Case '-[EssentialFeedTests.FeedLocalizationTests test_localizedStrings_haveKeysAndValuesForAllSupportedLocalizations]' started.
+Test Case '-[EssentialFeedTests.FeedLocalizationTests test_localizedStrings_haveKeysAndValuesForAllSupportedLocalizations]' passed (0.004 seconds).
+Test Suite 'FeedLocalizationTests' passed at 2025-04-19 18:49:07.679.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.004 (0.004) seconds
+Test Suite 'CoreDataFeedImageDataStoreTests' started at 2025-04-19 18:49:07.679.
+Test Case '-[EssentialFeedTests.CoreDataFeedImageDataStoreTests test_retrieveImageData_deliversNotFoundWhenStoredDataURLDoesNotMatch]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedImageDataStoreTests test_retrieveImageData_deliversNotFoundWhenStoredDataURLDoesNotMatch]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.CoreDataFeedImageDataStoreTests test_retrieveImageData_deliversNotFoundWhenEmpty]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedImageDataStoreTests test_retrieveImageData_deliversNotFoundWhenEmpty]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.CoreDataFeedImageDataStoreTests test_retrieveImageData_deliversLastInsertedValue]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedImageDataStoreTests test_retrieveImageData_deliversLastInsertedValue]' passed (0.004 seconds).
+Test Case '-[EssentialFeedTests.CoreDataFeedImageDataStoreTests test_retrieveImageData_deliversFoundDataWhenThereIsAStoredImageDataMatchingURL]' started.
+Test Case '-[EssentialFeedTests.CoreDataFeedImageDataStoreTests test_retrieveImageData_deliversFoundDataWhenThereIsAStoredImageDataMatchingURL]' passed (0.003 seconds).
+Test Suite 'CoreDataFeedImageDataStoreTests' passed at 2025-04-19 18:49:07.693.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.013 (0.014) seconds
+Test Suite 'FeedEndpointTests' started at 2025-04-19 18:49:07.693.
+Test Case '-[EssentialFeedTests.FeedEndpointTests test_feed_endpointURL]' started.
+Test Case '-[EssentialFeedTests.FeedEndpointTests test_feed_endpointURL]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.FeedEndpointTests test_feed_endpointURLAfterGivenImage]' started.
+Test Case '-[EssentialFeedTests.FeedEndpointTests test_feed_endpointURLAfterGivenImage]' passed (0.001 seconds).
+Test Suite 'FeedEndpointTests' passed at 2025-04-19 18:49:07.695.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.002 (0.002) seconds
+Test Suite 'SharedLocalizationTests' started at 2025-04-19 18:49:07.696.
+Test Case '-[EssentialFeedTests.SharedLocalizationTests test_localizedStrings_haveKeysAndValuesForAllSupportedLocalizations]' started.
+Test Case '-[EssentialFeedTests.SharedLocalizationTests test_localizedStrings_haveKeysAndValuesForAllSupportedLocalizations]' passed (0.003 seconds).
+Test Suite 'SharedLocalizationTests' passed at 2025-04-19 18:49:07.699.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.003 (0.004) seconds
+Test Suite 'FeedItemsMapperTests' started at 2025-04-19 18:49:07.699.
+Test Case '-[EssentialFeedTests.FeedItemsMapperTests test_map_deliversItemsOn200HTTPResponseWithJSONItems]' started.
+Test Case '-[EssentialFeedTests.FeedItemsMapperTests test_map_deliversItemsOn200HTTPResponseWithJSONItems]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.FeedItemsMapperTests test_map_throwsErrorOn200HTTPResponseWithInvalidJSON]' started.
+Test Case '-[EssentialFeedTests.FeedItemsMapperTests test_map_throwsErrorOn200HTTPResponseWithInvalidJSON]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.FeedItemsMapperTests test_map_deliversNoItemsOn200HTTPResponseWithEmptyJSONList]' started.
+Test Case '-[EssentialFeedTests.FeedItemsMapperTests test_map_deliversNoItemsOn200HTTPResponseWithEmptyJSONList]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.FeedItemsMapperTests test_map_throwsErrorOnNon200HTTPResponse]' started.
+Test Case '-[EssentialFeedTests.FeedItemsMapperTests test_map_throwsErrorOnNon200HTTPResponse]' passed (0.001 seconds).
+Test Suite 'FeedItemsMapperTests' passed at 2025-04-19 18:49:07.706.
+	 Executed 4 tests, with 0 failures (0 unexpected) in 0.005 (0.006) seconds
+Test Suite 'UserRegistrationUseCaseTests' started at 2025-04-19 18:49:07.706.
+Test Case '-[EssentialFeedTests.UserRegistrationUseCaseTests test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely]' started.
+Test Case '-[EssentialFeedTests.UserRegistrationUseCaseTests test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.UserRegistrationUseCaseTests test_registerUser_withWeakPassword_returnsValidationError_andDoesNotCallHTTPOrKeychain]' started.
+Test Case '-[EssentialFeedTests.UserRegistrationUseCaseTests test_registerUser_withWeakPassword_returnsValidationError_andDoesNotCallHTTPOrKeychain]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.UserRegistrationUseCaseTests test_registerUser_withInvalidEmail_returnsValidationError_andDoesNotCallHTTPOrKeychain]' started.
+Test Case '-[EssentialFeedTests.UserRegistrationUseCaseTests test_registerUser_withInvalidEmail_returnsValidationError_andDoesNotCallHTTPOrKeychain]' passed (0.004 seconds).
+Test Case '-[EssentialFeedTests.UserRegistrationUseCaseTests test_registerUser_withAlreadyRegisteredEmail_notifiesEmailAlreadyInUsePresenter]' started.
+Test Case '-[EssentialFeedTests.UserRegistrationUseCaseTests test_registerUser_withAlreadyRegisteredEmail_notifiesEmailAlreadyInUsePresenter]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.UserRegistrationUseCaseTests test_registerUser_withAlreadyRegisteredEmail_returnsEmailAlreadyInUseError_andDoesNotStoreCredentials]' started.
+Test Case '-[EssentialFeedTests.UserRegistrationUseCaseTests test_registerUser_withAlreadyRegisteredEmail_returnsEmailAlreadyInUseError_andDoesNotStoreCredentials]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.UserRegistrationUseCaseTests test_registerUser_withEmptyName_returnsValidationError_andDoesNotCallHTTPOrKeychain]' started.
+Test Case '-[EssentialFeedTests.UserRegistrationUseCaseTests test_registerUser_withEmptyName_returnsValidationError_andDoesNotCallHTTPOrKeychain]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.UserRegistrationUseCaseTests test_registerUser_withNoConnectivity_returnsConnectivityError_andDoesNotStoreCredentials]' started.
+Test Case '-[EssentialFeedTests.UserRegistrationUseCaseTests test_registerUser_withNoConnectivity_returnsConnectivityError_andDoesNotStoreCredentials]' passed (0.002 seconds).
+Test Suite 'UserRegistrationUseCaseTests' passed at 2025-04-19 18:49:07.722.
+	 Executed 7 tests, with 0 failures (0 unexpected) in 0.013 (0.016) seconds
+Test Suite 'CacheFeedUseCaseTests' started at 2025-04-19 18:49:07.722.
+Test Case '-[EssentialFeedTests.CacheFeedUseCaseTests test_init_doesNotMessageStoreUponCreation]' started.
+Test Case '-[EssentialFeedTests.CacheFeedUseCaseTests test_init_doesNotMessageStoreUponCreation]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.CacheFeedUseCaseTests test_save_failsOnInsertionError]' started.
+Test Case '-[EssentialFeedTests.CacheFeedUseCaseTests test_save_failsOnInsertionError]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.CacheFeedUseCaseTests test_save_succeedsOnSuccessfulCacheInsertion]' started.
+Test Case '-[EssentialFeedTests.CacheFeedUseCaseTests test_save_succeedsOnSuccessfulCacheInsertion]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.CacheFeedUseCaseTests test_save_doesNotRequestCacheInsertionOnDeletionError]' started.
+Test Case '-[EssentialFeedTests.CacheFeedUseCaseTests test_save_doesNotRequestCacheInsertionOnDeletionError]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.CacheFeedUseCaseTests test_save_requestsNewCacheInsertionWithTimestampOnSuccessfulDeletion]' started.
+Test Case '-[EssentialFeedTests.CacheFeedUseCaseTests test_save_requestsNewCacheInsertionWithTimestampOnSuccessfulDeletion]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.CacheFeedUseCaseTests test_save_failsOnDeletionError]' started.
+Test Case '-[EssentialFeedTests.CacheFeedUseCaseTests test_save_failsOnDeletionError]' passed (0.001 seconds).
+Test Suite 'CacheFeedUseCaseTests' passed at 2025-04-19 18:49:07.733.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.010 (0.011) seconds
+Test Suite 'FeedPresenterTests' started at 2025-04-19 18:49:07.737.
+Test Case '-[EssentialFeedTests.FeedPresenterTests test_title_isLocalized]' started.
+Test Case '-[EssentialFeedTests.FeedPresenterTests test_title_isLocalized]' passed (0.001 seconds).
+Test Suite 'FeedPresenterTests' passed at 2025-04-19 18:49:07.738.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.001 (0.002) seconds
+Test Suite 'SecureStorageTests' started at 2025-04-19 18:49:07.739.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_storesLowProtectionDataWithoutEncryption]' started.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_storesLowProtectionDataWithoutEncryption]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SecureStorageTests test_protectionLevel_returnsMediumForPersonalData]' started.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_protectionLevel_returnsMediumForPersonalData]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SecureStorageTests test_protectionLevel_returnsHighForSensitiveData]' started.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_protectionLevel_returnsHighForSensitiveData]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_withEmptyData_savesWithLowProtection]' started.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_withEmptyData_savesWithLowProtection]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_throwsErrorWhenStoreThrowsUnexpectedError]' started.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_throwsErrorWhenStoreThrowsUnexpectedError]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_encryptsAndStoresMediumProtectionData]' started.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_encryptsAndStoresMediumProtectionData]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_failsOnEncryptionError]' started.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_failsOnEncryptionError]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SecureStorageTests test_init_doesNotMessageStoreUponCreation]' started.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_init_doesNotMessageStoreUponCreation]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_throwsErrorWhenEncryptionServiceThrowsUnexpectedError]' started.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_throwsErrorWhenEncryptionServiceThrowsUnexpectedError]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_failsOnStoreError]' started.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_failsOnStoreError]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SecureStorageTests test_protectionLevel_returnsMediumForCapitalizedNames]' started.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_protectionLevel_returnsMediumForCapitalizedNames]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.SecureStorageTests test_protectionLevel_returnsHighForUnreadableData]' started.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_protectionLevel_returnsHighForUnreadableData]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_encryptsAndStoresHighProtectionData]' started.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_save_encryptsAndStoresHighProtectionData]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SecureStorageTests test_protectionLevel_returnsLowForPublicData]' started.
+Test Case '-[EssentialFeedTests.SecureStorageTests test_protectionLevel_returnsLowForPublicData]' passed (0.001 seconds).
+Test Suite 'SecureStorageTests' passed at 2025-04-19 18:49:07.765.
+	 Executed 14 tests, with 0 failures (0 unexpected) in 0.021 (0.027) seconds
+Test Suite 'FeedImagePresenterTests' started at 2025-04-19 18:49:07.770.
+Test Case '-[EssentialFeedTests.FeedImagePresenterTests test_map_createsViewModel]' started.
+Test Case '-[EssentialFeedTests.FeedImagePresenterTests test_map_createsViewModel]' passed (0.001 seconds).
+Test Suite 'FeedImagePresenterTests' passed at 2025-04-19 18:49:07.771.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.001 (0.001) seconds
+Test Suite 'URLSessionHTTPClientTests' started at 2025-04-19 18:49:07.771.
+Test Case '-[EssentialFeedTests.URLSessionHTTPClientTests test_cancelGetFromURLTask_cancelsURLRequest]' started.
+Test Case '-[EssentialFeedTests.URLSessionHTTPClientTests test_cancelGetFromURLTask_cancelsURLRequest]' passed (0.047 seconds).
+Test Case '-[EssentialFeedTests.URLSessionHTTPClientTests test_getFromURL_succeedsWithEmptyDataOnHTTPURLResponseWithNilData]' started.
+Test Case '-[EssentialFeedTests.URLSessionHTTPClientTests test_getFromURL_succeedsWithEmptyDataOnHTTPURLResponseWithNilData]' passed (0.004 seconds).
+Test Case '-[EssentialFeedTests.URLSessionHTTPClientTests test_getFromURL_performsGETRequestWithURL]' started.
+Test Case '-[EssentialFeedTests.URLSessionHTTPClientTests test_getFromURL_performsGETRequestWithURL]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.URLSessionHTTPClientTests test_getFromURL_failsOnRequestError]' started.
+2025-04-19 18:49:07.823379+0200 xctest[88055:13655464] [Default] Task <B98835F9-59CE-4722-8EED-696280B2FD71>.<1> finished with error [0] Error Domain=any error Code=0 "(null)" UserInfo={_NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <B98835F9-59CE-4722-8EED-696280B2FD71>.<1>"
+), _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <B98835F9-59CE-4722-8EED-696280B2FD71>.<1>}
+Test Case '-[EssentialFeedTests.URLSessionHTTPClientTests test_getFromURL_failsOnRequestError]' passed (0.005 seconds).
+Test Case '-[EssentialFeedTests.URLSessionHTTPClientTests test_getFromURL_succeedsOnHTTPURLResponseWithData]' started.
+Test Case '-[EssentialFeedTests.URLSessionHTTPClientTests test_getFromURL_succeedsOnHTTPURLResponseWithData]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.URLSessionHTTPClientTests test_getFromURL_failsOnAllInvalidRepresentationCases]' started.
+2025-04-19 18:49:07.836727+0200 xctest[88055:13655465] [Default] Task <B4688047-2107-4A83-8CF7-172DEF0E0AEA>.<1> finished with error [0] Error Domain=any error Code=0 "(null)" UserInfo={_NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <B4688047-2107-4A83-8CF7-172DEF0E0AEA>.<1>"
+), _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <B4688047-2107-4A83-8CF7-172DEF0E0AEA>.<1>}
+2025-04-19 18:49:07.837251+0200 xctest[88055:13655470] [Default] Task <9A1EF95B-F7EB-4198-B393-61F5BE9FA0D5>.<1> finished with error [0] Error Domain=any error Code=0 "(null)" UserInfo={_NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <9A1EF95B-F7EB-4198-B393-61F5BE9FA0D5>.<1>"
+), _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <9A1EF95B-F7EB-4198-B393-61F5BE9FA0D5>.<1>}
+2025-04-19 18:49:07.837826+0200 xctest[88055:13655470] [Default] Task <C3D4559E-69F2-498D-911D-8471975BEAA6>.<1> finished with error [0] Error Domain=any error Code=0 "(null)" UserInfo={_NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <C3D4559E-69F2-498D-911D-8471975BEAA6>.<1>"
+), _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <C3D4559E-69F2-498D-911D-8471975BEAA6>.<1>}
+2025-04-19 18:49:07.838425+0200 xctest[88055:13655470] [Default] Task <FFE354D7-04D8-4F94-9BA6-6D691BBE1031>.<1> finished with error [0] Error Domain=any error Code=0 "(null)" UserInfo={_NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <FFE354D7-04D8-4F94-9BA6-6D691BBE1031>.<1>"
+), _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <FFE354D7-04D8-4F94-9BA6-6D691BBE1031>.<1>}
+2025-04-19 18:49:07.839063+0200 xctest[88055:13655470] [Default] Task <AA6409A6-0032-4696-BD78-1C69B341A1D5>.<1> finished with error [0] Error Domain=any error Code=0 "(null)" UserInfo={_NSURLErrorRelatedURLSessionTaskErrorKey=(
+    "LocalDataTask <AA6409A6-0032-4696-BD78-1C69B341A1D5>.<1>"
+), _NSURLErrorFailingURLSessionTaskErrorKey=LocalDataTask <AA6409A6-0032-4696-BD78-1C69B341A1D5>.<1>}
+Test Case '-[EssentialFeedTests.URLSessionHTTPClientTests test_getFromURL_failsOnAllInvalidRepresentationCases]' passed (0.012 seconds).
+Test Suite 'URLSessionHTTPClientTests' passed at 2025-04-19 18:49:07.842.
+	 Executed 6 tests, with 0 failures (0 unexpected) in 0.070 (0.071) seconds
+Test Suite 'SystemKeychainTests' started at 2025-04-19 18:49:07.842.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_returnsFalse_forEmptyKey]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_returnsFalse_forEmptyKey]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_NoFallback_alwaysReturnsFalse]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_NoFallback_alwaysReturnsFalse]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_supportsUnicodeKeysAndLargeBinaryData]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_supportsUnicodeKeysAndLargeBinaryData]' passed (0.025 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_realSystemKeychain_saveAndLoad_returnsPersistedData]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_realSystemKeychain_saveAndLoad_returnsPersistedData]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_handlesSpecificKeychainErrors]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_handlesSpecificKeychainErrors]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_returnsBool_forValidInput]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_returnsBool_forValidInput]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_deletesPreviousValueBeforeSavingNewOne]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_deletesPreviousValueBeforeSavingNewOne]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_delegatesToKeychainProtocol_andReturnsSpyResult]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_delegatesToKeychainProtocol_andReturnsSpyResult]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_realSystemKeychain_saveAndDelete_returnsTrueOrFalse]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_realSystemKeychain_saveAndDelete_returnsTrueOrFalse]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_returnsFalse_forKeyWithOnlySpaces]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_returnsFalse_forKeyWithOnlySpaces]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_returnsFalse_forEmptyData]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_returnsFalse_forEmptyData]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_isThreadSafe]' started.
+/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeedTests/Security Feature/Keychain/SystemKeychainTests.swift:131: error: -[EssentialFeedTests.SystemKeychainTests test_save_isThreadSafe] : XCTAssertNotNil failed - Final data should not be nil after concurrent writes (tras varios intentos). Esto puede deberse a la naturaleza asíncrona y global del Keychain en el simulador o entorno CLI.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_isThreadSafe]' failed (0.757 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_returnsFalse_onKeychainFailure]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_returnsFalse_onKeychainFailure]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_returnsBool_forVeryLongKey]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainTests test_save_returnsBool_forVeryLongKey]' passed (0.002 seconds).
+Test Suite 'SystemKeychainTests' failed at 2025-04-19 18:49:08.643.
+	 Executed 14 tests, with 1 failure (0 unexpected) in 0.798 (0.800) seconds
+Test Suite 'ImageCommentsPresenterTests' started at 2025-04-19 18:49:08.643.
+Test Case '-[EssentialFeedTests.ImageCommentsPresenterTests test_map_createsViewModels]' started.
+Test Case '-[EssentialFeedTests.ImageCommentsPresenterTests test_map_createsViewModels]' passed (0.006 seconds).
+Test Case '-[EssentialFeedTests.ImageCommentsPresenterTests test_title_isLocalized]' started.
+Test Case '-[EssentialFeedTests.ImageCommentsPresenterTests test_title_isLocalized]' passed (0.001 seconds).
+Test Suite 'ImageCommentsPresenterTests' passed at 2025-04-19 18:49:08.650.
+	 Executed 2 tests, with 0 failures (0 unexpected) in 0.007 (0.008) seconds
+Test Suite 'ValidateFeedCacheUseCaseTests' started at 2025-04-19 18:49:08.651.
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_deletesExpiredCache]' started.
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_deletesExpiredCache]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_succeedsOnNonExpiredCache]' started.
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_succeedsOnNonExpiredCache]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_init_doesNotMessageStoreUponCreation]' started.
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_init_doesNotMessageStoreUponCreation]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_deletesCacheOnExpiration]' started.
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_deletesCacheOnExpiration]' passed (0.005 seconds).
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_succeedsOnSuccessfulDeletionOfFailedRetrieval]' started.
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_succeedsOnSuccessfulDeletionOfFailedRetrieval]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_failsOnDeletionErrorOfFailedRetrieval]' started.
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_failsOnDeletionErrorOfFailedRetrieval]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_succeedsOnEmptyCache]' started.
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_succeedsOnEmptyCache]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_failsOnDeletionErrorOfExpiredCache]' started.
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_failsOnDeletionErrorOfExpiredCache]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_deletesCacheOnRetrievalError]' started.
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_deletesCacheOnRetrievalError]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_doesNotDeleteNonExpiredCache]' started.
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_doesNotDeleteNonExpiredCache]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_doesNotDeleteCacheOnEmptyCache]' started.
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_doesNotDeleteCacheOnEmptyCache]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_succeedsOnSuccessfulDeletionOfExpiredCache]' started.
+Test Case '-[EssentialFeedTests.ValidateFeedCacheUseCaseTests test_validateCache_succeedsOnSuccessfulDeletionOfExpiredCache]' passed (0.005 seconds).
+Test Suite 'ValidateFeedCacheUseCaseTests' passed at 2025-04-19 18:49:08.680.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.026 (0.030) seconds
+Test Suite 'ImageCommentsEndpointTests' started at 2025-04-19 18:49:08.681.
+Test Case '-[EssentialFeedTests.ImageCommentsEndpointTests test_imageComments_endpointURL]' started.
+Test Case '-[EssentialFeedTests.ImageCommentsEndpointTests test_imageComments_endpointURL]' passed (0.002 seconds).
+Test Suite 'ImageCommentsEndpointTests' passed at 2025-04-19 18:49:08.683.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.002 (0.002) seconds
+Test Suite 'LoadFeedFromCacheUseCaseTests' started at 2025-04-19 18:49:08.683.
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_deliversNoImagesOnEmptyCache]' started.
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_deliversNoImagesOnEmptyCache]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_failsOnRetrievalError]' started.
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_failsOnRetrievalError]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_hasNoSideEffectsOnExpiredCache]' started.
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_hasNoSideEffectsOnExpiredCache]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_deliversCachedImagesOnNonExpiredCache]' started.
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_deliversCachedImagesOnNonExpiredCache]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_hasNoSideEffectsOnNonExpiredCache]' started.
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_hasNoSideEffectsOnNonExpiredCache]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_hasNoSideEffectsOnEmptyCache]' started.
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_hasNoSideEffectsOnEmptyCache]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_hasNoSideEffectsOnCacheExpiration]' started.
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_hasNoSideEffectsOnCacheExpiration]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_init_doesNotMessageStoreUponCreation]' started.
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_init_doesNotMessageStoreUponCreation]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_deliversNoImagesOnCacheExpiration]' started.
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_deliversNoImagesOnCacheExpiration]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_hasNoSideEffectsOnRetrievalError]' started.
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_hasNoSideEffectsOnRetrievalError]' passed (0.001 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_requestsCacheRetrieval]' started.
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_requestsCacheRetrieval]' passed (0.004 seconds).
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_deliversNoImagesOnExpiredCache]' started.
+Test Case '-[EssentialFeedTests.LoadFeedFromCacheUseCaseTests test_load_deliversNoImagesOnExpiredCache]' passed (0.001 seconds).
+Test Suite 'LoadFeedFromCacheUseCaseTests' passed at 2025-04-19 18:49:08.710.
+	 Executed 12 tests, with 0 failures (0 unexpected) in 0.021 (0.026) seconds
+Test Suite 'SystemKeychainIntegrationCoverageTests' started at 2025-04-19 18:49:08.710.
+Test Case '-[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_save_overwritesPreviousValue]' started.
+/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeedTests/Security Feature/Keychain/SystemKeychainIntegrationCoverageTests.swift:71: error: -[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_save_overwritesPreviousValue] : XCTAssertTrue failed
+/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeedTests/Security Feature/Keychain/SystemKeychainIntegrationCoverageTests.swift:72: error: -[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_save_overwritesPreviousValue] : XCTAssertTrue failed
+/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeedTests/Security Feature/Keychain/SystemKeychainIntegrationCoverageTests.swift:83: error: -[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_save_overwritesPreviousValue] : XCTAssertEqual failed: ("nil") is not equal to ("Optional(5 bytes)") - El valor sobrescrito no se reflejó tras varios intentos. Esto puede deberse a la naturaleza asíncrona del Keychain en el simulador o entorno CLI.
+Test Case '-[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_save_overwritesPreviousValue]' failed (0.600 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_save_returnsFalse_forKeyWithOnlySpaces]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_save_returnsFalse_forKeyWithOnlySpaces]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_save_returnsFalse_forEmptyData]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_save_returnsFalse_forEmptyData]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_save_returnsFalse_forEmptyKey]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_save_returnsFalse_forEmptyKey]' passed (0.003 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_saveAndLoad_realKeychain_persistsAndRetrievesData]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_saveAndLoad_realKeychain_persistsAndRetrievesData]' passed (0.004 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_load_returnsNil_forNonexistentKey]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_load_returnsNil_forNonexistentKey]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_load_returnsNil_forEmptyKey]' started.
+Test Case '-[EssentialFeedTests.SystemKeychainIntegrationCoverageTests test_load_returnsNil_forEmptyKey]' passed (0.002 seconds).
+Test Suite 'SystemKeychainIntegrationCoverageTests' failed at 2025-04-19 18:49:09.328.
+	 Executed 7 tests, with 3 failures (0 unexpected) in 0.614 (0.618) seconds
+Test Suite 'ImageCommentsLocalizationTests' started at 2025-04-19 18:49:09.337.
+Test Case '-[EssentialFeedTests.ImageCommentsLocalizationTests test_localizedStrings_haveKeysAndValuesForAllSupportedLocalizations]' started.
+Test Case '-[EssentialFeedTests.ImageCommentsLocalizationTests test_localizedStrings_haveKeysAndValuesForAllSupportedLocalizations]' passed (0.007 seconds).
+Test Suite 'ImageCommentsLocalizationTests' passed at 2025-04-19 18:49:09.344.
+	 Executed 1 test, with 0 failures (0 unexpected) in 0.007 (0.008) seconds
+Test Suite 'LoadResourcePresenterTests' started at 2025-04-19 18:49:09.345.
+Test Case '-[EssentialFeedTests.LoadResourcePresenterTests test_init_doesNotSendMessagesToView]' started.
+Test Case '-[EssentialFeedTests.LoadResourcePresenterTests test_init_doesNotSendMessagesToView]' passed (0.005 seconds).
+Test Case '-[EssentialFeedTests.LoadResourcePresenterTests test_didStartLoading_displaysNoErrorMessageAndStartsLoading]' started.
+Test Case '-[EssentialFeedTests.LoadResourcePresenterTests test_didStartLoading_displaysNoErrorMessageAndStartsLoading]' passed (0.009 seconds).
+Test Case '-[EssentialFeedTests.LoadResourcePresenterTests test_didFinishLoadingResource_displaysResourceAndStopsLoading]' started.
+Test Case '-[EssentialFeedTests.LoadResourcePresenterTests test_didFinishLoadingResource_displaysResourceAndStopsLoading]' passed (0.006 seconds).
+Test Case '-[EssentialFeedTests.LoadResourcePresenterTests test_didFinishLoadingWithError_displaysLocalizedErrorMessageAndStopsLoading]' started.
+Test Case '-[EssentialFeedTests.LoadResourcePresenterTests test_didFinishLoadingWithError_displaysLocalizedErrorMessageAndStopsLoading]' passed (0.002 seconds).
+Test Case '-[EssentialFeedTests.LoadResourcePresenterTests test_didFinishLoadingWithMapperError_displaysLocalizedErrorMessageAndStopsLoading]' started.
+Test Case '-[EssentialFeedTests.LoadResourcePresenterTests test_didFinishLoadingWithMapperError_displaysLocalizedErrorMessageAndStopsLoading]' passed (0.002 seconds).
+Test Suite 'LoadResourcePresenterTests' passed at 2025-04-19 18:49:09.372.
+	 Executed 5 tests, with 0 failures (0 unexpected) in 0.023 (0.027) seconds
+Test Suite 'EssentialFeedTests.xctest' failed at 2025-04-19 18:49:09.372.
+	 Executed 134 tests, with 4 failures (0 unexpected) in 1.823 (1.909) seconds
+Test Suite 'All tests' failed at 2025-04-19 18:49:09.373.
+	 Executed 134 tests, with 4 failures (0 unexpected) in 1.823 (1.912) seconds
+
+Test session results, code coverage, and logs:
+	/Users/juancarlosmerlosalbarracin/Library/Developer/Xcode/DerivedData/EssentialFeed-azevhmzbtvsmfsabzzannksqefru/Logs/Test/Test-EssentialFeed-2025.04.19_18-48-53-+0200.xcresult
+
+Testing started

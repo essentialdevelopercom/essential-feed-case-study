@@ -16,8 +16,8 @@ func test_registerUser_withValidData_createsUserAndStoresCredentialsSecurely() a
         
         switch result {
         case .success(let user):
-            XCTAssertEqual(user.name, name)
-            XCTAssertEqual(user.email, email)
+            XCTAssertEqual(user.name, name, "Registered user's name should match input")
+            XCTAssertEqual(user.email, email, "Registered user's email should match input")
         case .failure:
             XCTFail("Expected success, got failure instead")
         }
@@ -73,9 +73,9 @@ func test_registerUser_withAlreadyRegisteredEmail_notifiesEmailAlreadyInUsePrese
 
     // Assert: Se notifica al notifier (async/await)
     await fulfillment(of: [expectation], timeout: 1.0)
-    XCTAssertTrue(notifier.notified)
+    XCTAssertTrue(notifier.notified, "Notifier should be called on registration")
     // Assert: No se guardan credenciales
-    XCTAssertEqual(keychain.saveCallCount, 0)
+    XCTAssertEqual(keychain.saveCallCount, 0, "Keychain save should not be called on registration failure")
     // Assert: El resultado es el error esperado
     switch result {
     case .failure(let error as UserRegistrationError):

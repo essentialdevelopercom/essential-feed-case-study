@@ -15,25 +15,12 @@ report_file="$report_dir/coverage-report.txt"
 
 # 1. Ejecutar tests con cobertura en el simulador preferido
 echo "Ejecutando tests en el simulador $simulator_name ($ios_version)..."
-# 1.1. Detectar todas las clases de test relevantes en ambas carpetas
-only_testing_flags=""
-for testfile in $(find EssentialFeed/EssentialFeedTests -type f -name '*Tests*.swift'); do
-  classname=$(basename "$testfile" .swift)
-  # Solo incluir clases cuyo nombre contiene 'Tests' y NO helpers como 'Spy'
-  if [[ "$classname" == *Tests* ]] && [[ "$classname" != *Spy* ]]; then
-    only_testing_flags+=" -only-testing:EssentialFeedTests/$classname"
-  fi
-done
-
-echo "Ejecutando tests con flags: $only_testing_flags"
-
-# 1.2. Ejecutar tests solo de las clases detectadas
+# Ejecutar TODOS los tests del scheme para cobertura completa de producción
 xcodebuild \
   -scheme "$target_scheme" \
   -project EssentialFeed/EssentialFeed.xcodeproj \
   -destination "platform=iOS Simulator,name=$simulator_name,OS=$ios_version" \
   -enableCodeCoverage YES \
-  $only_testing_flags \
   test || { echo "Fallo la ejecución de tests"; exit 1; }
 
 # 2. Buscar el archivo .xcresult más reciente (robusto ante nombres y espacios)

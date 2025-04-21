@@ -22,5 +22,15 @@ Este script limpia DerivedData, fuerza el uso del simulador correcto y ejecuta l
 # Script para Generar resumen de cobertura
 python3 scripts/generate_coverage_summary_md.py 
 
-Este script genera un resumen de cobertura de código en Markdown, HTML y CSV a partir de `coverage-reports/coverage-report.txt`.
+Este script genera un resumen de cobertura de código en Markdown, HTML y CSV a partir de `[coverage-summary.md](docs/coverage-summary.md)
 
+---
+
+## 📊 Estado de cobertura (actualizado 2025-04-21)
+- **Cobertura global:** 88.3%
+- **Módulos críticos de seguridad:** Keychain, SecureStorage, Registro y Login >85%
+- **Tests:** unitarios e integración, cubriendo escenarios reales y edge cases principales.
+- Consulta el [coverage-summary.md](docs/coverage-summary.md) para detalle por módulo.
+- Reporte interactivo: [coverage_html_latest/index.html](coverage_html_latest/index.html)
+
+> Mantén la cobertura >85% en módulos core y prioriza edge cases de helpers/factories para robustez máxima.

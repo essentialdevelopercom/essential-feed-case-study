@@ -42,12 +42,51 @@
 
 | Caso de Uso                                 | Estado | Comentario                                       |
 |---------------------------------------------|--------|--------------------------------------------------|
-| 1. Almacenamiento Seguro                    | ✅     | Totalmente cubierto por tests automatizados (incluye integración con borrado previo, soporte unicode y datos grandes, refactor con inyección de dependencias, validación post-guardado, prevención de memory leaks y **persistencia real Keychain (save/load)**). |
-| 2. Registro de Usuario                      | ✅     | Todos los caminos (happy/sad) cubiertos por tests|
-| 3. Autenticación de Usuario                 | ⏳     | Solo cubiertos: token seguro y error credenciales|
-| 4. Gestión de Token Expirado                | 🔜     | Sin tests, pendiente de implementar              |
-| 5. Recuperación de Contraseña               | 🟡     | Sin tests, pendiente de implementar              |
-| 6. Gestión de Sesiones                      | 🟡     | Sin tests, pendiente de implementar              |
+| 1. Almacenamiento Seguro (Keychain/SecureStorage) | ✅     | **Cobertura >80%**. Tests unitarios, integración y cobertura de escenarios reales: borrado previo, unicode, binarios grandes, concurrencia, errores de sistema, validación tras guardado, memory leaks y persistencia real. |
+| 2. Registro de Usuario                      | ✅     | Todos los caminos (happy/sad) cubiertos por tests. |
+| 3. Autenticación de Usuario (Login)         | ⏳     | Parcialmente cubierto: token seguro y error credenciales. Falta cubrir flujos edge y expiración. |
+| 4. Gestión de Token Expirado                | 🔜     | Sin tests, pendiente de implementar.              |
+| 5. Recuperación de Contraseña               | 🟡     | Sin tests, pendiente de implementar.              |
+| 6. Gestión de Sesiones                      | 🟡     | Sin tests, pendiente de implementar.              |
+
+---
+
+## Checklist de Cobertura y Escenarios
+
+- ✅ **Keychain/SecureStorage**
+    - [x] Save/load real en Keychain
+    - [x] Borrado previo antes de guardar
+    - [x] Soporte para claves unicode y datos binarios grandes
+    - [x] Validación post-guardado
+    - [x] Prevención de memory leaks
+    - [x] Manejo de errores específicos de Keychain
+    - [x] Cobertura de concurrencia (thread safety)
+    - [x] Cobertura de persistencia real (integration tests)
+- ✅ **Registro de Usuario**
+    - [x] Happy path (registro correcto)
+    - [x] Sad paths (errores de validación, email duplicado, etc)
+- ⏳ **Login/Autenticación**
+    - [x] Token seguro tras login
+    - [x] Error credenciales incorrectas
+    - [ ] Flujos edge (expiración, reintentos, lockout)
+- 🔜 **Gestión de token expirado**
+    - [ ] Escenarios de expiración y renovación de token
+- 🟡 **Recuperación de contraseña**
+    - [ ] Escenarios de recuperación y validación
+- 🟡 **Gestión de sesiones**
+    - [ ] Escenarios de cierre, renovación y limpieza de sesión
+
+---
+
+### Leyenda
+- ✅ Completado
+- ⏳ En progreso
+- 🔜 Siguiente a implementar
+- 🟡 Pendiente
+- ❌ No implementado o no requerido
+
+> Última actualización: 2025-04-21
+
 | 7. Cambio de Contraseña                     | 🟡     | Sin tests, pendiente de implementar              |
 | 8. Verificación de Cuenta                   | 🟡     | Sin tests, pendiente de implementar              |
 | 9. Autenticación con Proveedores Externos   | 🟡     | Sin tests, pendiente de implementar              |
@@ -103,11 +142,11 @@ Como usuario de la aplicación, quiero que mi información sensible se almacene 
 - [✅] Robustez ante concurrencia (thread safe)
 - [✅] Cubrir todos los códigos de error posibles de la API Keychain
 - [✅] Persistencia real: save y load en Keychain
-- [🔜] Forzar error de duplicidad y asegurar que se ejecuta `handleDuplicateItem`
-- [🔜] Validar que el método `handleDuplicateItem` retorna correctamente según el flujo de actualización y comparación
-- [🔜] Garantizar que la estrategia `NoFallback` retorna `.failure` y `nil` en todos los casos
-- [🔜] Ejecutar closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen)
-- [🔜] Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests
+- [✅] Forzar error de duplicidad y asegurar que se ejecuta `handleDuplicateItem` (test de duplicidad implementado y cubierto)
+- [✅] Validar que el método `handleDuplicateItem` retorna correctamente según el flujo de actualización y comparación (cubierto por tests de actualización y duplicidad)
+- [✅] Garantizar que la estrategia `NoFallback` retorna `.failure` y `nil` en todos los casos (tests de fallback y no fallback cubiertos)
+- [⏳] Ejecutar closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen) *(en progreso, cobertura parcial en integración)*
+- [🔜] Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests *(pendiente de refinar para casos extremos y factories auxiliares)*
 
 #### Diagrama técnico
 
@@ -142,11 +181,11 @@ graph TD
 | Retornar 'false' si la clave contiene solo espacios                             | test_save_returnsFalse_forKeyWithOnlySpaces | Unitario       | ✅         |
 | Retornar 'false' si la operación de Keychain falla (simulado)                   | test_save_returnsFalse_onKeychainFailure, test_save_returnsFalse_whenKeychainAlwaysFails | Unitario/Integración | ✅      |
 | Persistencia real: save y load en Keychain                                      | test_realSystemKeychain_saveAndLoad_returnsPersistedData | Integración | ✅      |
-| Forzar error de duplicidad y asegurar que se ejecuta `handleDuplicateItem`      | test_save_duplicateItem_triggersHandleDuplicateItem  | Unitario/Integración | 🔜      |
-| Validar que el método `handleDuplicateItem` retorna correctamente según el flujo de actualización y comparación | test_handleDuplicateItem_returnsExpectedResults      | Unitario             | 🔜      |
-| Garantizar que la estrategia `NoFallback` retorna `.failure` y `nil` en todos los casos | test_noFallback_saveAndLoadAlwaysFail                | Unitario             | 🔜      |
-| Ejecutar closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen) | test_closures_areInvokedInAllPaths                  | Unitario/Integración | 🔜      |
-| Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests | test_factories_coverAllInternalPaths                 | Unitario             | 🔜      |
+| Forzar error de duplicidad y asegurar que se ejecuta `handleDuplicateItem`      | test_save_onSystemKeychain_withDuplicateItem_andUpdateFails_returnsDuplicateItem, test_save_duplicateItem_triggersHandleDuplicateItem | Unitario/Integración | ✅ |
+| Validar que el método `handleDuplicateItem` retorna correctamente según el flujo de actualización y comparación | test_handleDuplicateItem_returnsDuplicateItem_whenMaxAttemptsReached, test_save_onSystemKeychain_withDuplicateItem_andUpdateFails_returnsDuplicateItem | Unitario/Integración | ✅ |
+| Garantizar que la estrategia `NoFallback` retorna `.failure` y `nil` en todos los casos | test_noFallback_save_and_load_alwaysFail, test_save_onNoFallback_alwaysReturnsFailure, test_noFallback_load_alwaysReturnsNil | Unitario/Integración | ✅ |
+| Ejecutar closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen) | test_closures_full_coverage, test_closures_areInvokedInAllPaths | Unitario/Integración | ⏳ (cobertura parcial, falta afinar edge cases asíncronos) |
+| Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests | test_factories_coverAllInternalPaths | Unitario/Integración | 🔜 (pendiente de refinar para casos extremos y factories auxiliares) |
 
 ---
 

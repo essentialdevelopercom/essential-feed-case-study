@@ -43,30 +43,6 @@
 | Caso de Uso                                 | Estado             | Comentario                                       |
 |---------------------------------------------|--------------------|--------------------------------------------------|
 | 1. Almacenamiento Seguro                    | ✅ Completado      | Totalmente cubierto por tests automatizados (incluye integración con borrado previo, soporte unicode y datos grandes, refactor con inyección de dependencias, validación post-guardado, prevención de memory leaks y **persistencia real Keychain (save/load)**).
-
-#### 🗂️ Tabla de trazabilidad técnica <-> tests
-
-| 🛠️ Subtarea técnica                                                                                                   | ✅ Test que la cubre                                                                                                                                                                                                                          | Tipo de test         | Estado   |
-|-----------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------|----------|
-| Determinar nivel de protección necesario para cada dato      | test_protectionLevelForData              | Unitario          | ✅         |
-| Encriptar la información antes de almacenar si es necesario  | test_encryptsDataIfNeeded                | Unitario          | ✅         |
-| Almacenar en Keychain con configuración adecuada             | test_saveAndLoad_realKeychain_persistsAndRetrievesData | Integración | ✅      |
-| Verificar que la información se almacena correctamente       | test_saveAndLoad_realKeychain_persistsAndRetrievesData | Integración | ✅      |
-| Intentar almacenamiento alternativo si falla el Keychain     | test_save_fallbackToAlternativeStorage   | Unitario/Integración | ✅      |
-| Notificar error si persiste el fallo                         | test_save_notifiesOnPersistentFailure    | Unitario/Integración | ✅      |
-| Limpiar datos corruptos y solicitar nueva autenticación      | test_detectsAndCleansCorruptedData       | Unitario/Integración | ✅      |
-| Retornar `false` si la clave está vacía                      | test_save_returnsFalse_forEmptyKey       | Unitario          | ✅         |
-| Retornar `false` si los datos están vacíos                   | test_save_returnsFalse_forEmptyData      | Unitario          | ✅         |
-| Retornar `false` si la clave contiene solo espacios          | test_save_returnsFalse_forKeyWithOnlySpaces | Unitario       | ✅         |
-| Retornar `false` si la operación de Keychain falla (simulado)| test_save_returnsFalse_onKeychainFailure, test_save_returnsFalse_whenKeychainAlwaysFails | Unitario/Integración | ✅      |
-| Eliminar correctamente valores previos antes de guardar uno nuevo | test_save_deletesPreviousValueBeforeSavingNewOne | Integración | ✅  |
-| Soportar claves unicode y datos binarios grandes             | test_save_supportsUnicodeKeysAndLargeBinaryData | Integración | ✅     |
-| Robustez ante concurrencia                                   | test_save_isThreadSafe                   | Integración       | ✅         |
-| Cubrir todos los códigos de error posibles de la API Keychain| test_save_handlesSpecificKeychainErrors  | Unitario/Integración | ✅      |
-
-> 🟡 El test `test_save_returnsFalse_whenAllRetriesFail_integration` es **de integración** y puede ser no determinista en simulador/CLI. Para cobertura real de la rama de error (por ejemplo, clave inválida), usa el test **unitario con mock** `test_save_returnsFalse_whenKeychainAlwaysFails`.
-
-  |
 | 2. Registro de Usuario                      | ✅ Completado      | Todos los caminos (happy/sad) cubiertos por tests|
 | 3. Autenticación de Usuario                 | ⏳ En progreso     | Solo cubiertos: token seguro y error credenciales|
 | 4. Gestión de Token Expirado                | 🔜 Siguiente       | Sin tests, pendiente de implementar              |
@@ -116,8 +92,8 @@ Como usuario de la aplicación, quiero que mi información sensible se almacene 
 - [✅] Intentar almacenamiento alternativo si falla el Keychain
 - [✅] Notificar error si persiste el fallo
 - [✅] Limpiar datos corruptos y solicitar nueva autenticación
-- [✅] Borra valor previo antes de guardar uno nuevo
-- [✅] Soporta claves unicode y datos grandes
+- [✅] Eliminar correctamente valores previos antes de guardar uno nuevo
+- [✅] Soportar claves unicode y datos grandes
 - [✅] Devuelve error para clave vacía o datos vacíos
 - [✅] Simula errores específicos de Keychain
 - [✅] Retornar 'false' si la clave está vacía
@@ -125,9 +101,13 @@ Como usuario de la aplicación, quiero que mi información sensible se almacene 
 - [✅] Retornar 'false' si la clave contiene solo espacios
 - [✅] Retornar 'false' si la operación de Keychain falla (simulado)
 - [✅] Robustez ante concurrencia (thread safe)
-- [✅] Cubrir todos los códigos de error posibles de la API del Keychain
+- [✅] Cubrir todos los códigos de error posibles de la API Keychain
 - [✅] Persistencia real: save y load en Keychain
-
+- [🔜] Forzar error de duplicidad y asegurar que se ejecuta `handleDuplicateItem`
+- [🔜] Validar que el método `handleDuplicateItem` retorna correctamente según el flujo de actualización y comparación
+- [🔜] Garantizar que la estrategia `NoFallback` retorna `.failure` y `nil` en todos los casos
+- [🔜] Ejecutar closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen)
+- [🔜] Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests
 
 #### Diagrama técnico
 
@@ -142,30 +122,17 @@ graph TD
     G -->|notify| A
 ```
 
-#### Tabla de trazabilidad checklist técnico <-> tests
+#### 🗂️ Tabla de trazabilidad técnica <-> tests
+| 🛠️ Subtarea técnica | ✅ Test que la cubre (real/propuesto) | Tipo de test | Estado | |-----------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------|----------------------|----------| | Determinar nivel de protección necesario para cada dato | test_protectionLevelForData | Unitario | ✅ | | Encriptar la información antes de almacenar si es necesario | test_encryptsDataIfNeeded | Unitario | ✅ | | Almacenar en Keychain con configuración adecuada | test_saveAndLoad_realKeychain_persistsAndRetrievesData | Integración | ✅ | | Verificar que la información se almacena correctamente | test_saveAndLoad_realKeychain_persistsAndRetrievesData | Integración | ✅ | | Intentar almacenamiento alternativo si falla el Keychain | test_save_fallbackToAlternativeStorage | Unitario/Integración | ✅ | | Notificar error si persiste el fallo | test_save_notifiesOnPersistentFailure | Unitario/Integración | ✅ | | Limpiar datos corruptos y solicitar nueva autenticación | test_detectsAndCleansCorruptedData | Unitario/Integración | ✅ | | Eliminar correctamente valores previos antes de guardar uno nuevo | test_save_deletesPreviousValueBeforeSavingNewOne | Integración | ✅ | | Soportar claves unicode y datos binarios grandes | test_save_supportsUnicodeKeysAndLargeBinaryData | Integración | ✅ | | Robustez ante concurrencia | test_save_isThreadSafe | Integración | ✅ | | Cubrir todos los códigos de error posibles de la API Keychain | test_save_handlesSpecificKeychainErrors | Unitario/Integración | ✅ | | Retornar 'false' si la clave está vacía | test_save_returnsFalse_forEmptyKey | Unitario | ✅ | | Retornar 'false' si los datos están vacíos | test_save_returnsFalse_forEmptyData | Unitario | ✅ | | Retornar 'false' si la clave contiene solo espacios | test_save_returnsFalse_forKeyWithOnlySpaces | Unitario | ✅ | | Retornar 'false' si la operación de Keychain falla (simulado) | test_save_returnsFalse_onKeychainFailure, test_save_returnsFalse_whenKeychainAlwaysFails | Unitario/Integración | ✅ | | Persistencia real: save y load en Keychain | test_realSystemKeychain_saveAndLoad_returnsPersistedData | Integración | ✅ | | Forzar error de duplicidad y asegurar que se ejecuta handleDuplicateItem | test_save_duplicateItem_triggersHandleDuplicateItem | Unitario/Integración | 🔜 | | Validar que el método handleDuplicateItem retorna correctamente según el flujo de actualización y comparación | test_handleDuplicateItem_returnsExpectedResults | Unitario | 🔜 | | Garantizar que la estrategia NoFallback retorna .failure y nil en todos los casos | test_noFallback_saveAndLoadAlwaysFail | Unitario | 🔜 | | Ejecutar closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen) | test_closures_areInvokedInAllPaths | Unitario/Integración | 🔜 | | Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests | test_factories_coverAllInternalPaths | Unitario | 🔜 |
 
-| Ítem checklist almacenamiento seguro                         | Test que lo cubre (nombre real)           | Tipo de test      | Cobertura  |
-|--------------------------------------------------------------|-------------------------------------------|-------------------|------------|
-| [✅] Determinar nivel de protección necesario para cada dato      | test_protectionLevelForData               | Unitario          | ✅         |
-| [✅] Encriptar la información antes de almacenar si es necesario  | test_encryptsDataIfNeeded                 | Unitario          | ✅         |
-| [✅] Almacenar en Keychain con configuración adecuada             | test_realSystemKeychain_saveAndLoad_returnsPersistedData | Integración | ✅      |
-| [✅] Verificar que la información se almacena correctamente       | test_realSystemKeychain_saveAndLoad_returnsPersistedData | Integración | ✅      |
-| [✅] Intentar almacenamiento alternativo si falla el Keychain     | test_saveData_usesAlternativeStorage_whenKeychainAndFallbackFail | Unitario/Integración | ✅      |
-| [✅] Notificar error si persiste el fallo                         | test_save_returnsFalse_onKeychainFailure     | Unitario/Integración | ✅      |
-| [✅] Limpiar datos corruptos y solicitar nueva autenticación      | test_detectsAndCleansCorruptedData        | Unitario/Integración | ✅      |
-| [✅] Borra valor previo antes de guardar uno nuevo                | test_save_deletesPreviousValueBeforeSavingNewOne | Integración | ✅  |
-| [✅] Soporta claves unicode y datos grandes                       | test_save_supportsUnicodeKeysAndLargeBinaryData | Integración | ✅     |
-| [✅] Devuelve error para clave vacía o datos vacíos               | test_save_returnsFalse_forEmptyKey / test_save_returnsFalse_forEmptyData | Unitario | ✅         |
-| [✅] Simula errores específicos de Keychain                       | test_save_handlesSpecificKeychainErrors    | Unitario/Integración | ✅      |
-| [✅] Retornar 'false' si la clave está vacía                      | test_save_returnsFalse_forEmptyKey         | Unitario          | ✅         |
-| [✅] Retornar 'false' si los datos están vacíos                   | test_save_returnsFalse_forEmptyData        | Unitario          | ✅         |
-| [✅] Retornar 'false' si la clave contiene solo espacios          | test_save_returnsFalse_forKeyWithOnlySpaces | Unitario         | ✅         |
-| [✅] Retornar 'false' si la operación de Keychain falla (simulado)| test_save_returnsFalse_onKeychainFailure  | Unitario/Integración | ✅      |
-| [✅] Robustez ante concurrencia (thread safe)                     | test_save_isThreadSafe                    | Integración       | ✅         |
-| [✅] Validación post-guardado y manejo de corrupción              | test_save_returnsFailure_whenValidationAfterSaveFails     | Unitario/Integración | ✅      |
-| [✅] Prevención de memory leaks en KeychainSpies                  | test_saveData_succeeds_whenKeychainSavesSuccessfully, test_saveData_fails_whenKeychainReturnsError, test_saveData_usesFallback_whenKeychainFails, test_saveData_usesAlternativeStorage_whenKeychainAndFallbackFail | Unitario | ✅ |
-| [✅] Cubrir todos los códigos de error posibles de la API Keychain| test_save_handlesSpecificKeychainErrors   | Unitario/Integración | ✅      |
-| [✅] Persistencia real: save y load en Keychain                   | test_realSystemKeychain_saveAndLoad_returnsPersistedData | Integración | ✅      |
+---
+
+> **Nota profesional sobre tests de Keychain:**
+> 
+> El test `test_save_returnsFalse_whenAllRetriesFail_integration` es de tipo **integración** y puede ser no determinista en simulador/CLI.
+> Para cobertura real de la rama de error (por ejemplo, clave inválida), utiliza el test **unitario con mock**: `test_save_returnsFalse_whenKeychainAlwaysFails`.
+> 
+> Esta práctica garantiza fiabilidad, reproducibilidad y cobertura real de todos los caminos de error en Keychain, tanto en CI/CD como en validaciones locales.
 
 ---
 

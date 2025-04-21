@@ -62,8 +62,8 @@ final class SystemKeychainTests: XCTestCase {
 		spy.saveResult = .success
 		let data = "expected".data(using: .utf8)!
 		let key = "key"
-		spy.willValidateAfterSave = { corruptedKey in
-			spy.simulateCorruption(forKey: corruptedKey)
+		spy.willValidateAfterSave = { [weak spy] corruptedKey in
+			spy?.simulateCorruption(forKey: corruptedKey)
 		}
 		let result = sut.save(data: data, forKey: key)
 		XCTAssertEqual(result, .failure, "Save result should be .failure if validation fails")

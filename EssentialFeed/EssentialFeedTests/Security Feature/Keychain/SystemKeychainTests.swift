@@ -315,18 +315,50 @@ final class SystemKeychainTests: XCTestCase {
 
 	// Checklist: Delete covers success and error paths
 	// CU: SystemKeychain-delete-success, SystemKeychain-delete-emptyKey
-	func test_delete_onSystemKeychain_withValidAndInvalidInput() {
-		let sut = makeSystemKeychain()
-		let key = uniqueKey()
-		let data = "data".data(using: .utf8)!
-		// Guardar primero para poder borrar
-		XCTAssertEqual(sut.save(data: data, forKey: key), .success, "Should save data before deleting")
-		XCTAssertTrue(sut.delete(forKey: key), "Should delete data for valid key")
-		XCTAssertNil(sut.load(forKey: key), "Should return nil after deletion")
-		// Path error: clave vacía
-		XCTAssertFalse(sut.delete(forKey: ""), "Should return false for empty key")
-	}
+	    func test_delete_onSystemKeychain_withValidAndInvalidInput() {
+        let sut = makeSystemKeychain()
+        let key = uniqueKey()
+        let data = "data".data(using: .utf8)!
+        // Guardar primero para poder borrar
+        XCTAssertEqual(sut.save(data: data, forKey: key), .success, "Should save data before deleting")
+        XCTAssertTrue(sut.delete(forKey: key), "Should delete data for valid key")
+        XCTAssertNil(sut.load(forKey: key), "Should return nil after deletion")
+        // Path error: clave vacía
+        XCTAssertFalse(sut.delete(forKey: ""), "Should return false for empty key")
+    }
+
+    // Checklist: _save covers validation for empty key and data
+    // CU: SystemKeychain-_save-emptyKey, SystemKeychain-_save-emptyData, SystemKeychain-_save-success
+    func test__save_onSystemKeychain_validatesInputAndSavesCorrectly() {
+        let (sut, _) = makeSpySUT()
+        let validKey = uniqueKey()
+        let validData = "data".data(using: .utf8)!
+        // Path éxito
+        let resultSuccess = sut.save(data: validData, forKey: validKey)
+        XCTAssertEqual(resultSuccess, .success, "Should save data with valid key and data")
+        // Path error: clave vacía
+        let resultEmptyKey = sut.save(data: validData, forKey: "")
+        XCTAssertEqual(resultEmptyKey, .failure, "Should fail to save with empty key")
+        // Path error: data vacío
+        let resultEmptyData = sut.save(data: Data(), forKey: validKey)
+        XCTAssertEqual(resultEmptyData, .failure, "Should fail to save with empty data")
+    }
+
+    // Checklist: NoFallback always fails
+    // CU: NoFallback-save-alwaysFails, NoFallback-load-alwaysNil, NoFallback-init
+    func test_noFallback_save_and_load_alwaysFail() {
+        let fallback = makeNoFallback()
+        let key = uniqueKey()
+        let data = "irrelevant".data(using: .utf8)!
+        // Save siempre falla
+        XCTAssertEqual(fallback.save(data: data, forKey: key), .failure, "NoFallback should always return .failure on save")
+        // Load siempre es nil
+        XCTAssertNil(fallback.load(forKey: key), "NoFallback should always return nil on load")
+        // Init no lanza excepción
+        XCTAssertNotNil(fallback, "NoFallback should be initializable")
+    }
 }
+
 
 // MARK: - Helpers y Mocks
 extension SystemKeychainTests {

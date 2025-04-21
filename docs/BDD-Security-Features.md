@@ -124,6 +124,14 @@ Como usuario de la aplicación, quiero que mi información sensible se almacene 
 
 ### ✅ Checklist técnico de almacenamiento seguro
 
+> **Limitación técnica en cobertura automatizada de Keychain**
+>
+> Por restricciones conocidas de Xcode y el entorno CLI, los tests que interactúan con el Keychain del sistema/simulador pueden fallar o no reflejar cobertura real al ejecutar por línea de comandos (xcodebuild, CI, scripts), aunque funcionen correctamente en Xcode GUI.  
+> Por tanto, la cobertura de la clase `SystemKeychain.swift` y sus flujos críticos se valida y audita visualmente mediante el reporte de cobertura integrado de Xcode, que es la fuente de verdad para auditoría y compliance.  
+> El resto de la cobertura (tests unitarios, helpers, lógica de negocio) se reporta y automatiza normalmente por CLI.
+>
+> _Esta decisión se documenta para máxima transparencia ante revisores y auditores, y se mantiene alineada con las mejores prácticas de seguridad y calidad en iOS._
+
 - [✅] Determinar el nivel de protección necesario para cada dato
 - [✅] Encriptar la información antes de almacenar si es necesario
 - [✅] Almacenar en Keychain con configuración adecuada

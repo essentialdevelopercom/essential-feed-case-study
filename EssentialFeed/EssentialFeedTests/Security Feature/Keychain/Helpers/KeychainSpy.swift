@@ -18,7 +18,10 @@ public final class KeychainSaveSpy: KeychainSavable {
 	public init() {}
 	
 	public func save(data: Data, forKey key: String) -> KeychainSaveResult {
-		if let _ = simulatedError {
+		if let error = simulatedError {
+			if error == -25299 { // errSecDuplicateItem
+				return .duplicateItem
+			}
 			return .failure
 		}
 		saveCalled = true

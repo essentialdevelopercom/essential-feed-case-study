@@ -237,6 +237,7 @@ final class SystemKeychainTests: XCTestCase {
 	func test_save_handlesSpecificKeychainErrors() {
 		let (sut, spy) = makeSpySUT()
 		spy.saveResult = .duplicateItem
+		spy.updateResult = false // Ensure update fails so .duplicateItem is returned
 		spy.saveSpy.simulatedError = -25299  // errSecDuplicateItem
 		let result = sut.save(data: anyData(), forKey: anyKey())
 		XCTAssertEqual(result, .duplicateItem, "Should return .duplicateItem on duplicate item error")

@@ -42,7 +42,7 @@
 
 | Caso de Uso                                 | Estado             | Comentario                                       |
 |---------------------------------------------|--------------------|--------------------------------------------------|
-| 1. Almacenamiento Seguro                    | ✅ Completado      | Totalmente cubierto por tests automatizados (incluye integración con borrado previo, soporte unicode y datos grandes, refactor con inyección de dependencias y **persistencia real Keychain (save/load)**).
+| 1. Almacenamiento Seguro                    | ✅ Completado      | Totalmente cubierto por tests automatizados (incluye integración con borrado previo, soporte unicode y datos grandes, refactor con inyección de dependencias, validación post-guardado, prevención de memory leaks y **persistencia real Keychain (save/load)**).
 
 #### 🗂️ Tabla de trazabilidad técnica <-> tests
 
@@ -162,6 +162,8 @@ graph TD
 | [✅] Retornar 'false' si la clave contiene solo espacios          | test_save_returnsFalse_forKeyWithOnlySpaces | Unitario         | ✅         |
 | [✅] Retornar 'false' si la operación de Keychain falla (simulado)| test_save_returnsFalse_onKeychainFailure  | Unitario/Integración | ✅      |
 | [✅] Robustez ante concurrencia (thread safe)                     | test_save_isThreadSafe                    | Integración       | ✅         |
+| [✅] Validación post-guardado y manejo de corrupción              | test_save_returnsFailure_whenValidationAfterSaveFails     | Unitario/Integración | ✅      |
+| [✅] Prevención de memory leaks en KeychainSpies                  | test_saveData_succeeds_whenKeychainSavesSuccessfully, test_saveData_fails_whenKeychainReturnsError, test_saveData_usesFallback_whenKeychainFails, test_saveData_usesAlternativeStorage_whenKeychainAndFallbackFail | Unitario | ✅ |
 | [✅] Cubrir todos los códigos de error posibles de la API Keychain| test_save_handlesSpecificKeychainErrors   | Unitario/Integración | ✅      |
 | [✅] Persistencia real: save y load en Keychain                   | test_realSystemKeychain_saveAndLoad_returnsPersistedData | Integración | ✅      |
 

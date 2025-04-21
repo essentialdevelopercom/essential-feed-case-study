@@ -391,24 +391,36 @@ GET /image/{image-id}/comments
 | Archivo | Cobertura | Test que lo cubre |
 |---|---|---|
 | [UserLoginUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Authentication Feature/UserLoginUseCase.swift) | 100.00% | UserLoginUseCaseTests.swift |
-| [SecureStorage.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Security Feature/SecureStorage.swift) | 100.00% | SecureStorageTests.swift
-KeychainSecureStorageTests.swift |
-| [UserRegistrationUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Registration Feature/UserRegistrationUseCase.swift) | 97.46% | UserRegistrationUseCaseTests.swift
-UserRegistrationUseCaseTests+Server.swift |
-| [SystemKeychain.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Security Feature/Keychain/SystemKeychain.swift) | 51.85% | SystemKeychainTests.swift |
+| [SecureStorage.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Security Feature/SecureStorage.swift) | 100.00% | KeychainSecureStorageTests.swift
+SystemKeychainIntegrationCoverageTests.swift
+SecureStorageTests.swift |
+| [UserRegistrationUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Registration Feature/UserRegistrationUseCase.swift) | 97.46% | UserRegistrationUseCaseTests+Server.swift
+UserRegistrationUseCaseTests.swift |
+| [SystemKeychain.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Security Feature/Keychain/SystemKeychain.swift) | 51.85% | SystemKeychainIntegrationCoverageTests.swift
+SystemKeychainTests.swift
+SecureStorageTests.swift |
 
 ## Archivos con menor cobertura (>0%)
 
 | Archivo | Cobertura | Test que lo cubre |
 |---|---|---|
-| [SystemKeychain.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Security Feature/Keychain/SystemKeychain.swift) | 51.85% | SystemKeychainTests.swift |
-| [UserRegistrationUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Registration Feature/UserRegistrationUseCase.swift) | 97.46% | UserRegistrationUseCaseTests.swift
-UserRegistrationUseCaseTests+Server.swift |
+| [SystemKeychain.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Security Feature/Keychain/SystemKeychain.swift) | 51.85% | SystemKeychainIntegrationCoverageTests.swift
+SystemKeychainTests.swift
+SecureStorageTests.swift |
+| [UserRegistrationUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Registration Feature/UserRegistrationUseCase.swift) | 97.46% | UserRegistrationUseCaseTests+Server.swift
+UserRegistrationUseCaseTests.swift |
 | [UserLoginUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Authentication Feature/UserLoginUseCase.swift) | 100.00% | UserLoginUseCaseTests.swift |
-| [SecureStorage.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Security Feature/SecureStorage.swift) | 100.00% | SecureStorageTests.swift
-KeychainSecureStorageTests.swift |
+| [SecureStorage.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Security Feature/SecureStorage.swift) | 100.00% | KeychainSecureStorageTests.swift
+SystemKeychainIntegrationCoverageTests.swift
+SecureStorageTests.swift |
 
 ---
+## Archivos de producción **sin ningún test asociado**
+
+Todos los archivos de producción tienen al menos un test asociado.
+
+> Estos archivos no tienen ningún test directo asociado según el mapeo por nombre y CU. Revisa si requieren cobertura o si son candidatos a refactorización.
+
 ### ¿Cómo leer este reporte?
 - **Cobertura total:** Porcentaje de líneas cubiertas por tests en todo el target.
 - **Mayor cobertura:** Archivos mejor cubiertos por los tests.

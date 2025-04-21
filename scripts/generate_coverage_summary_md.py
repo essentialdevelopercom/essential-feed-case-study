@@ -57,7 +57,7 @@ for d in test_dirs:
     test_files += glob(f"{d}/**/*Tests*.swift", recursive=True)
 # Normalizar paths
 import os
-test_files = [os.path.relpath(f, REPO_ROOT) for f in test_files]
+test_files = [str(Path(f).resolve()) for f in test_files]
 # Eliminar duplicados
 unique_test_files = list(dict.fromkeys(test_files))
 
@@ -116,44 +116,10 @@ for pf in prod_files:
                     related_tests.add(tf)
         except Exception:
             pass
-    # Extra: extraer métodos de test con // Checklist: o // CU: de cada archivo de test
-    method_map = {}
-    for tf in related_tests:
-        method_map[Path(tf).name] = []
-        try:
-            with open(tf, encoding="utf-8") as f:
-                lines = f.readlines()
-                for i, line in enumerate(lines):
-                    checklist = re.search(r'//\s*Checklist:\s*([\w_\-]+)', line)
-                    cu = re.search(r'//\s*CU:\s*([\w_\-]+)', line)
-                    if checklist or cu:
-                        # Busca el nombre del método de test en la siguiente línea
-                        for j in range(i+1, min(i+4, len(lines))):
-                            m = re.search(r'func\s+(test_[\w_\-]+)', lines[j])
-                            if m:
-                                nombre = m.group(1)
-                                if checklist:
-                                    nombre = f'{nombre} [Checklist: {checklist.group(1)}]'
-                                if cu:
-                                    nombre = f'{nombre} [CU: {cu.group(1)}]'
-                                method_map[Path(tf).name].append(nombre)
-                                break
-        except Exception:
-            pass
-    # Siempre incluir el archivo de test como primer elemento, luego los métodos (si existen)
-    final_test_map = {}
-    for tf in set(Path(t).name for t in related_tests):
-        methods = method_map.get(tf, [])
-        # Si hay métodos, archivo + métodos (sin duplicar el archivo)
-        if methods:
-            final_test_map[tf] = [tf] + [m for m in methods if m != tf]
-        else:
-            final_test_map[tf] = [tf]
-    # Combina todos los tests (archivo + métodos) para la columna
-    all_tests = set()
-    for tf in set(Path(t).name for t in related_tests):
-        all_tests.update(final_test_map.get(tf, [tf]))
-    test_map[pf] = list(all_tests)
+        test_map[pf] = sorted(related_tests)
+
+
+    test_map[pf] = sorted(related_tests)
 
 # Incluye todos los archivos de producción y test relevantes, aunque tengan 0 o N/A
 all_prod_files = set([f[0] for f in files if is_included(f[0])])
@@ -188,7 +154,8 @@ def md_table(rows, test_map=None):
         rel = rel_link(Path(name))
         cov_str = f"{cov:.2f}%" if cov is not None else "N/A"
         if test_map and name in test_map:
-            test_items = test_map[name]
+            # Solo nombres de archivos de test, sin métodos ni comentarios CU
+            test_items = [Path(t).name for t in test_map[name]]
             test_str = "\n".join(test_items)
         else:
             test_str = ""
@@ -204,7 +171,8 @@ def html_table(rows, bars=False, test_map=None):
         rel = rel_link(Path(name))
         cov_str = f"{cov:.2f}%" if cov is not None else "N/A"
         if test_map and name in test_map:
-            test_items = test_map[name]
+            # Solo nombres de archivos de test, sin métodos ni comentarios CU
+            test_items = [Path(t).name for t in test_map[name]]
             test_str = "<br>".join(test_items)
         else:
             test_str = ""
@@ -252,7 +220,7 @@ with MD_REPORT.open("w") as f:
     f.write(md_table(bottom5, test_map=test_map))
     f.write("\n---\n")
     f.write("## Archivos de producción **sin ningún test asociado**\n\n")
-    f.write(md_table_no_tests(prod_without_tests, cov_map))
+    f.write(md_table_no_tests(prod_without_tests, dict(files)))
     f.write("\n> Estos archivos no tienen ningún test directo asociado según el mapeo por nombre y CU. Revisa si requieren cobertura o si son candidatos a refactorización.\n\n")
     f.write("### ¿Cómo leer este reporte?\n")
     f.write("- **Cobertura total:** Porcentaje de líneas cubiertas por tests en todo el target.\n")

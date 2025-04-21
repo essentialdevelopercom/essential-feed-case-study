@@ -40,18 +40,18 @@
 
 ## Resumen Actualizado de Estado de Implementación
 
-| Caso de Uso                                 | Estado             | Comentario                                       |
-|---------------------------------------------|--------------------|--------------------------------------------------|
-| 1. Almacenamiento Seguro                    | ✅ Completado      | Totalmente cubierto por tests automatizados (incluye integración con borrado previo, soporte unicode y datos grandes, refactor con inyección de dependencias, validación post-guardado, prevención de memory leaks y **persistencia real Keychain (save/load)**).
-| 2. Registro de Usuario                      | ✅ Completado      | Todos los caminos (happy/sad) cubiertos por tests|
-| 3. Autenticación de Usuario                 | ⏳ En progreso     | Solo cubiertos: token seguro y error credenciales|
-| 4. Gestión de Token Expirado                | 🔜 Siguiente       | Sin tests, pendiente de implementar              |
-| 5. Recuperación de Contraseña               | 🟡 Pendiente       | Sin tests, pendiente de implementar              |
-| 6. Gestión de Sesiones                      | 🟡 Pendiente       | Sin tests, pendiente de implementar              |
-| 7. Cambio de Contraseña                     | 🟡 Pendiente       | Sin tests, pendiente de implementar              |
-| 8. Verificación de Cuenta                   | 🟡 Pendiente       | Sin tests, pendiente de implementar              |
-| 9. Autenticación con Proveedores Externos   | 🟡 Pendiente       | Sin tests, pendiente de implementar              |
-| 10. Métricas de Seguridad                   | 🟡 Pendiente       | Sin tests, pendiente de implementar              |
+| Caso de Uso                                 | Estado | Comentario                                       |
+|---------------------------------------------|--------|--------------------------------------------------|
+| 1. Almacenamiento Seguro                    | ✅     | Totalmente cubierto por tests automatizados (incluye integración con borrado previo, soporte unicode y datos grandes, refactor con inyección de dependencias, validación post-guardado, prevención de memory leaks y **persistencia real Keychain (save/load)**). |
+| 2. Registro de Usuario                      | ✅     | Todos los caminos (happy/sad) cubiertos por tests|
+| 3. Autenticación de Usuario                 | ⏳     | Solo cubiertos: token seguro y error credenciales|
+| 4. Gestión de Token Expirado                | 🔜     | Sin tests, pendiente de implementar              |
+| 5. Recuperación de Contraseña               | 🟡     | Sin tests, pendiente de implementar              |
+| 6. Gestión de Sesiones                      | 🟡     | Sin tests, pendiente de implementar              |
+| 7. Cambio de Contraseña                     | 🟡     | Sin tests, pendiente de implementar              |
+| 8. Verificación de Cuenta                   | 🟡     | Sin tests, pendiente de implementar              |
+| 9. Autenticación con Proveedores Externos   | 🟡     | Sin tests, pendiente de implementar              |
+| 10. Métricas de Seguridad                   | 🟡     | Sin tests, pendiente de implementar              |
 
 > Solo se marca como completado lo que está cubierto por tests automatizados reales. El resto debe implementarse y testearse antes de marcar como hecho.
 
@@ -123,7 +123,30 @@ graph TD
 ```
 
 #### 🗂️ Tabla de trazabilidad técnica <-> tests
-| 🛠️ Subtarea técnica | ✅ Test que la cubre (real/propuesto) | Tipo de test | Estado | |-----------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------|----------------------|----------| | Determinar nivel de protección necesario para cada dato | test_protectionLevelForData | Unitario | ✅ | | Encriptar la información antes de almacenar si es necesario | test_encryptsDataIfNeeded | Unitario | ✅ | | Almacenar en Keychain con configuración adecuada | test_saveAndLoad_realKeychain_persistsAndRetrievesData | Integración | ✅ | | Verificar que la información se almacena correctamente | test_saveAndLoad_realKeychain_persistsAndRetrievesData | Integración | ✅ | | Intentar almacenamiento alternativo si falla el Keychain | test_save_fallbackToAlternativeStorage | Unitario/Integración | ✅ | | Notificar error si persiste el fallo | test_save_notifiesOnPersistentFailure | Unitario/Integración | ✅ | | Limpiar datos corruptos y solicitar nueva autenticación | test_detectsAndCleansCorruptedData | Unitario/Integración | ✅ | | Eliminar correctamente valores previos antes de guardar uno nuevo | test_save_deletesPreviousValueBeforeSavingNewOne | Integración | ✅ | | Soportar claves unicode y datos binarios grandes | test_save_supportsUnicodeKeysAndLargeBinaryData | Integración | ✅ | | Robustez ante concurrencia | test_save_isThreadSafe | Integración | ✅ | | Cubrir todos los códigos de error posibles de la API Keychain | test_save_handlesSpecificKeychainErrors | Unitario/Integración | ✅ | | Retornar 'false' si la clave está vacía | test_save_returnsFalse_forEmptyKey | Unitario | ✅ | | Retornar 'false' si los datos están vacíos | test_save_returnsFalse_forEmptyData | Unitario | ✅ | | Retornar 'false' si la clave contiene solo espacios | test_save_returnsFalse_forKeyWithOnlySpaces | Unitario | ✅ | | Retornar 'false' si la operación de Keychain falla (simulado) | test_save_returnsFalse_onKeychainFailure, test_save_returnsFalse_whenKeychainAlwaysFails | Unitario/Integración | ✅ | | Persistencia real: save y load en Keychain | test_realSystemKeychain_saveAndLoad_returnsPersistedData | Integración | ✅ | | Forzar error de duplicidad y asegurar que se ejecuta handleDuplicateItem | test_save_duplicateItem_triggersHandleDuplicateItem | Unitario/Integración | 🔜 | | Validar que el método handleDuplicateItem retorna correctamente según el flujo de actualización y comparación | test_handleDuplicateItem_returnsExpectedResults | Unitario | 🔜 | | Garantizar que la estrategia NoFallback retorna .failure y nil en todos los casos | test_noFallback_saveAndLoadAlwaysFail | Unitario | 🔜 | | Ejecutar closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen) | test_closures_areInvokedInAllPaths | Unitario/Integración | 🔜 | | Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests | test_factories_coverAllInternalPaths | Unitario | 🔜 |
+
+| 🛠️ Subtarea técnica                                                                                                   | ✅ Test que la cubre (real/propuesto)                     | Tipo de test         | Estado   |
+|-----------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------|----------------------|----------|
+| Determinar nivel de protección necesario para cada dato                         | test_protectionLevelForData              | Unitario          | ✅         |
+| Encriptar la información antes de almacenar si es necesario                     | test_encryptsDataIfNeeded                | Unitario          | ✅         |
+| Almacenar en Keychain con configuración adecuada                                | test_saveAndLoad_realKeychain_persistsAndRetrievesData | Integración | ✅      |
+| Verificar que la información se almacena correctamente                          | test_saveAndLoad_realKeychain_persistsAndRetrievesData | Integración | ✅      |
+| Intentar almacenamiento alternativo si falla el Keychain                        | test_save_fallbackToAlternativeStorage   | Unitario/Integración | ✅      |
+| Notificar error si persiste el fallo                                            | test_save_notifiesOnPersistentFailure    | Unitario/Integración | ✅      |
+| Limpiar datos corruptos y solicitar nueva autenticación                         | test_detectsAndCleansCorruptedData       | Unitario/Integración | ✅      |
+| Eliminar correctamente valores previos antes de guardar uno nuevo               | test_save_deletesPreviousValueBeforeSavingNewOne | Integración | ✅  |
+| Soportar claves unicode y datos binarios grandes                                | test_save_supportsUnicodeKeysAndLargeBinaryData | Integración | ✅     |
+| Robustez ante concurrencia                                                      | test_save_isThreadSafe                   | Integración       | ✅         |
+| Cubrir todos los códigos de error posibles de la API Keychain                   | test_save_handlesSpecificKeychainErrors  | Unitario/Integración | ✅      |
+| Retornar 'false' si la clave está vacía                                         | test_save_returnsFalse_forEmptyKey       | Unitario          | ✅         |
+| Retornar 'false' si los datos están vacíos                                      | test_save_returnsFalse_forEmptyData      | Unitario          | ✅         |
+| Retornar 'false' si la clave contiene solo espacios                             | test_save_returnsFalse_forKeyWithOnlySpaces | Unitario       | ✅         |
+| Retornar 'false' si la operación de Keychain falla (simulado)                   | test_save_returnsFalse_onKeychainFailure, test_save_returnsFalse_whenKeychainAlwaysFails | Unitario/Integración | ✅      |
+| Persistencia real: save y load en Keychain                                      | test_realSystemKeychain_saveAndLoad_returnsPersistedData | Integración | ✅      |
+| Forzar error de duplicidad y asegurar que se ejecuta `handleDuplicateItem`      | test_save_duplicateItem_triggersHandleDuplicateItem  | Unitario/Integración | 🔜      |
+| Validar que el método `handleDuplicateItem` retorna correctamente según el flujo de actualización y comparación | test_handleDuplicateItem_returnsExpectedResults      | Unitario             | 🔜      |
+| Garantizar que la estrategia `NoFallback` retorna `.failure` y `nil` en todos los casos | test_noFallback_saveAndLoadAlwaysFail                | Unitario             | 🔜      |
+| Ejecutar closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen) | test_closures_areInvokedInAllPaths                  | Unitario/Integración | 🔜      |
+| Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests | test_factories_coverAllInternalPaths                 | Unitario             | 🔜      |
 
 ---
 
@@ -153,15 +176,15 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 ---
 
 ### Checklist técnico de registro
-- ✅ Almacenar credenciales iniciales de forma segura (Keychain)
-- ✅ Almacenar el token de autenticación recibido (OAuth/JWT) de forma segura tras registro
-- ✅ Notificar éxito de registro
-- ✅ Notificar que el correo ya está en uso
-- ✅ Mostrar mensajes de error apropiados y específicos
-- ✅ Guardar datos para reintento si no hay conexión y notificar error
-- ✅ Tests unitarios y de integración para todos los caminos (happy/sad path)
-- ✅ Refactor: helper de tests usa KeychainSpy concreto para asserts claros
-- ✅ Documentación y arquitectura alineada (ver AUTH-ARCHITECTURE-GUIDE.md, sección 2)
+- [✅] Almacenar credenciales iniciales de forma segura (Keychain)
+- [✅] Almacenar el token de autenticación recibido (OAuth/JWT) de forma segura tras registro
+- [✅] Notificar éxito de registro
+- [✅] Notificar que el correo ya está en uso
+- [✅] Mostrar mensajes de error apropiados y específicos
+- [✅] Guardar datos para reintento si no hay conexión y notificar error
+- [✅] Tests unitarios y de integración para todos los caminos (happy/sad path)
+- [✅] Refactor: helper de tests usa KeychainSpy concreto para asserts claros
+- [✅] Documentación y arquitectura alineada (ver AUTH-ARCHITECTURE-GUIDE.md, sección 2)
 
 ---
 
@@ -238,17 +261,17 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 ---
 
 ### Checklist técnico de login
-- ✅ Almacenar token de autenticación de forma segura tras login exitoso
+- [✅] Almacenar token de autenticación de forma segura tras login exitoso
   - Cubierto por test: `test_login_succeeds_onValidCredentialsAndServerResponse`
-- ❌ Registrar sesión activa en SessionManager
-- 🟡 Notificar éxito de login (parcial, falta integración UI)
-- ❌ Notificar errores de validación específicos (formato)
-- ✅ Notificar error de credenciales
+- [❌] Registrar sesión activa en SessionManager
+- [🟡] Notificar éxito de login (parcial, falta integración UI)
+- [❌] Notificar errores de validación específicos (formato)
+- [✅] Notificar error de credenciales
   - Cubierto por test: `test_login_fails_onInvalidCredentialsAndNotifiesFailure`
-- ❌ Ofrecer recuperación de contraseña
-- ❌ Almacenar la solicitud para reintentar (sin conexión)
-- ❌ Notificar error de conectividad
-- ❌ Aplicar retardo/bloqueo tras múltiples intentos fallidos
+- [❌] Ofrecer recuperación de contraseña
+- [❌] Almacenar la solicitud para reintentar (sin conexión)
+- [❌] Notificar error de conectividad
+- [❌] Aplicar retardo/bloqueo tras múltiples intentos fallidos
 
 ---
 
@@ -386,12 +409,12 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 ---
 
 ### Checklist técnico de recuperación de contraseña
-- ❌ Enviar enlace de restablecimiento al correo registrado
-- ❌ Mostrar mensaje neutro si el correo no está registrado
-- ❌ Permitir establecer nueva contraseña si el enlace es válido
-- ❌ Mostrar error y permitir solicitar nuevo enlace si el enlace es inválido o expirado
-- ❌ Registrar todos los intentos y cambios para métricas de seguridad
-- ❌ Notificar por correo el cambio de contraseña
+- [❌] Enviar enlace de restablecimiento al correo registrado
+- [❌] Mostrar mensaje neutro si el correo no está registrado
+- [❌] Permitir establecer nueva contraseña si el enlace es válido
+- [❌] Mostrar error y permitir solicitar nuevo enlace si el enlace es inválido o expirado
+- [❌] Registrar todos los intentos y cambios para métricas de seguridad
+- [❌] Notificar por correo el cambio de contraseña
 
 ---
 
@@ -468,14 +491,14 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 ---
 
 ### Checklist técnico de gestión de sesiones
-- ❌ Mostrar lista de sesiones activas con detalles relevantes
-- ❌ Destacar la sesión actual
-- ❌ Permitir cierre remoto de una sesión
-- ❌ Permitir cierre de todas las sesiones excepto la actual
-- ❌ Notificar al dispositivo afectado tras cierre remoto
-- ❌ Detectar acceso sospechoso y notificar al usuario
-- ❌ Permitir verificar o cerrar sesión sospechosa
-- ❌ Sugerir cambio de contraseña si corresponde
+- [❌] Mostrar lista de sesiones activas con detalles relevantes
+- [❌] Destacar la sesión actual
+- [❌] Permitir cierre remoto de una sesión
+- [❌] Permitir cierre de todas las sesiones excepto la actual
+- [❌] Notificar al dispositivo afectado tras cierre remoto
+- [❌] Detectar acceso sospechoso y notificar al usuario
+- [❌] Permitir verificar o cerrar sesión sospechosa
+- [❌] Sugerir cambio de contraseña si corresponde
 
 ---
 
@@ -556,15 +579,15 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 
 ### Checklist técnico de verificación de cuenta
 
-- ❌ Enviar correo de verificación tras registro
-- ❌ Procesar enlace de verificación y actualizar estado de cuenta
-- ❌ Mostrar mensaje de éxito tras verificación
-- ❌ Permitir inicio de sesión solo si la cuenta está verificada
-- ❌ Actualizar estado de verificación en todos los dispositivos
-- ❌ Permitir reenvío de correo de verificación
-- ❌ Invalidar enlaces de verificación anteriores tras reenvío
-- ❌ Mostrar mensaje de error en caso de enlace inválido/expirado
-- ❌ Ofrecer opción de reenviar correo en caso de error
+- [❌] Enviar correo de verificación tras registro
+- [❌] Procesar enlace de verificación y actualizar estado de cuenta
+- [❌] Mostrar mensaje de éxito tras verificación
+- [❌] Permitir inicio de sesión solo si la cuenta está verificada
+- [❌] Actualizar estado de verificación en todos los dispositivos
+- [❌] Permitir reenvío de correo de verificación
+- [❌] Invalidar enlaces de verificación anteriores tras reenvío
+- [❌] Mostrar mensaje de error en caso de enlace inválido/expirado
+- [❌] Ofrecer opción de reenviar correo en caso de error
 
 > Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
 
@@ -679,12 +702,12 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 
 ### Checklist técnico de visualización de feed público
 
-- ❌ Mostrar feed público para usuarios no autenticados
-- ❌ Ocultar información sensible o privada en modo público
-- ❌ Solicitar autenticación al acceder a contenido restringido
-- ❌ Manejar errores de conectividad y mostrar mensajes claros
-- ❌ Permitir recarga manual del feed
-- ❌ Mostrar placeholders o estados vacíos cuando no hay contenido
+- [❌] Mostrar feed público para usuarios no autenticados
+- [❌] Ocultar información sensible o privada en modo público
+- [❌] Solicitar autenticación al acceder a contenido restringido
+- [❌] Manejar errores de conectividad y mostrar mensajes claros
+- [❌] Permitir recarga manual del feed
+- [❌] Mostrar placeholders o estados vacíos cuando no hay contenido
 
 > Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
 
@@ -762,14 +785,14 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 
 ### Checklist técnico de autenticación con proveedores externos
 
-- ❌ Permitir autenticación con Google
-- ❌ Permitir autenticación con Apple
-- ❌ Crear cuenta automáticamente si es primer acceso
-- ❌ Asociar cuenta existente si el email ya existe
-- ❌ Manejar errores de autenticación y mostrar mensajes claros
-- ❌ Permitir desvinculación de proveedor externo
-- ❌ Manejar revocación de permisos desde el proveedor
-- ❌ Actualizar sesión y permisos tras autenticación externa
+- [❌] Permitir autenticación con Google
+- [❌] Permitir autenticación con Apple
+- [❌] Crear cuenta automáticamente si es primer acceso
+- [❌] Asociar cuenta existente si el email ya existe
+- [❌] Manejar errores de autenticación y mostrar mensajes claros
+- [❌] Permitir desvinculación de proveedor externo
+- [❌] Manejar revocación de permisos desde el proveedor
+- [❌] Actualizar sesión y permisos tras autenticación externa
 
 > Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
 
@@ -850,12 +873,12 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 
 ### Checklist técnico de métricas de seguridad
 
-- ❌ Registrar eventos de seguridad relevantes
-- ❌ Analizar patrones de intentos fallidos
-- ❌ Notificar a administradores en eventos críticos
-- ❌ Almacenar eventos de forma segura y trazable
-- ❌ Aplicar medidas automáticas ante patrones sospechosos
-- ❌ Permitir visualización y consulta de métricas
+- [❌] Registrar eventos de seguridad relevantes
+- [❌] Analizar patrones de intentos fallidos
+- [❌] Notificar a administradores en eventos críticos
+- [❌] Almacenar eventos de forma segura y trazable
+- [❌] Aplicar medidas automáticas ante patrones sospechosos
+- [❌] Permitir visualización y consulta de métricas
 
 > Solo se marcarán como completados los ítems con test real automatizado. El resto debe implementarse y testearse antes de marcar como hecho.
 

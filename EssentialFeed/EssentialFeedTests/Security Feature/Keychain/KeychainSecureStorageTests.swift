@@ -9,8 +9,8 @@ final class KeychainSecureStorageTests: XCTestCase {
         let key = "test-key"
         let data = "test-data".data(using: .utf8)!
         keychain.saveResult = KeychainSaveResult.success
-        keychain.willValidateAfterSave = { corruptedKey in
-            keychain.simulateCorruption(forKey: corruptedKey)
+        keychain.willValidateAfterSave = { [weak keychain] corruptedKey in
+            keychain?.simulateCorruption(forKey: corruptedKey)
         }
 
         let result = sut.save(data: data, forKey: key)
@@ -28,8 +28,8 @@ final class KeychainSecureStorageTests: XCTestCase {
         keychain.saveResult = KeychainSaveResult.failure
         fallback.saveResult = KeychainSaveResult.failure
         alternative.saveResult = KeychainSaveResult.failure
-        keychain.willValidateAfterSave = { corruptedKey in
-            keychain.simulateCorruption(forKey: corruptedKey)
+        keychain.willValidateAfterSave = { [weak keychain] corruptedKey in
+            keychain?.simulateCorruption(forKey: corruptedKey)
         }
 
         let result = sut.save(data: data, forKey: key)
@@ -46,8 +46,8 @@ final class KeychainSecureStorageTests: XCTestCase {
         let data = "test-data".data(using: .utf8)!
         keychain.saveResult = KeychainSaveResult.failure
         fallback.saveResult = KeychainSaveResult.success
-        keychain.willValidateAfterSave = { corruptedKey in
-            keychain.simulateCorruption(forKey: corruptedKey)
+        keychain.willValidateAfterSave = { [weak keychain] corruptedKey in
+            keychain?.simulateCorruption(forKey: corruptedKey)
         }
 
         let result = sut.save(data: data, forKey: key)
@@ -65,8 +65,8 @@ final class KeychainSecureStorageTests: XCTestCase {
         keychain.saveResult = KeychainSaveResult.failure
         fallback.saveResult = KeychainSaveResult.failure
         alternative.saveResult = KeychainSaveResult.success
-        keychain.willValidateAfterSave = { corruptedKey in
-            keychain.simulateCorruption(forKey: corruptedKey)
+        keychain.willValidateAfterSave = { [weak keychain] corruptedKey in
+            keychain?.simulateCorruption(forKey: corruptedKey)
         }
 
         // Simula que Keychain y fallback fallan

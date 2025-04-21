@@ -78,9 +78,7 @@ final class KeychainSecureStorageTests: XCTestCase {
     }
 
     // MARK: - Helpers
-    private func makeKeychainFullSpy() -> KeychainFullSpy {
-        return KeychainFullSpy()
-    }
+
 
     private func makeDefaultSUT(file: StaticString = #file, line: UInt = #line) -> (KeychainSecureStorage, KeychainFullSpy, KeychainFullSpy, KeychainFullSpy) {
         return makeSUT(

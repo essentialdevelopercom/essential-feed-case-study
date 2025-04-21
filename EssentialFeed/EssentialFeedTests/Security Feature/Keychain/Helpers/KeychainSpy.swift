@@ -43,12 +43,17 @@ public final class KeychainDeleteSpy: KeychainSavable, KeychainDeletable {
     public var deleteCalled = false
     public var lastDeletedKey: String?
     public var deleteResult: Bool = true
+    /// Si se asigna, simula un error real de borrado y fuerza el path de error
+    public var simulatedDeleteError: Int? = nil
 
     public init() {}
 
     public func delete(forKey key: String) -> Bool {
         deleteCalled = true
         lastDeletedKey = key
+        if let _ = simulatedDeleteError {
+            return false // Simula error real
+        }
         return deleteResult
     }
 
@@ -77,6 +82,9 @@ public final class KeychainUpdateSpy: KeychainSavable, KeychainUpdatable {
     public func save(data: Data, forKey key: String) -> KeychainSaveResult { .success }
     public func load(forKey key: String) -> Data? { nil }
 }
+
+// MARK: - KeychainFullSpy
+
 
 // MARK: - KeychainSpyAux
 
@@ -116,7 +124,7 @@ public final class KeychainFullSpy: KeychainFull, KeychainSpyAux {
         set { deleteSpy.lastDeletedKey = newValue }
     }
 
-    private var storage: [String: Data] = [:]
+    var storage: [String: Data] = [:] // Cambiado a internal para acceso en tests
     private let storageLock = NSLock()
     private var errorByKey: [String: Int] = [:]
     public var deleteSpy = KeychainDeleteSpy()
@@ -140,8 +148,9 @@ public final class KeychainFullSpy: KeychainFull, KeychainSpyAux {
     public func save(data: Data, forKey key: String) -> KeychainSaveResult {
         var shouldValidateKey: String?
         var resultToReturn: KeychainSaveResult = .failure
+        var wasDuplicateUpdate = false
         storageLock.lock()
-        if !deleteUnlocked(forKey: key) {
+        if (!deleteUnlocked(forKey: key)) {
             storageLock.unlock()
             return .failure
         }
@@ -156,7 +165,7 @@ public final class KeychainFullSpy: KeychainFull, KeychainSpyAux {
             if didUpdate {
                 storage[key] = data
                 if willValidateAfterSave != nil { shouldValidateKey = key }
-                resultToReturn = .success
+                wasDuplicateUpdate = true
             } else {
                 storageLock.unlock()
                 return .duplicateItem
@@ -168,10 +177,18 @@ public final class KeychainFullSpy: KeychainFull, KeychainSpyAux {
         storageLock.unlock()
         if let validateKey = shouldValidateKey {
             willValidateAfterSave?(validateKey)
-            storageLock.lock()
-            let stillThere = storage[validateKey]
-            storageLock.unlock()
-            return stillThere == nil ? .failure : .success
+            // Validación: primero loadResult (simulación de corrupción), si no, storage real
+            let validationData: Data? = loadResult ?? {
+                storageLock.lock()
+                let data = storage[validateKey]
+                storageLock.unlock()
+                return data
+            }()
+            if wasDuplicateUpdate {
+                return validationData == nil ? .duplicateItem : .success
+            } else {
+                return validationData == nil ? .failure : .success
+            }
         }
         return resultToReturn
     }
@@ -189,7 +206,9 @@ public final class KeychainFullSpy: KeychainFull, KeychainSpyAux {
         defer { storageLock.unlock() }
         return deleteUnlocked(forKey: key)
     }
+    public var loadResult: Data? = nil
     public func load(forKey key: String) -> Data? {
+        if let forced = loadResult { return forced }
         storageLock.lock()
         let data = storage[key]
         storageLock.unlock()

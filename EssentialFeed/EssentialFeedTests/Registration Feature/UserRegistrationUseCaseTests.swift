@@ -212,7 +212,7 @@ final class UserRegistrationUseCaseTests: XCTestCase {
   }
 
   private func makeSUTWithKeychain(
-    _ keychain: RecordingKeychainFullSpy, file: StaticString = #file, line: UInt = #line
+    _ keychain: KeychainFullSpy, file: StaticString = #file, line: UInt = #line
   ) -> (sut: UserRegistrationUseCase, name: String, email: String, password: String) {
     let name = "Carlos"
     let email = "carlos@email.com"

@@ -141,7 +141,6 @@
 		B49EFABF2DB552DC007B703C /* AsyncAssertHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49EFABE2DB552DC007B703C /* AsyncAssertHelpers.swift */; };
 		B4D71EEF2DAF1643003A1316 /* KeychainProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B442B75D2AB3451700284B92 /* KeychainProtocol.swift */; };
 		B4D71EF72DAF1DE5003A1316 /* UserRegistrationUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D71EF22DAF1D34003A1316 /* UserRegistrationUseCaseTests.swift */; };
-		B4D71EF82DAF1DE5003A1316 /* RecordingKeychainSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D71EF02DAF1D34003A1316 /* RecordingKeychainSpy.swift */; };
 		B4E5AC962DB5785C007B8F34 /* KeychainSecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E5AC922DB5785C007B8F34 /* KeychainSecureStorageTests.swift */; };
 		B4E5AC972DB5785C007B8F34 /* SystemKeychainIntegrationCoverageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E5AC932DB5785C007B8F34 /* SystemKeychainIntegrationCoverageTests.swift */; };
 		B4E5AC982DB5785C007B8F34 /* SystemKeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E5AC942DB5785C007B8F34 /* SystemKeychainTests.swift */; };
@@ -322,7 +321,6 @@
 		B47D59792DB3D67F00034806 /* SecureStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageTests.swift; sourceTree = "<group>"; };
 		B49EFABC2DB54D0B007B703C /* KeychainSecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSecureStorage.swift; sourceTree = "<group>"; };
 		B49EFABE2DB552DC007B703C /* AsyncAssertHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncAssertHelpers.swift; sourceTree = "<group>"; };
-		B4D71EF02DAF1D34003A1316 /* RecordingKeychainSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingKeychainSpy.swift; sourceTree = "<group>"; };
 		B4D71EF12DAF1D34003A1316 /* UserRegistrationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRegistrationUseCase.swift; sourceTree = "<group>"; };
 		B4D71EF22DAF1D34003A1316 /* UserRegistrationUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRegistrationUseCaseTests.swift; sourceTree = "<group>"; };
 		B4E5AC922DB5785C007B8F34 /* KeychainSecureStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSecureStorageTests.swift; sourceTree = "<group>"; };
@@ -960,7 +958,6 @@
 		B4D71EF32DAF1D34003A1316 /* Registration Feature */ = {
 			isa = PBXGroup;
 			children = (
-				B4D71EF02DAF1D34003A1316 /* RecordingKeychainSpy.swift */,
 				B4D71EF22DAF1D34003A1316 /* UserRegistrationUseCaseTests.swift */,
 			);
 			path = "Registration Feature";
@@ -1331,7 +1328,6 @@
 				B4E5AC972DB5785C007B8F34 /* SystemKeychainIntegrationCoverageTests.swift in Sources */,
 				B4E5AC982DB5785C007B8F34 /* SystemKeychainTests.swift in Sources */,
 				B4D71EF72DAF1DE5003A1316 /* UserRegistrationUseCaseTests.swift in Sources */,
-				B4D71EF82DAF1DE5003A1316 /* RecordingKeychainSpy.swift in Sources */,
 				087546922272381700542C32 /* XCTestCase+FailableInsertFeedStoreSpecs.swift in Sources */,
 				08EF9D2C250BC95A004539C2 /* ImageCommentsPresenterTests.swift in Sources */,
 				086044FE233E1A90005ECD22 /* CacheFeedImageDataUseCaseTests.swift in Sources */,

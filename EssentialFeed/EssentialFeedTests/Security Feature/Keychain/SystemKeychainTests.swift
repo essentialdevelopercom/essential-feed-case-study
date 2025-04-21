@@ -370,9 +370,22 @@ final class SystemKeychainTests: XCTestCase {
         let result = sut.save(data: data, forKey: key)
         XCTAssertEqual(result, .duplicateItem, "Should return .duplicateItem after max duplicate attempts")
     }
+
+    // Checklist: _update covers validation for empty key and data
+    // CU: SystemKeychain-_update-emptyKey, SystemKeychain-_update-emptyData
+    func test__update_onSystemKeychain_failsWithEmptyKeyOrData() {
+        let sut = makeSystemKeychain()
+        let validKey = uniqueKey()
+        let validData = "data".data(using: .utf8)!
+        // Path error: clave vacía
+        let resultEmptyKey = sut.update(data: validData, forKey: "")
+        XCTAssertFalse(resultEmptyKey, "Should fail to update with empty key")
+        // Path error: data vacío
+        let resultEmptyData = sut.update(data: Data(), forKey: validKey)
+        XCTAssertFalse(resultEmptyData, "Should fail to update with empty data")
+    }
+
 }
-
-
 
 // MARK: - Helpers y Mocks
 extension SystemKeychainTests {

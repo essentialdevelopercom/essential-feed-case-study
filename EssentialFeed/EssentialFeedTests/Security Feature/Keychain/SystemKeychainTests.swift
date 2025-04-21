@@ -290,6 +290,42 @@ final class SystemKeychainTests: XCTestCase {
         // Path error: data vacío
         XCTAssertFalse(sut.update(data: Data(), forKey: key), "Should return false for empty data")
     }
+	
+	// Checklist: Save covers duplicate and update paths
+	// CU: SystemKeychain-save-duplicate-success, SystemKeychain-save-duplicate-updateFails
+	func test_save_onSystemKeychain_withDuplicateItem_forcesHandleDuplicateItem() {
+		let (sut, spy) = makeSpySUT()
+		spy.saveResult = .duplicateItem
+		spy.updateResult = true
+		let data = "data".data(using: .utf8)!
+		let key = uniqueKey()
+		let result = sut.save(data: data, forKey: key)
+		XCTAssertEqual(result, .success, "Should return .success when update path succeeds after duplicate item error")
+	}
+	
+	func test_save_onSystemKeychain_withDuplicateItem_andUpdateFails_returnsDuplicateItem() {
+		let (sut, spy) = makeSpySUT()
+		spy.saveResult = .duplicateItem
+		spy.updateResult = false
+		let data = "data".data(using: .utf8)!
+		let key = uniqueKey()
+		let result = sut.save(data: data, forKey: key)
+		XCTAssertEqual(result, .duplicateItem, "Should return .duplicateItem when update path fails after duplicate item error")
+	}
+
+	// Checklist: Delete covers success and error paths
+	// CU: SystemKeychain-delete-success, SystemKeychain-delete-emptyKey
+	func test_delete_onSystemKeychain_withValidAndInvalidInput() {
+		let sut = makeSystemKeychain()
+		let key = uniqueKey()
+		let data = "data".data(using: .utf8)!
+		// Guardar primero para poder borrar
+		XCTAssertEqual(sut.save(data: data, forKey: key), .success, "Should save data before deleting")
+		XCTAssertTrue(sut.delete(forKey: key), "Should delete data for valid key")
+		XCTAssertNil(sut.load(forKey: key), "Should return nil after deletion")
+		// Path error: clave vacía
+		XCTAssertFalse(sut.delete(forKey: ""), "Should return false for empty key")
+	}
 }
 
 // MARK: - Helpers y Mocks

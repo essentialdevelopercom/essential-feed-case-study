@@ -274,6 +274,22 @@ final class SystemKeychainTests: XCTestCase {
 		XCTAssertNotNil(sut2, "SystemKeychain should be created without keychain parameter")
 	}
 	
+    // Checklist: Update covers success and error paths
+    // CU: SystemKeychain-update-success, SystemKeychain-update-invalidInput
+    func test_update_onSystemKeychain_withValidAndInvalidInput() {
+        let sut = makeSystemKeychain()
+        let key = uniqueKey()
+        let data = "original".data(using: .utf8)!
+        let updated = "updated".data(using: .utf8)!
+        // Path éxito: guarda, luego actualiza
+        XCTAssertEqual(sut.save(data: data, forKey: key), .success, "Should save initial data")
+        XCTAssertTrue(sut.update(data: updated, forKey: key), "Should update data for valid key")
+        XCTAssertEqual(sut.load(forKey: key), updated, "Should load updated data")
+        // Path error: clave vacía
+        XCTAssertFalse(sut.update(data: data, forKey: ""), "Should return false for empty key")
+        // Path error: data vacío
+        XCTAssertFalse(sut.update(data: Data(), forKey: key), "Should return false for empty data")
+    }
 }
 
 // MARK: - Helpers y Mocks

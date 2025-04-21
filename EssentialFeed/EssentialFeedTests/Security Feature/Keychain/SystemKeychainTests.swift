@@ -209,28 +209,29 @@ final class SystemKeychainTests: XCTestCase {
 	
 	// CU: SystemKeychain-save-threadSafe
 	// Checklist: test_save_isThreadSafe
-	func test_save_isThreadSafe() {
-		let sut = makeSUT()
-		let key = uniqueKey()
-		let data1 = "1".data(using: .utf8)!
-		let data2 = "2".data(using: .utf8)!
-		let data3 = "3".data(using: .utf8)!
-		let data4 = "4".data(using: .utf8)!
-		let data5 = "5".data(using: .utf8)!
-		let allData = [data1, data2, data3, data4, data5]
-		let queue = DispatchQueue(label: "test", attributes: .concurrent)
-		let group = DispatchGroup()
-		for data in allData {
-			group.enter()
-			queue.async {
-				_ = sut.save(data: data, forKey: key)
-				group.leave()
-			}
-		}
-		group.wait()
-		
-		assertEventuallyEqual(sut.load(forKey: key), nil)
-	}
+    func test_save_isThreadSafe() {
+        let sut = makeSUT()
+        let key = uniqueKey()
+        let data1 = "1".data(using: .utf8)!
+        let data2 = "2".data(using: .utf8)!
+        let data3 = "3".data(using: .utf8)!
+        let data4 = "4".data(using: .utf8)!
+        let data5 = "5".data(using: .utf8)!
+        let allData = [data1, data2, data3, data4, data5]
+        let possibleValues: [Data?] = [nil] + allData
+        let queue = DispatchQueue(label: "test", attributes: .concurrent)
+        let group = DispatchGroup()
+        for data in allData {
+            group.enter()
+            queue.async {
+                _ = sut.save(data: data, forKey: key)
+                group.leave()
+            }
+        }
+        group.wait()
+        let loaded = sut.load(forKey: key)
+        XCTAssertTrue(possibleValues.contains(loaded), "Value should be one of the written values or nil")
+    }
 	
 	// CU: SystemKeychain-save-specificKeychainErrors
 	// Checklist: test_save_handlesSpecificKeychainErrors

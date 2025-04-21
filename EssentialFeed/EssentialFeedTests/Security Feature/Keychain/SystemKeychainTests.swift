@@ -357,7 +357,21 @@ final class SystemKeychainTests: XCTestCase {
         // Init no lanza excepción
         XCTAssertNotNil(fallback, "NoFallback should be initializable")
     }
+
+    // Checklist: handleDuplicateItem covers max attempts
+    // CU: SystemKeychain-handleDuplicateItem-maxAttempts
+    func test_handleDuplicateItem_returnsDuplicateItem_whenMaxAttemptsReached() {
+        let (sut, spy) = makeSpySUT()
+        spy.saveResult = .duplicateItem
+        spy.updateResult = false // Forzar que nunca se consiga actualizar
+        let data = "data".data(using: .utf8)!
+        let key = uniqueKey()
+        // Simula el save varias veces para forzar los reintentos
+        let result = sut.save(data: data, forKey: key)
+        XCTAssertEqual(result, .duplicateItem, "Should return .duplicateItem after max duplicate attempts")
+    }
 }
+
 
 
 // MARK: - Helpers y Mocks

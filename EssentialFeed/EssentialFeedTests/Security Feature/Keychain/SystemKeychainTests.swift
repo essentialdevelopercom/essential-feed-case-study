@@ -1,10 +1,26 @@
 // SystemKeychainTests.swift
-// Unit tests for SystemKeychain
 
 import EssentialFeed
 import XCTest
 
 final class SystemKeychainTests: XCTestCase {
+    // Cobertura explícita de constructores y métodos base para SystemKeychain y NoFallback
+    func test_init_systemKeychain_doesNotThrow() {
+        _ = makeSystemKeychain()
+    }
+    func test_save_onSystemKeychain_withInvalidInput_returnsFailure() {
+        let sut = makeSystemKeychain()
+        XCTAssertEqual(sut.save(data: Data(), forKey: ""), .failure)
+    }
+    func test_init_noFallback_doesNotThrow() {
+        _ = makeNoFallback()
+    }
+    func test_save_onNoFallback_alwaysReturnsFailure() {
+        let sut = makeNoFallback()
+        let data = "irrelevant".data(using: .utf8)!
+        XCTAssertEqual(sut.save(data: data, forKey: "irrelevant"), .failure)
+    }
+
 	func test_debug_minimal() {
 		XCTAssertTrue(true)
 	}
@@ -262,6 +278,13 @@ final class SystemKeychainTests: XCTestCase {
 
 // MARK: - Helpers y Mocks
 extension SystemKeychainTests {
+    fileprivate func makeSystemKeychain() -> SystemKeychain {
+        return SystemKeychain()
+    }
+    fileprivate func makeNoFallback() -> NoFallback {
+        return NoFallback()
+    }
+
 	fileprivate func makeSUT(
 		keychain: KeychainProtocolWithDelete? = nil, file: StaticString = #file, line: UInt = #line
 	) -> SystemKeychain {

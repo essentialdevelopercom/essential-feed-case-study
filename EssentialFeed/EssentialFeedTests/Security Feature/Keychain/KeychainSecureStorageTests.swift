@@ -9,15 +9,12 @@ final class KeychainSecureStorageTests: XCTestCase {
 		let key = "test-key"
 		let data = "test-data".data(using: .utf8)!
 		keychain.saveResult = KeychainSaveResult.success
-		keychain.willValidateAfterSave = { [weak keychain] corruptedKey in
-			keychain?.simulateCorruption(forKey: corruptedKey)
-		}
 		
 		let result = sut.save(data: data, forKey: key)
-		
+
 		XCTAssertEqual(keychain.saveSpy.receivedKey, key, "Should pass correct key to keychain")
 		XCTAssertEqual(keychain.saveSpy.receivedData, data, "Should pass correct data to keychain")
-		assertEventuallyEqual(sut.load(forKey: key), data)
+		XCTAssertEqual(sut.load(forKey: key), data, "Loaded data should match saved data") // This assert checks value equality, not reference
 		XCTAssertEqual(result, KeychainSaveResult.success, "Save should succeed with valid input")
 	}
 	

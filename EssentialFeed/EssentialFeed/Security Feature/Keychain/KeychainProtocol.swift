@@ -17,13 +17,13 @@ public protocol KeychainDeletable {
 }
 
 public protocol KeychainUpdatable {
-	func update(data: Data, forKey key: String) -> Bool
+    func update(data: Data, forKey key: String) -> OSStatus
 }
 
 public protocol KeychainFull: KeychainSavable {
-	func update(data: Data, forKey key: String) -> Bool
-	func delete(forKey key: String) -> Bool
-	func load(forKey key: String) -> Data?
+    func update(data: Data, forKey key: String) -> OSStatus
+    func delete(forKey key: String) -> Bool
+    func load(forKey key: String) -> Data?
 }
 
 // MARK: - Protocolos segregados para Keychain

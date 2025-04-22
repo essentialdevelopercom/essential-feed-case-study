@@ -133,9 +133,9 @@
 		08EFE6BD22D6384100DA417A /* FeedImageCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EFE6BC22D6384100DA417A /* FeedImageCellController.swift */; };
 		08F8822D236499B200CAEE16 /* FeedCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8822C236499B200CAEE16 /* FeedCache.swift */; };
 		B40098352DB022350081699A /* UserRegistrationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D71EF12DAF1D34003A1316 /* UserRegistrationUseCase.swift */; };
-		B47D59722DB39E2900034806 /* UserLoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47D596F2DB39E0200034806 /* UserLoginUseCase.swift */; };
 		B47D59752DB39E8900034806 /* UserLoginUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47D59732DB39E4A00034806 /* UserLoginUseCaseTests.swift */; };
 		B47D597C2DB3D67F00034806 /* SecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47D59792DB3D67F00034806 /* SecureStorageTests.swift */; };
+		B4803EE22DB7A6CA00E2D68A /* UserLoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4803EE12DB7A6CA00E2D68A /* UserLoginUseCase.swift */; };
 		B49EFABB2DB54B6F007B703C /* SystemKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EB7002DAEBA17002FBC51 /* SystemKeychain.swift */; };
 		B49EFABD2DB54D0B007B703C /* KeychainSecureStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49EFABC2DB54D0B007B703C /* KeychainSecureStorage.swift */; };
 		B49EFABF2DB552DC007B703C /* AsyncAssertHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49EFABE2DB552DC007B703C /* AsyncAssertHelpers.swift */; };
@@ -316,9 +316,9 @@
 		08FC5AA922D5F47900148E12 /* FeedImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataLoader.swift; sourceTree = "<group>"; };
 		B42EB7002DAEBA17002FBC51 /* SystemKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SystemKeychain.swift; path = "EssentialFeed/Security Feature/Keychain/SystemKeychain.swift"; sourceTree = SOURCE_ROOT; };
 		B442B75D2AB3451700284B92 /* KeychainProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeychainProtocol.swift; path = "EssentialFeed/Security Feature/Keychain/KeychainProtocol.swift"; sourceTree = SOURCE_ROOT; };
-		B47D596F2DB39E0200034806 /* UserLoginUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginUseCase.swift; sourceTree = "<group>"; };
 		B47D59732DB39E4A00034806 /* UserLoginUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginUseCaseTests.swift; sourceTree = "<group>"; };
 		B47D59792DB3D67F00034806 /* SecureStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageTests.swift; sourceTree = "<group>"; };
+		B4803EE12DB7A6CA00E2D68A /* UserLoginUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginUseCase.swift; sourceTree = "<group>"; };
 		B49EFABC2DB54D0B007B703C /* KeychainSecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSecureStorage.swift; sourceTree = "<group>"; };
 		B49EFABE2DB552DC007B703C /* AsyncAssertHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncAssertHelpers.swift; sourceTree = "<group>"; };
 		B4D71EF12DAF1D34003A1316 /* UserRegistrationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRegistrationUseCase.swift; sourceTree = "<group>"; };
@@ -488,7 +488,6 @@
 		080EDEE721B6DA7E00813479 = {
 			isa = PBXGroup;
 			children = (
-				B47D59702DB39E0200034806 /* Authentication Feature */,
 				080EDEF321B6DA7E00813479 /* EssentialFeed */,
 				080EDEFE21B6DA7E00813479 /* EssentialFeedTests */,
 				0899395D220359C50031B03D /* EssentialFeedAPIEndToEndTests */,
@@ -517,6 +516,7 @@
 		080EDEF321B6DA7E00813479 /* EssentialFeed */ = {
 			isa = PBXGroup;
 			children = (
+				B4803EE02DB7A63C00E2D68A /* Authentication Feature */,
 				B40098342DB022150081699A /* Registration Feature */,
 				B4F6AFE72DAE9DDA00D46FA8 /* Security Feature */,
 				080EDEF521B6DA7E00813479 /* Info.plist */,
@@ -930,14 +930,6 @@
 			path = "Registration Feature";
 			sourceTree = "<group>";
 		};
-		B47D59702DB39E0200034806 /* Authentication Feature */ = {
-			isa = PBXGroup;
-			children = (
-				B47D596F2DB39E0200034806 /* UserLoginUseCase.swift */,
-			);
-			path = "Authentication Feature";
-			sourceTree = SOURCE_ROOT;
-		};
 		B47D59742DB39E4A00034806 /* Authentication Feature */ = {
 			isa = PBXGroup;
 			children = (
@@ -953,6 +945,14 @@
 				B47D59792DB3D67F00034806 /* SecureStorageTests.swift */,
 			);
 			path = "Security Feature";
+			sourceTree = "<group>";
+		};
+		B4803EE02DB7A63C00E2D68A /* Authentication Feature */ = {
+			isa = PBXGroup;
+			children = (
+				B4803EE12DB7A6CA00E2D68A /* UserLoginUseCase.swift */,
+			);
+			path = "Authentication Feature";
 			sourceTree = "<group>";
 		};
 		B4D71EF32DAF1D34003A1316 /* Registration Feature */ = {
@@ -1269,6 +1269,7 @@
 				08285AFB228C17B8000A8987 /* CoreDataHelpers.swift in Sources */,
 				08C0880E21E4EF2900ACFB30 /* FeedItemsMapper.swift in Sources */,
 				B40098352DB022350081699A /* UserRegistrationUseCase.swift in Sources */,
+				B4803EE22DB7A6CA00E2D68A /* UserLoginUseCase.swift in Sources */,
 				087148C4232BFCF100D6BE1A /* FeedImageViewModel.swift in Sources */,
 				08EF9D29250BBC6C004539C2 /* ResourceErrorView.swift in Sources */,
 				08E546CC24F9631300C64FAE /* FeedImageDataMapper.swift in Sources */,
@@ -1291,7 +1292,6 @@
 				0889B0FA2530B0AA00FEAB5A /* ImageCommentsEndpoint.swift in Sources */,
 				0804862E236345A40087ED48 /* FeedImageDataCache.swift in Sources */,
 				08C4E988233E13CC00D939F8 /* FeedImageDataStore.swift in Sources */,
-				B47D59722DB39E2900034806 /* UserLoginUseCase.swift in Sources */,
 				087148B6232BEAAF00D6BE1A /* FeedPresenter.swift in Sources */,
 				0844769121FCBE7D00439BE9 /* URLSessionHTTPClient.swift in Sources */,
 				B49EFABD2DB54D0B007B703C /* KeychainSecureStorage.swift in Sources */,

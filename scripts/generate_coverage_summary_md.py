@@ -1,321 +1,198 @@
-#!/usr/bin/env python3
-"""
-Genera resumen de cobertura en Markdown, HTML y CSV a partir de coverage-report.txt.
-Incluye enlaces a los archivos fuente y puede integrarse en README.md.
-"""
-import re
-from pathlib import Path
-import csv
-
-TXT_REPORT = Path("coverage-reports/coverage-report.txt")
-MD_REPORT = Path("coverage-reports/coverage-summary.md")
-HTML_REPORT = Path("coverage-reports/coverage-summary.html")
-CSV_REPORT = Path("coverage-reports/coverage-summary.csv")
-README = Path("README.md")
-
-REPO_ROOT = Path(__file__).parent.resolve()
-
-if not TXT_REPORT.exists():
-    print(f"ERROR: No existe {TXT_REPORT}")
-    exit(1)
-
-# Expresiones regulares para extraer datos
-file_line_re = re.compile(r"^\s*(/.+\.swift)\s+(\d+\.\d+)%")
-total_re = re.compile(r"^\s*EssentialFeed\.framework\s+(\d+\.\d+)%")
-
-files = []
-total_coverage = None
-
-with TXT_REPORT.open() as f:
-    for line in f:
-        m = file_line_re.match(line)
-        if m:
-            files.append((m.group(1), float(m.group(2))))
-        else:
-            t = total_re.match(line)
-            if t and total_coverage is None:
-                total_coverage = float(t.group(1))
-
-# Filtrar solo archivos de Auth, Registro y Seguridad
-INCLUDED_FEATURES = [
-    'Authentication Feature',
-    'Registration Feature',
-    'Security Feature'
-]
-def is_included(path):
-    return any(feature in path for feature in INCLUDED_FEATURES)
-
-# Incluir archivos de test relevantes aunque no tengan cobertura (mostrar como N/A)
-test_dirs = [
-    'EssentialFeed/EssentialFeedTests/Authentication Feature',
-    'EssentialFeed/EssentialFeedTests/Registration Feature',
-    'EssentialFeed/EssentialFeedTests/Security Feature',
-]
-test_files = []
-from glob import glob
-for d in test_dirs:
-    test_files += glob(f"{d}/**/*Tests*.swift", recursive=True)
-# Normalizar paths
 import os
-test_files = [str(Path(f).resolve()) for f in test_files]
-# Eliminar duplicados
-unique_test_files = list(dict.fromkeys(test_files))
+import sys
+import csv
+import argparse
+import datetime
+import re
 
-import logging
-logging.basicConfig(level=logging.WARNING)
+def main():
+    parser = argparse.ArgumentParser(description='Genera resumen de cobertura en Markdown, HTML y CSV.')
+    parser.add_argument('--report', type=str, default='./coverage-reports/coverage-report.txt', help='Ruta al archivo coverage-report.txt')
+    parser.add_argument('--md', type=str, default='./coverage-reports/coverage-summary.md', help='Ruta de salida Markdown')
+    parser.add_argument('--html', type=str, default='./coverage-reports/coverage-summary.html', help='Ruta de salida HTML')
+    parser.add_argument('--csv', type=str, default='./coverage-reports/coverage-summary.csv', help='Ruta de salida CSV')
+    args = parser.parse_args()
 
-# Mapeo producción <-> test (convención y CU)
-prod_files = [f[0] for f in files if is_included(f[0])]
-cu_map = {}
+    report = args.report
+    md_report = args.md
+    html_report = args.html
+    csv_report = args.csv
 
-# Extrae los CU de cada archivo de test, logueando errores si los hay
-def extract_cu_map(test_files):
-    cu_map = {}
-    for tf in test_files:
-        cu_map[tf] = []
+    if not os.path.exists(report):
+        print(f'ERROR: No existe el archivo de cobertura: {report}\nAsegúrate de ejecutar primero generate_coverage_report.sh y que los tests hayan pasado.')
+        sys.exit(1)
+
+    # Expresiones regulares para extraer datos
+    file_line_re = re.compile(r"^\s*(/.+\.swift)\s+(\d+\.\d+)% \(\d+/\d+\)")
+    total_re = re.compile(r"^\s*EssentialFeed\.framework\s+(\d+\.\d+)%")
+
+    files = []
+    total_coverage = None
+
+    with open(report) as f:
+        for line in f:
+            m = file_line_re.match(line)
+            if m:
+                files.append((m.group(1), float(m.group(2))))
+            mt = total_re.match(line)
+            if mt:
+                total_coverage = float(mt.group(1))
+
+    print("Archivos procesados:", files)
+    print("Cobertura total:", total_coverage)
+
+    # Markdown
+    with open(md_report, "w") as f:
+        f.write(f"# Cobertura de código\n\nCobertura total: {total_coverage if total_coverage is not None else 'N/A'}%\n\n")
+        f.write("| Archivo | Cobertura (%) |\n|---------|---------------|\n")
+        for path, cov in files:
+            f.write(f"| `{path}` | {cov:.2f} |\n")
+
+    # HTML con CSS externo y tabla simple, rutas relativas
+    def relative_path(path):
+        # Acorta la ruta para mostrar solo desde el directorio que contiene el xcodeproj
+        # Busca el primer directorio que contenga un .xcodeproj en el repo
+        repo_root = os.getcwd()
+        xcodeproj_dir = None
+        for root_dir, dirs, files in os.walk(repo_root):
+            for d in dirs:
+                if d.endswith('.xcodeproj'):
+                    xcodeproj_dir = os.path.dirname(os.path.join(root_dir, d))
+                    break
+            if xcodeproj_dir:
+                break
+        if xcodeproj_dir:
+            try:
+                rel = os.path.relpath(path, xcodeproj_dir)
+                return rel
+            except:
+                pass
+        # Fallback: ruta relativa desde el repo
         try:
-            with open(tf, encoding="utf-8") as f:
-                for line in f:
-                    m = re.search(r'//\s*CU:\s*(.+)', line)
-                    if m:
-                        cu_map[tf].append(m.group(1).strip())
-        except Exception as e:
-            logging.warning(f"Error leyendo {tf}: {e}")
-    return cu_map
+            rel = os.path.relpath(path, repo_root)
+            return rel
+        except:
+            return os.path.basename(path)
 
-cu_map = extract_cu_map(test_files)
+    # --- NUEVO BLOQUE: Parsear coverage-report.txt y construir el diccionario de coberturas ---
+    coverage_txt = os.path.join(os.path.dirname(__file__), '../coverage-reports/coverage-report.txt')
+    coverage_data = {}
+    with open(coverage_txt, 'r') as covf:
+        for line in covf:
+            m = re.match(r"\s*(/.+\.swift)\s+([0-9.]+)% \((\d+)/(\d+)\)", line)
+            if m:
+                path = m.group(1).strip()
+                pct = float(m.group(2))
+                num = int(m.group(3))
+                den = int(m.group(4))
+                coverage_data[path] = {'pct': pct, 'num': num, 'den': den}
+    # --- PARSE LCOV ---
+    lcov_path = os.path.join(os.getcwd(), 'coverage.lcov')
+    coverage_data = {}
+    current_file = None
+    with open(lcov_path) as lcov:
+        for line in lcov:
+            line = line.strip()
+            if line.startswith('SF:'):
+                current_file = line[3:]
+                if current_file not in coverage_data:
+                    coverage_data[current_file] = {'functions': [0, 0], 'lines': [0, 0]}
+            elif line.startswith('FNF:'):
+                coverage_data[current_file]['functions'][1] = int(line[4:])
+            elif line.startswith('FNH:'):
+                coverage_data[current_file]['functions'][0] = int(line[4:])
+            elif line.startswith('LF:'):
+                coverage_data[current_file]['lines'][1] = int(line[3:])
+            elif line.startswith('LH:'):
+                coverage_data[current_file]['lines'][0] = int(line[3:])
+    # --- FIN PARSE LCOV ---
 
-def is_related_by_name(base, tf):
-    test_stem = Path(tf).stem
-    # Coincidencia estricta: nombre igual o termina en BaseTests
-    return test_stem == base or test_stem.endswith(f"{base}Tests")
+    with open(html_report, "w") as f:
+        f.write(f"""<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><meta charset='UTF-8'>
+<style>
+body {{ background: #181818; color: #eee; font-family: 'SF Mono', 'Menlo', 'Consolas', monospace; }}
+table {{ border-collapse: collapse; width: 100%; font-size: 14px; margin-bottom: 0.5em; }}
+th, td {{ border: 1px solid #444; padding: 6px 10px; }}
+th {{ background: #232323; color: #fff; position: sticky; top: 0; z-index: 2; }}
+tr.light-row {{ background: #191c1f; }}
+tr.alt-row {{ background: #22252a; }}
+tr:hover {{ background: #2c333a; }}
+.column-entry-green {{ background: #1e4620; color: #b6ffb6; }}
+.column-entry-yellow {{ background: #4c4300; color: #ffe066; }}
+.column-entry-red {{ background: #4d2323; color: #ffb3b3; }}
+.column-entry-gray {{ background: #333; color: #aaa; }}
+pre {{ margin: 0; font-family: inherit; }}
+a {{ color: #b3e5fc; text-decoration: underline; }}
+.totals-row {{ font-weight: bold; border-top: 2px solid #888; background: #222; }}
+</style>
+<script src='control.js'></script></head><body><h2 style='margin-bottom:0.2em;'>Coverage Report</h2><div style='font-size:13px;color:#ccc;margin-bottom:1em;'>Created: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}</div><p style='margin:0 0 1em 0;'><b>Total: {total_coverage:.2f}%</b></p><div class='centered'><table><tr><th title='Relative path to source file'>Filename</th><th title='Percentage and count of functions covered by tests'>Function Coverage</th><th title='Percentage and count of lines covered by tests'>Line Coverage</th><th title='Percentage and count of regions covered by tests'>Region Coverage</th><th title='Branches covered by tests (not available)'>Branch Coverage</th></tr>""")
 
-# Construye el mapeo producción <-> tests usando matching robusto
-# 1. Por nombre base de archivo
-# 2. Por CU declarado en comentarios
-# 3. (Opcional) Por aparición de la clase base en el contenido del test
-
-test_map = {}
-for pf in prod_files:
-    base = Path(pf).stem.replace("+Server", "")
-    related_tests = set([tf for tf in test_files if is_related_by_name(base, tf)])
-    # Por CU
-    related_tests.update([tf for tf, cu_list in cu_map.items() if any(base in cu for cu in cu_list)])
-    # (Opcional) Aquí puedes añadir lógica para buscar la clase base en el contenido del test
-    test_map[pf] = sorted(related_tests)
-
-    for tf in test_files:
-        try:
-            with open(tf, encoding="utf-8") as f:
-                content = f.read()
-                # Busca el nombre de la clase (no solo el base)
-                class_name = base
-                if class_name.endswith(".swift"):
-                    class_name = class_name.replace(".swift", "")
-                if class_name in content:
-                    related_tests.add(tf)
-        except Exception:
-            pass
-        test_map[pf] = sorted(related_tests)
-
-
-    test_map[pf] = sorted(related_tests)
-
-# Incluye todos los archivos de producción y test relevantes, aunque tengan 0 o N/A
-all_prod_files = set([f[0] for f in files if is_included(f[0])])
-all_test_files = set(unique_test_files)
-# Añadir archivos de test y producción aunque no tengan cobertura
-files_with_coverage = [f for f in files if is_included(f[0])]
-files_with_coverage += [(f, None) for f in all_test_files if f not in [fwc[0] for fwc in files_with_coverage]]
-files_with_coverage += [(f, None) for f in all_prod_files if f not in [fwc[0] for fwc in files_with_coverage]]
-files_with_coverage.sort(key=lambda x: (-1 if x[1] is None else -x[1]))
-files_with_coverage_min = sorted([f for f in files_with_coverage if f[1] is not None], key=lambda x: x[1])
-
-def is_production_file(path):
-    name = Path(path).name
-    return not re.search(r'Tests(\+.*)?\.swift$', name)
-
-prod_files_with_coverage = [f for f in files_with_coverage if is_production_file(f[0])]
-
-# Top 5 mayor y menor cobertura
-top5 = prod_files_with_coverage[:5]
-bottom5 = sorted([f for f in prod_files_with_coverage if f[1] is not None], key=lambda x: x[1])[:5]
-
-# Helper para enlaces relativos en markdown/html
-def rel_link(abs_path):
-    try:
-        return abs_path.relative_to(REPO_ROOT)
-    except ValueError:
-        return abs_path
-
-def md_table(rows, test_map=None):
-    out = "| Archivo | Cobertura | Test que lo cubre |\n|---|---|---|\n"
-    for name, cov in rows:
-        rel = rel_link(Path(name))
-        cov_str = f"{cov:.2f}%" if cov is not None else "N/A"
-        if test_map and name in test_map:
-            # Solo nombres de archivos de test, sin métodos ni comentarios CU
-            test_items = [Path(t).name for t in test_map[name]]
-            test_str = "\n".join(test_items)
-        else:
-            test_str = ""
-        out += f"| [{rel.name}]({rel}) | {cov_str} | {test_str} |\n"
-    return out
-
-def html_table(rows, bars=False, test_map=None):
-    out = "<table><tr><th>Archivo</th><th>Cobertura</th>"
-    if test_map:
-        out += "<th>Test que lo cubre</th>"
-    out += ("<th></th>" if bars else "") + "</tr>"
-    for name, cov in rows:
-        rel = rel_link(Path(name))
-        cov_str = f"{cov:.2f}%" if cov is not None else "N/A"
-        if test_map and name in test_map:
-            # Solo nombres de archivos de test, sin métodos ni comentarios CU
-            test_items = [Path(t).name for t in test_map[name]]
-            test_str = "<br>".join(test_items)
-        else:
-            test_str = ""
-        bar_html = ""
-        if bars and cov is not None:
-            if cov >= 90:
-                color = "green"
-            elif cov >= 70:
-                color = "yellow"
+        # Calcular totales reales (media ponderada)
+        total_funcs = sum(d['functions'][1] for d in coverage_data.values())
+        total_funcs_cov = sum(d['functions'][0] for d in coverage_data.values())
+        total_lines = sum(d['lines'][1] for d in coverage_data.values())
+        total_lines_cov = sum(d['lines'][0] for d in coverage_data.values())
+        total_func_pct = (100.0 * total_funcs_cov / total_funcs) if total_funcs else 0.0
+        total_line_pct = (100.0 * total_lines_cov / total_lines) if total_lines else 0.0
+        for i, path in enumerate(coverage_data):
+            data = coverage_data[path]
+            rel_path = relative_path(path)
+            rel_path_clean = rel_path.replace('../', '').replace('EssentialFeed/EssentialFeed/', '').replace('EssentialFeed/', '').replace('//', '/').lstrip('/')
+            link = os.path.relpath(path, os.path.join(os.getcwd(), 'coverage_html_latest'))
+            def format_cov(val, num, den):
+                return f"{val:.2f}% ({num}/{den})"
+            def css_class(val):
+                if val == '-' or val.startswith('-'):
+                    return 'column-entry-gray'
+                try:
+                    v = float(val.split('%')[0].replace(',', '.'))
+                except:
+                    return 'column-entry-gray'
+                if v >= 95:
+                    return 'column-entry-green'
+                elif v >= 80:
+                    return 'column-entry-yellow'
+                else:
+                    return 'column-entry-red'
+            # Function Coverage
+            fn_cov = data['functions']
+            if fn_cov[1]:
+                fn_pct = 100.0 * fn_cov[0] / fn_cov[1]
+                function_str = format_cov(fn_pct, fn_cov[0], fn_cov[1])
             else:
-                color = "red"
-            bar_html = f'''<td class="cov-bar"><div class="bar-bg"><div class="bar-fill {color}" style="width:{cov:.0f}%;"></div><span class="cov-label">{cov:.2f}%</span></div></td>'''
-        elif bars:
-            bar_html = "<td></td>"
-        out += f'<tr><td><a href="{rel}">{rel.name}</a></td><td>{cov_str}</td>'
-        if test_map:
-            out += f'<td>{test_str}</td>'
-        out += f'{bar_html}</tr>'
-    out += "</table>"
-    return out
+                function_str = '-'
+            # Line Coverage
+            ln_cov = data['lines']
+            if ln_cov[1]:
+                ln_pct = 100.0 * ln_cov[0] / ln_cov[1]
+                line_str = format_cov(ln_pct, ln_cov[0], ln_cov[1])
+            else:
+                line_str = '-'
+            # Region y Branch Coverage no disponibles
+            region_str = '-'
+            branch_str = '-'
+            row_class = 'alt-row' if i % 2 else 'light-row'
+            f.write(f"<tr class='{row_class}'>"
+                    f"<td style='border:1px solid #555;padding:4px 8px;background:#181818;'><pre style='margin:0;'><a href='{link}' style='color:#b3e5fc;text-decoration:underline;'>{rel_path_clean}</a></pre></td>"
+                    f"<td class='{css_class(function_str)}' style='border:1px solid #555;padding:4px 8px;'><pre style='margin:0;' title='Functions: {fn_cov[0]} of {fn_cov[1]} covered'>{function_str}</pre></td>"
+                    f"<td class='{css_class(line_str)}' style='border:1px solid #555;padding:4px 8px;'><pre style='margin:0;' title='Lines: {ln_cov[0]} of {ln_cov[1]} covered'>{line_str}</pre></td>"
+                    f"<td class='column-entry-gray' style='border:1px solid #555;padding:4px 8px;'><pre style='margin:0;' title='Region coverage not available'>-</pre></td>"
+                    f"<td class='column-entry-gray' style='border:1px solid #555;padding:4px 8px;'><pre style='margin:0;' title='Branch coverage not available'>-</pre></td></tr>")
+        # Fila Totals real
+        f.write(f"<tr class='totals-row'><td>Totals</td><td>{total_func_pct:.2f}% ({total_funcs_cov}/{total_funcs})</td><td>{total_line_pct:.2f}% ({total_lines_cov}/{total_lines})</td><td>-</td><td>-</td></tr></table></div>\n")
+        # Pie de página tipo llvm-cov
+        f.write("""
+<pre style='margin:12px 0 0 0;padding:8px 0 0 0;font-family:monospace;font-size:13px;color:#fff;background:#222;text-align:left;border:none;'>Generated by generate_coverage_summary_md.py</pre>
+</body></html>""")
 
-# Identifica archivos de producción sin ningún test asociado
-prod_without_tests = [name for name in prod_files if not test_map.get(name)]
+    # CSV
+    with open(csv_report, "w", newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(["Archivo", "Cobertura (%)"])
+        for path, cov in files:
+            writer.writerow([path, f"{cov:.2f}"])
 
-def md_table_no_tests(files, cov_map):
-    if not files:
-        return "Todos los archivos de producción tienen al menos un test asociado.\n"
-    out = "| Archivo | Cobertura |\n|---|---|\n"
-    for name in files:
-        cov = cov_map.get(name, None)
-        cov_str = f"{cov:.2f}%" if cov is not None else "N/A"
-        rel = rel_link(Path(name))
-        out += f"| [{rel.name}]({rel}) | {cov_str} |\n"
-    return out
+    print(f"[OK] coverage-summary.md, coverage-summary.html y coverage-summary.csv generados en {os.path.dirname(md_report)}")
 
-with MD_REPORT.open("w") as f:
-    f.write("# 📊 Resumen de Cobertura de Código\n\n")
-    if total_coverage is not None:
-        f.write(f"**Cobertura total:** **{total_coverage:.2f}%**\n\n")
-    else:
-        f.write("Cobertura total: No detectada\n\n")
-    f.write("---\n\n## Archivos con mayor cobertura\n\n")
-    f.write(md_table(top5, test_map=test_map))
-    f.write("\n## Archivos con menor cobertura (>0%)\n\n")
-    f.write(md_table(bottom5, test_map=test_map))
-    f.write("\n---\n")
-    f.write("## Archivos de producción **sin ningún test asociado**\n\n")
-    f.write(md_table_no_tests(prod_without_tests, dict(files)))
-    f.write("\n> Estos archivos no tienen ningún test directo asociado según el mapeo por nombre y CU. Revisa si requieren cobertura o si son candidatos a refactorización.\n\n")
-    f.write("### ¿Cómo leer este reporte?\n")
-    f.write("- **Cobertura total:** Porcentaje de líneas cubiertas por tests en todo el target.\n")
-    f.write("- **Mayor cobertura:** Archivos mejor cubiertos por los tests.\n")
-    f.write("- **Menor cobertura:** Archivos con menor cobertura (pero mayor a 0%).\n")
-    f.write("\n> Para cobertura por clase o función, revisa el archivo `coverage-report.txt`.\n")
-
-# HTML
-with HTML_REPORT.open("w") as f:
-    f.write(f"""
-<!DOCTYPE html>
-<html lang=\"es\">
-<head>
-  <meta charset=\"UTF-8\">
-  <title>Resumen de Cobertura de Código</title>
-  <style>
-    body {{ font-family: 'Segoe UI', Arial, sans-serif; background: #f8fafc; color: #222; margin: 0; padding: 0; }}
-    .container {{ max-width: 800px; margin: 32px auto; background: #fff; border-radius: 12px; box-shadow: 0 2px 16px #0001; padding: 32px; }}
-    h1 {{ font-size: 2.2em; margin-bottom: 0.2em; display: flex; align-items: center; }}
-    h1 .emoji {{ font-size: 1.2em; margin-right: 0.3em; }}
-    .total-cov {{ font-size: 1.4em; font-weight: bold; color: #fff; background: linear-gradient(90deg, #1db954 60%, #ffb300 100%); padding: 8px 24px; border-radius: 24px; display: inline-block; margin-bottom: 18px; }}
-    table {{ border-collapse: collapse; width: 100%; margin: 18px 0; }}
-    th, td {{ border: none; padding: 10px 12px; text-align: left; }}
-    th {{ background: #e3eafc; color: #222; font-weight: 600; border-bottom: 2px solid #b6c7e3; }}
-    tr {{ background: #f5f7fa; }}
-    tr:nth-child(even) {{ background: #e9f2fb; }}
-    td.cov-bar {{ min-width: 180px; }}
-    .bar-bg {{ background: #e0e0e0; border-radius: 8px; width: 100%; height: 18px; position: relative; }}
-    .bar-fill {{ height: 100%; border-radius: 8px; position: absolute; left: 0; top: 0; }}
-    .bar-fill.green {{ background: #1db954; }}
-    .bar-fill.yellow {{ background: #ffb300; }}
-    .bar-fill.red {{ background: #e53935; }}
-    .cov-label {{ position: absolute; left: 50%; top: 0; transform: translateX(-50%); font-size: 0.98em; color: #222; font-weight: bold; }}
-    .section-title {{ margin-top: 2.2em; margin-bottom: 0.5em; font-size: 1.15em; color: #1a73e8; }}
-    ul {{ margin-top: 0.5em; }}
-    .legend {{ margin-top: 2em; font-size: 1.01em; color: #555; }}
-    code {{ background: #f3f4f8; color: #1a73e8; padding: 2px 6px; border-radius: 4px; }}
-  </style>
-</head>
-<body>
-<div class="container">
-  <h1><span class="emoji">📊</span>Resumen de Cobertura de Código</h1>
-  <div class="total-cov">Cobertura total: {total_coverage:.2f}%</div>
-  <div class="section-title">Archivos con mayor cobertura</div>
-  {html_table(top5, bars=True, test_map=test_map)}
-  <div class="section-title">Archivos con menor cobertura (&gt;0%)</div>
-  {html_table(bottom5, bars=True, test_map=test_map)}
-  <div class="legend">
-    <h3>¿Cómo leer este reporte?</h3>
-    <ul>
-      <li><b>Cobertura total:</b> Porcentaje de líneas cubiertas por tests en todo el target.</li>
-      <li><b>Mayor cobertura:</b> Archivos mejor cubiertos por los tests.</li>
-      <li><b>Menor cobertura:</b> Archivos con menor cobertura (pero mayor a 0%).</li>
-    </ul>
-    <p>Para cobertura por clase o función, revisa el archivo <code>coverage-report.txt</code>.</p>
-  </div>
-</div>
-</body></html>
-""")
-
-# CSV
-with CSV_REPORT.open("w", newline="") as f:
-    writer = csv.writer(f)
-    writer.writerow(["Archivo", "Cobertura", "Test que lo cubre"])
-    for name, cov in files_with_coverage:
-        rel = rel_link(Path(name))
-        cov_str = f"{cov:.2f}%" if cov is not None else "N/A"
-        test_str = ", ".join(test_map.get(name, [])) if 'test_map' in globals() else ""
-        writer.writerow([str(rel), cov_str, test_str])
-
-# Integrar resumen en README.md (si existe)
-if README.exists():
-    with README.open() as f:
-        lines = f.readlines()
-    # Elimina bloques previos de cobertura
-    start = end = None
-    for i, line in enumerate(lines):
-        if line.strip() == "<!-- COVERAGE-REPORT-START -->":
-            start = i
-        if line.strip() == "<!-- COVERAGE-REPORT-END -->":
-            end = i
-            break
-    md_block = ["<!-- COVERAGE-REPORT-START -->\n"]
-    md_block += [l for l in MD_REPORT.open()]
-    md_block.append("<!-- COVERAGE-REPORT-END -->\n")
-    if start is not None and end is not None:
-        new_lines = lines[:start] + md_block + lines[end+1:]
-    else:
-        # Añade al final
-        new_lines = lines + ["\n"] + md_block
-    with README.open("w") as f:
-        f.writelines(new_lines)
-
-print(f"Resumen Markdown generado en {MD_REPORT}")
-print(f"Resumen HTML generado en {HTML_REPORT}")
-print(f"Resumen CSV generado en {CSV_REPORT}")
-if README.exists():
-    print("Resumen integrado en README.md entre marcas <!-- COVERAGE-REPORT-START --> y <!-- COVERAGE-REPORT-END -->")
+if __name__ == "__main__":
+    main()

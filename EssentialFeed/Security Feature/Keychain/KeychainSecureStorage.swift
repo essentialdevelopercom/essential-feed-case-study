@@ -30,17 +30,17 @@ public final class KeychainSecureStorage {
 			return .failure
 		}
 	}
-
+	
 	public func load(forKey key: String) -> Data? {
-    if let data = keychain.load(forKey: key) {
-        return data
-    }
-    if let data = fallback.load(forKey: key) {
-        return data
-    }
-    if let data = alternative.load(forKey: key) {
-        return data
-    }
-    return nil
-}
+		if let data = keychain.load(forKey: key) {
+			return data
+		}
+		if let data = fallback.load(forKey: key) {
+			return data
+		}
+		if let data = alternative.load(forKey: key) {
+			return data
+		}
+		return nil
+	}
 }

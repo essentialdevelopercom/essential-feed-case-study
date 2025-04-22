@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import EssentialFeed
+import EssentialFeed
 // CU: SystemKeychain
 // CU: Seguridad de almacenamiento
 // Checklist: Verificar operaciones seguras de almacenamiento y recuperación
@@ -127,35 +127,35 @@ final class SecureStorageTests: XCTestCase {
 		let data = "password123".data(using: .utf8)!
 		let unexpectedError = NSError(domain: "encryption", code: 999)
 		encryptionService.stubbedError = unexpectedError
-
+		
 		XCTAssertThrowsError(try sut.save(data, forKey: "any-key")) { error in
 			XCTAssertEqual(error as NSError, unexpectedError)
 		}
 		XCTAssertTrue(store.receivedMessages.isEmpty)
 	}
-
+	
 	func test_save_throwsErrorWhenStoreThrowsUnexpectedError() {
 		let (sut, store, _) = makeSUT()
 		let data = "welcome message".data(using: .utf8)!
 		let storeError = NSError(domain: "store", code: 999)
 		store.stubSave(forKey: "any-key", with: .failure(storeError))
-
+		
 		XCTAssertThrowsError(try sut.save(data, forKey: "any-key")) { error in
 			XCTAssertEqual(error as NSError, storeError)
 		}
 	}
-
+	
 	func test_save_withEmptyData_savesWithLowProtection() {
 		let (sut, store, encryptionService) = makeSUT()
 		let emptyData = Data()
 		let key = "empty-key"
-
+		
 		try? sut.save(emptyData, forKey: key)
-
+		
 		XCTAssertTrue(encryptionService.encryptedData.isEmpty, "Should not encrypt empty data")
 		XCTAssertEqual(store.receivedMessages, [.save(key: key, value: emptyData)], "Should store empty data as low protection")
 	}
-
+	
 	func test_save_failsOnStoreError() {
 		let (sut, store, _) = makeSUT()
 		let publicData = "welcome message".data(using: .utf8)!

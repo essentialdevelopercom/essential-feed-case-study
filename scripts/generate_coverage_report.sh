@@ -1,33 +1,49 @@
 #!/bin/bash
 # generate_coverage_report.sh
-# Script para ejecutar tests en el simulador iPhone 16 Pro, generar y guardar el reporte de cobertura
+# Script profesional para generar reporte de cobertura en macOS
+# 1. Elimina el bundle anterior
+# 2. Ejecuta tests con cobertura y genera bundle en ./coverage-reports/ci_macOS.xcresult
+# 3. Extrae el reporte con xccov a coverage-report.txt
+# 4. Ejecuta el script de resumen Markdown/HTML/CSV
+# 5. Mensajes claros de error/success
 
 set -e
 
-# Configuración
-derived_data=~/Library/Developer/Xcode/DerivedData
-target_scheme="EssentialFeed"
-simulator_name="iPhone 16 Pro"
-ios_version="18.4"
-report_dir="coverage-reports"
-mkdir -p "$report_dir"
-report_file="$report_dir/coverage-report.txt"
+scheme="CI_macOS"
+project="EssentialFeed/EssentialFeed.xcodeproj"
+destination="platform=macOS"
+coverage_dir="coverage-reports"
+result_bundle="$coverage_dir/ci_macOS.xcresult"
+report_txt="$coverage_dir/coverage-report.txt"
 
-# 1. Ejecutar tests con cobertura en el simulador preferido
-echo "Ejecutando tests en el simulador $simulator_name ($ios_version)..."
-# Ejecutar TODOS los tests del scheme para cobertura completa de producción
+# Asegura que el directorio de cobertura existe
+mkdir -p "$coverage_dir"
+
+# Elimina el bundle anterior si existe
+if [ -d "$result_bundle" ]; then
+  echo "[INFO] Eliminando bundle anterior $result_bundle"
+  rm -rf "$result_bundle"
+fi
+
+# Ejecuta tests y genera el bundle
 xcodebuild \
-  -scheme "$target_scheme" \
-  -project EssentialFeed/EssentialFeed.xcodeproj \
-  -destination "platform=iOS Simulator,name=$simulator_name,OS=$ios_version" \
+  -scheme "$scheme" \
+  -project "$project" \
+  -destination "$destination" \
   -enableCodeCoverage YES \
-  test || { echo "Fallo la ejecución de tests"; exit 1; }
+  -resultBundlePath "$result_bundle" \
+  test
 
-# 2. Buscar el archivo .xcresult más reciente (robusto ante nombres y espacios)
-xcresult=$(find $derived_data -type d -name '*.xcresult' -print0 | xargs -0 ls -1td 2>/dev/null | head -1)
-echo "XCRESULT path: $xcresult"
-if [[ -z "$xcresult" || ! -d "$xcresult" ]]; then
-  echo "ERROR: No se encontró ningún archivo .xcresult válido."
+# Extrae el reporte de cobertura
+if xcrun xccov view --report "$result_bundle" > "$report_txt"; then
+  if [ -s "$report_txt" ]; then
+    echo "\n[OK] Cobertura generada en $report_txt"
+  else
+    echo "[ERROR] El reporte de cobertura está vacío."
+    exit 1
+  fi
+else
+  echo "[ERROR] Fallo al extraer cobertura con xccov."
   exit 1
 fi
 ls -lh "$xcresult"

@@ -19,12 +19,42 @@ Para asegurar que los tests de Keychain se ejecutan igual en Xcode y en la conso
 
 Este script limpia DerivedData, fuerza el uso del simulador correcto y ejecuta los tests con cobertura. Así se evitan inconsistencias y problemas de permisos típicos en tests de Keychain.
 
-# Script para Generar resumen de cobertura
-python3 scripts/generate_coverage_summary_md.py 
+# Cobertura de tests y reporte profesional
 
-Este script genera un resumen de cobertura de código en Markdown, HTML y CSV a partir de `[coverage-summary.md](docs/coverage-summary.md)
+### 1. Generar cobertura y bundle reproducible
 
-## Cobertura de tests
+Ejecuta el script profesional para limpiar, ejecutar tests y generar el bundle de cobertura:
+
+```sh
+./scripts/generate_coverage_report.sh
+```
+
+Esto:
+- Elimina el bundle anterior si existe
+- Ejecuta todos los tests con cobertura en macOS usando el esquema CI_macOS
+- Genera el bundle en `./coverage-reports/ci_macOS.xcresult`
+- Extrae el reporte de cobertura como `./coverage-reports/coverage-report.txt`
+- Lanza el resumen Markdown/HTML/CSV automáticamente
+
+### 2. Generar resumen de cobertura manualmente
+
+Si solo quieres el resumen a partir del bundle y el reporte ya generados:
+
+```sh
+python3 scripts/generate_coverage_summary_md.py
+```
+
+Por defecto usa:
+- Bundle: `./coverage-reports/ci_macOS.xcresult`
+- Reporte: `./coverage-reports/coverage-report.txt`
+
+### 3. Archivos generados
+- `coverage-report.txt`: Resumen plano de cobertura por archivo/función
+- `coverage-summary.md`, `coverage-summary.html`, `coverage-summary.csv`: Resúmenes listos para documentación, auditoría y CI
+
+---
+
+
 
 > **Limitación técnica en cobertura automatizada de Keychain**
 >

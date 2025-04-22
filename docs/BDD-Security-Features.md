@@ -31,11 +31,12 @@
 > Por ejemplo para EssentialFeed: **xcodebuild test -scheme EssentialFeed -destination "platform=macOS" -enableCodeCoverage YES**  
 
 ### Leyenda
-- ✅ Completado  
-- 🔜 Siguiente a implementar  
-- 🟡 Pendiente    
-- ⏳ En progreso 
-- ❌ No implementado o no requerido
+
+- [✅] Completado y cubierto (con test o funcionalidad)
+- [🟡] Parcialmente cubierto, en progreso, o pendiente de edge cases (ver comentario)
+- [⏳] En progreso 
+- [🔜] Planificado/próximo, aún no iniciado
+- [❌] No implementado, no cubierto, o bloqueado
 
 ---
 
@@ -49,6 +50,12 @@
 | 4. Gestión de Token Expirado                | 🔜     | Sin tests, pendiente de implementar.              |
 | 5. Recuperación de Contraseña               | 🟡     | Sin tests, pendiente de implementar.              |
 | 6. Gestión de Sesiones                      | 🟡     | Sin tests, pendiente de implementar.              |
+| 7. Cambio de Contraseña                     | 🟡     | Sin tests, pendiente de implementar              |
+| 8. Verificación de Cuenta                   | 🟡     | Sin tests, pendiente de implementar              |
+| 9. Autenticación con Proveedores Externos   | 🟡     | Sin tests, pendiente de implementar              |
+| 10. Métricas de Seguridad                   | 🟡     | Sin tests, pendiente de implementar              |
+
+> Solo se marca como completado lo que está cubierto por tests automatizados reales. El resto debe implementarse y testearse antes de marcar como hecho.
 
 ---
 
@@ -64,31 +71,22 @@
     - [✅] Cobertura de concurrencia (thread safety)
     - [✅] Cobertura de persistencia real (integration tests)
 - ✅ **Registro de Usuario**
-    - [x] Happy path (registro correcto)
-    - [x] Sad paths (errores de validación, email duplicado, etc)
+    - [✅] Happy path (registro correcto)
+    - [✅] Sad paths (errores de validación, email duplicado, etc)
 - ⏳ **Login/Autenticación**
-    - [x] Token seguro tras login
-    - [x] Error credenciales incorrectas
-    - [ ] Flujos edge (expiración, reintentos, lockout)
+    - [✅] Token seguro tras login
+    - [✅] Error credenciales incorrectas
+    - [🔜] Flujos edge (expiración, reintentos, lockout)
 - 🔜 **Gestión de token expirado**
-    - [ ] Escenarios de expiración y renovación de token
+    - [🟡] Escenarios de expiración y renovación de token
 - 🟡 **Recuperación de contraseña**
-    - [ ] Escenarios de recuperación y validación
+    - [🟡] Escenarios de recuperación y validación
 - 🟡 **Gestión de sesiones**
-    - [ ] Escenarios de cierre, renovación y limpieza de sesión
+    - [🟡] Escenarios de cierre, renovación y limpieza de sesión
 
 ---
 
 > Última actualización: 2025-04-21
-
-| 7. Cambio de Contraseña                     | 🟡     | Sin tests, pendiente de implementar              |
-| 8. Verificación de Cuenta                   | 🟡     | Sin tests, pendiente de implementar              |
-| 9. Autenticación con Proveedores Externos   | 🟡     | Sin tests, pendiente de implementar              |
-| 10. Métricas de Seguridad                   | 🟡     | Sin tests, pendiente de implementar              |
-
-> Solo se marca como completado lo que está cubierto por tests automatizados reales. El resto debe implementarse y testearse antes de marcar como hecho.
-
----
 
 ### Tabla de trazabilidad (próximos casos de uso)
 

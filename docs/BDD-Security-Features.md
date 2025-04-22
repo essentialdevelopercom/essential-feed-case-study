@@ -159,10 +159,10 @@ Como usuario de la aplicación, quiero que mi información sensible se almacene 
 - [✅] Validar que el método handleDuplicateItem retorna correctamente según el flujo de actualización y comparación (cubierto por tests de actualización y duplicidad)
 - [✅] Garantizar que la estrategia NoFallback retorna .failure y nil en todos los casos (tests de fallback y no fallback cubiertos)
 - [⏳] Ejecutar closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen) (en progreso, cobertura parcial en integración)
-- [🔜] Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests (pendiente de refinar para casos extremos y factories auxiliares)
-- [🔜] Test de integración real con Keychain del sistema (añadir y marcar cuando esté cubierto)
-- [] Snapshot testing para outputs y errores relevantes (añadir si aporta cobertura y valor)
-- [🔜] Cobertura de todos los branches/ramas de código crítico (añadir tests específicos para cada branch no cubierto)
+- [🟡] Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests (pendiente de refinar para casos extremos y factories auxiliares)
+- [🟡] Test de integración real con Keychain del sistema (añadir y marcar cuando esté cubierto)
+- [🟡] Snapshot testing para outputs y errores relevantes (añadir si aporta cobertura y valor)
+- [🟡] Cobertura de todos los branches/ramas de código crítico (añadir tests específicos para cada branch no cubierto)
 
 #### Diagrama técnico
 

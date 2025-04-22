@@ -42,12 +42,15 @@ public final class SystemKeychain: KeychainFull {
 	/// Deletes a value from the Keychain for a given key.
 	/// - Returns: true if the item was deleted or not found, false if the key is invalid or deletion failed.
 	public func delete(forKey key: String) -> Bool {
-		if DispatchQueue.getSpecific(key: SystemKeychain.queueKey) != nil {
-			return _delete(forKey: key)
-		} else {
-			return queue.sync { _delete(forKey: key) }
-		}
-	}
+    if let keychain = keychain {
+        return keychain.delete(forKey: key)
+    }
+    if DispatchQueue.getSpecific(key: SystemKeychain.queueKey) != nil {
+        return _delete(forKey: key)
+    } else {
+        return queue.sync { _delete(forKey: key) }
+    }
+}
 	
 	private func _delete(forKey key: String) -> Bool {
 		guard !key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return false }

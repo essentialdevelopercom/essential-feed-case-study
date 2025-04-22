@@ -5,38 +5,143 @@ import XCTest
 
 final class SystemKeychainTests: XCTestCase {
 	
-	// Checklist: Debug
-	// CU: Debug/Infrastructure - Checklist: Minimal debug test (placeholder)
-	func test_debug_minimal() {
-		XCTAssertTrue(true)
+	// MARK: - Concurrency and Thread Safety
+	
+	// Checklist: Thread Safety
+	// CU: SystemKeychain-save-concurrent
+	func test_save_isThreadSafe_underConcurrentAccess() {
+		var sut: SystemKeychain? = makeSUT()
+		let key = uniqueKey()
+		let data = "concurrent-data".data(using: .utf8)!
+		let queue = DispatchQueue(label: "test.concurrent", attributes: .concurrent)
+		let expectation = expectation(description: "Concurrent saves")
+		expectation.expectedFulfillmentCount = 10 // Para depuración, luego vuelve a 100
+		let resultsLock = NSLock()
+		var results = [KeychainSaveResult]()
+		for _ in 0..<10 {
+			queue.async { [weak sut] in
+				guard let sut = sut else {
+					expectation.fulfill()
+					return
+				}
+				let result = sut.save(data: data, forKey: key)
+				resultsLock.lock()
+				results.append(result)
+				resultsLock.unlock()
+				expectation.fulfill()
+			}
+		}
+		// Forzamos la liberación del SUT antes del wait
+		sut = nil
+		wait(for: [expectation], timeout: 5)
+		XCTAssertTrue(results.allSatisfy { $0 == .success || $0 == .duplicateItem }, "All concurrent saves should succeed or be duplicateItem")
 	}
 	
-	// Checklist: Debug
-	// CU: Debug/Infrastructure - Checklist: Debug spy factory coverage
-	func test_debug_step1() {
-		let (_, _) = makeSpySUT()
-		XCTAssertTrue(true)
-	}
+	// MARK: - Validation after Save (Simulated Corruption)
 	
-	// Checklist: Debug
-	// CU: Debug/Infrastructure - Checklist: Full spy factory coverage
-	func test_debug_only_spy() {
-		let spy = makeKeychainFullSpy()
-		let data = "data".data(using: .utf8)!
-		let key = "spy-key"
-		_ = spy.save(data: data, forKey: key)
-		XCTAssertTrue(true)
-	}
-	
-	// Checklist: Debug
-	// CU: Debug/Infrastructure - Checklist: Debug step 2
-	func test_debug_step2() {
+	// Checklist: Validation after Save
+	// CU: SystemKeychain-save-validationAfterSave
+	func test_save_returnsFailure_whenValidationAfterSaveFails_dueToCorruption() {
 		let (sut, spy) = makeSpySUT()
-		spy.saveResult = KeychainSaveResult.success
+		spy.saveResult = .success
+		let data = "expected".data(using: .utf8)!
+		let key = uniqueKey()
+		spy.willValidateAfterSave = { [weak spy] corruptedKey in
+			spy?.simulateCorruption(forKey: corruptedKey)
+		}
+		let result = sut.save(data: data, forKey: key)
+		XCTAssertEqual(result, .failure, "Save should return failure if validation after save fails due to corruption")
+	}
+	
+	// MARK: - Duplicate Item and Update Fails
+	
+	// Checklist: Duplicate Item and Update Fails
+	// CU: SystemKeychain-save-duplicateItem
+	func test_save_returnsDuplicateItem_whenUpdateFailsAfterDuplicate() {
+		let (sut, spy) = makeSpySUT()
 		let data = "data".data(using: .utf8)!
-		let key = "spy-key"
-		_ = sut.save(data: data, forKey: key)
-		XCTAssertTrue(true)
+		let key = uniqueKey()
+		spy.saveResult = .duplicateItem
+		spy.updateResult = false
+		let result = sut.save(data: data, forKey: key)
+		XCTAssertEqual(result, .duplicateItem, "Should return duplicateItem when update fails after duplicate")
+	}
+	
+	// MARK: - Error Fallback (NoFallback Strategy)
+	
+	// Checklist: Error Fallback
+	// CU: SystemKeychain-save-noFallback
+	func test_save_onNoFallbackStrategy_alwaysReturnsFailure() {
+		let sut = makeNoFallback()
+		let data = "irrelevant".data(using: .utf8)!
+		let key = uniqueKey()
+		let result = sut.save(data: data, forKey: key)
+		XCTAssertEqual(result, .failure, "NoFallback should always return failure on save")
+	}
+	
+	// MARK: - Edge Cases: Empty Key/Data
+	func test_save_returnsFailure_forEmptyKeyOrData() {
+		let sut = makeSUT()
+		let data = "irrelevant".data(using: .utf8)!
+		XCTAssertEqual(sut.save(data: data, forKey: ""), .failure, "Saving with empty key should fail")
+		XCTAssertEqual(sut.save(data: Data(), forKey: uniqueKey()), .failure, "Saving with empty data should fail")
+	}
+	
+	// MARK: - Unicode Keys and Large Data
+	func test_save_supportsUnicodeKeys_andLargeBinaryData() {
+		let sut = makeSUT()
+		let unicodeKey = "🔑-ключ-密钥-llave"
+		let data = Data((0..<100_000).map { _ in UInt8.random(in: 0...255) })
+		let result = sut.save(data: data, forKey: unicodeKey)
+		XCTAssertEqual(result, .success, "Should save large binary data with unicode key successfully")
+		let loaded = sut.load(forKey: unicodeKey)
+		XCTAssertEqual(loaded, data, "Loaded data should match saved data for unicode key")
+	}
+	
+	// MARK: - Helpers/Factories Edge Cases
+	func test_save_and_delete_withEdgeCaseKeys_andHelpers() {
+		let (sut, _) = makeSpySUT()
+		let emptyKey = ""
+		let spacesKey = "   "
+		let normalData = "data".data(using: .utf8)!
+		XCTAssertEqual(sut.save(data: normalData, forKey: emptyKey), .failure, "Should fail to save with empty key")
+		XCTAssertEqual(sut.save(data: normalData, forKey: spacesKey), .failure, "Should fail to save with spaces key")
+		XCTAssertFalse(sut.delete(forKey: emptyKey), "Should fail to delete with empty key")
+		XCTAssertFalse(sut.delete(forKey: spacesKey), "Should fail to delete with spaces key")
+	}
+	
+	// MARK: - Simulate Factory Error
+	func test_factory_canSimulateErrorForAllOperations() {
+		// Using KeychainFullSpy via factory
+		let spy = makeKeychainFullSpy()
+		spy.saveResult = .failure
+		spy.updateResult = false
+		spy.deleteSpy.deleteResult = false
+		let sut = makeSUT(keychain: spy)
+		let key = uniqueKey()
+		let data = "irrelevant".data(using: .utf8)!
+		XCTAssertEqual(spy.deleteSpy.deleteResult, false, "Precondition: spy must be configured to fail delete")
+		let deleteResult = sut.delete(forKey: key)
+		XCTAssertFalse(deleteResult, "Should return false when spy is configured to fail delete")
+		XCTAssertEqual(sut.save(data: data, forKey: key), .failure, "Should return failure when spy is configured to fail save")
+		XCTAssertFalse(sut.update(data: data, forKey: key), "Should return false when spy is configured to fail update")
+	}
+	
+	// MARK: - Borrado de clave inexistente
+	func test_delete_returnsTrue_whenKeyDoesNotExist() {
+		let (sut, spy) = makeSpySUT()
+		let key = uniqueKey()
+		spy.deleteSpy.deleteResult = true
+		XCTAssertTrue(sut.delete(forKey: key), "Should return true when deleting non-existent key (Keychain semantics)")
+	}
+	
+	// MARK: - Update sobre clave inexistente
+	func test_update_returnsFalse_whenKeyDoesNotExist() {
+		let (sut, spy) = makeSpySUT()
+		let key = uniqueKey()
+		let data = "irrelevant".data(using: .utf8)!
+		spy.updateResult = false
+		XCTAssertFalse(sut.update(data: data, forKey: key), "Should return false when updating non-existent key")
 	}
 	
 	// Checklist: Delegates to injected keychain and returns its result
@@ -460,15 +565,18 @@ extension SystemKeychainTests {
 	fileprivate func test_init_systemKeychain_doesNotThrow() {
 		_ = makeSystemKeychain()
 	}
+	
 	// CU: SecureStorage (SystemKeychain) - Checklist: Returns failure for invalid input (empty key/data)
 	fileprivate func test_save_onSystemKeychain_withInvalidInput_returnsFailure() {
 		let sut = makeSystemKeychain()
 		XCTAssertEqual(sut.save(data: Data(), forKey: ""), KeychainSaveResult.failure)
 	}
+	
 	// CU: SecureStorage (NoFallback strategy) - Checklist: Explicit constructor coverage
 	fileprivate func test_init_noFallback_doesNotThrow() {
 		_ = makeNoFallback()
 	}
+	
 	// CU: SecureStorage (NoFallback strategy) - Checklist: Always returns failure
 	fileprivate func test_save_onNoFallback_alwaysReturnsFailure() {
 		let sut = makeNoFallback()

@@ -121,6 +121,11 @@ Como usuario de la aplicación, quiero que mi información sensible se almacene 
 - Recuperar datos de forma segura
 - Manejar errores de almacenamiento
 - Soportar concurrencia y robustez ante fallos
+- [Nuevo] Cubrir todos los caminos de error y edge cases internos en helpers y factories de test
+- [Nuevo] Ejecutar y cubrir closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen)
+- [Nuevo] Validar integración real con Keychain del sistema (tests de integración)
+- [Nuevo] Validar outputs y errores mediante snapshot testing (si aplica y sube cobertura)
+- [Nuevo] Garantizar que cada rama/branch del código crítico tiene su test asociado-
 
 ### ✅ Checklist técnico de almacenamiento seguro
 
@@ -150,11 +155,14 @@ Como usuario de la aplicación, quiero que mi información sensible se almacene 
 - [✅] Robustez ante concurrencia (thread safe)
 - [✅] Cubrir todos los códigos de error posibles de la API Keychain
 - [✅] Persistencia real: save y load en Keychain
-- [✅] Forzar error de duplicidad y asegurar que se ejecuta `handleDuplicateItem` (test de duplicidad implementado y cubierto)
-- [✅] Validar que el método `handleDuplicateItem` retorna correctamente según el flujo de actualización y comparación (cubierto por tests de actualización y duplicidad)
-- [✅] Garantizar que la estrategia `NoFallback` retorna `.failure` y `nil` en todos los casos (tests de fallback y no fallback cubiertos)
-- [⏳] Ejecutar closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen) *(en progreso, cobertura parcial en integración)*
-- [🔜] Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests *(pendiente de refinar para casos extremos y factories auxiliares)*
+- [✅] Forzar error de duplicidad y asegurar que se ejecuta handleDuplicateItem (test de duplicidad implementado y cubierto)
+- [✅] Validar que el método handleDuplicateItem retorna correctamente según el flujo de actualización y comparación (cubierto por tests de actualización y duplicidad)
+- [✅] Garantizar que la estrategia NoFallback retorna .failure y nil en todos los casos (tests de fallback y no fallback cubiertos)
+- [⏳] Ejecutar closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen) (en progreso, cobertura parcial en integración)
+- [🔜] Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests (pendiente de refinar para casos extremos y factories auxiliares)
+- [🔜] Test de integración real con Keychain del sistema (añadir y marcar cuando esté cubierto)
+- [] Snapshot testing para outputs y errores relevantes (añadir si aporta cobertura y valor)
+- [🔜] Cobertura de todos los branches/ramas de código crítico (añadir tests específicos para cada branch no cubierto)
 
 #### Diagrama técnico
 

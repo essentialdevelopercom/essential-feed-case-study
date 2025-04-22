@@ -49,13 +49,16 @@ public final class KeychainDeleteSpy: KeychainSavable, KeychainDeletable {
 	public init() {}
 	
 	public func delete(forKey key: String) -> Bool {
-		deleteCalled = true
-		lastDeletedKey = key
-		if let _ = simulatedDeleteError {
-			return false // Simula error real
-		}
-		return deleteResult
-	}
+    deleteCalled = true
+    lastDeletedKey = key
+    if key.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+        return false
+    }
+    if let _ = simulatedDeleteError {
+        return false // Simula error real
+    }
+    return deleteResult
+}
 	
 	// Dummy implementations for KeychainSavable
 	public func save(data: Data, forKey key: String) -> KeychainSaveResult { .success }

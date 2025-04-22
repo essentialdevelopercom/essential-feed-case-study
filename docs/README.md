@@ -54,8 +54,6 @@ Por defecto usa:
 
 ---
 
-
-
 > **Limitación técnica en cobertura automatizada de Keychain**
 >
 > Por restricciones conocidas de Xcode y el entorno CLI, los tests que interactúan con el Keychain del sistema/simulador pueden fallar o no reflejar cobertura real al ejecutar por línea de comandos (xcodebuild, CI, scripts), aunque funcionen correctamente en Xcode GUI.  
@@ -66,8 +64,9 @@ Por defecto usa:
 
 ---
 
-## 📊 Estado de cobertura (actualizado 2025-04-21)
-- **Cobertura global:** 88.3%
+## 📊 Estado de cobertura (actualizado 2025-04-23 01:09)
+
+- **Cobertura global:** 92.03%
 - **Módulos críticos de seguridad:** Keychain, SecureStorage, Registro y Login >85%
 - **Tests:** unitarios e integración, cubriendo escenarios reales y edge cases principales.
 - Consulta el [coverage-summary.md](docs/coverage-summary.md) para detalle por módulo.

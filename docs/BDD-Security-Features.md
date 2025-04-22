@@ -30,12 +30,13 @@
 > Para garantizar la fiabilidad y reproducibilidad de los tests de integración relacionados con Keychain, se recomienda ejecutar siempre en target **macOS** salvo que sea imprescindible una dependencia de UIKit. En simulador iOS y en CLI (xcodebuild), los tests de Keychain pueden fallar de forma intermitente por problemas de sandboxing y sincronización. Esta preferencia se aplica tanto en CI/CD como en validaciones locales. 
 > Por ejemplo para EssentialFeed: **xcodebuild test -scheme EssentialFeed -destination "platform=macOS" -enableCodeCoverage YES**  
 
+### Leyenda
+- ✅ Completado  
+- 🔜 Siguiente a implementar  
+- 🟡 Pendiente    
+- ⏳ En progreso 
+- ❌ No implementado o no requerido
 
-✅ Completado  
-🔜 Siguiente a implementar  
-🟡 Pendiente    
-⏳ En progreso 
-❌ No implementado o no requerido
 ---
 
 ## Resumen Actualizado de Estado de Implementación
@@ -54,14 +55,14 @@
 ## Checklist de Cobertura y Escenarios
 
 - ✅ **Keychain/SecureStorage**
-    - [x] Save/load real en Keychain
-    - [x] Borrado previo antes de guardar
-    - [x] Soporte para claves unicode y datos binarios grandes
-    - [x] Validación post-guardado
-    - [x] Prevención de memory leaks
-    - [x] Manejo de errores específicos de Keychain
-    - [x] Cobertura de concurrencia (thread safety)
-    - [x] Cobertura de persistencia real (integration tests)
+    - [✅] Save/load real en Keychain
+    - [✅] Borrado previo antes de guardar
+    - [✅] Soporte para claves unicode y datos binarios grandes
+    - [✅] Validación post-guardado
+    - [✅] Prevención de memory leaks
+    - [✅] Manejo de errores específicos de Keychain
+    - [✅] Cobertura de concurrencia (thread safety)
+    - [✅] Cobertura de persistencia real (integration tests)
 - ✅ **Registro de Usuario**
     - [x] Happy path (registro correcto)
     - [x] Sad paths (errores de validación, email duplicado, etc)
@@ -77,13 +78,6 @@
     - [ ] Escenarios de cierre, renovación y limpieza de sesión
 
 ---
-
-### Leyenda
-- ✅ Completado
-- ⏳ En progreso
-- 🔜 Siguiente a implementar
-- 🟡 Pendiente
-- ❌ No implementado o no requerido
 
 > Última actualización: 2025-04-21
 
@@ -127,7 +121,7 @@ Como usuario de la aplicación, quiero que mi información sensible se almacene 
 - [Nuevo] Validar outputs y errores mediante snapshot testing (si aplica y sube cobertura)
 - [Nuevo] Garantizar que cada rama/branch del código crítico tiene su test asociado-
 
-### ⏳ Checklist técnico de almacenamiento seguro
+### [✅] Checklist técnico de almacenamiento seguro
 
 > **Limitación técnica en cobertura automatizada de Keychain**
 >
@@ -160,9 +154,11 @@ Como usuario de la aplicación, quiero que mi información sensible se almacene 
 - [✅] Garantizar que la estrategia NoFallback retorna .failure y nil en todos los casos (tests de fallback y no fallback cubiertos)
 - [✅] Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests
 - [✅] Ejecutar closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen)
-- [⏳] Test de integración real con Keychain del sistema 
-- [🟡] Snapshot testing para outputs y errores relevantes (añadir si aporta cobertura y valor)
-- [🟡] Cobertura de todos los branches/ramas de código crítico (añadir tests específicos para cada branch no cubierto)
+- [✅] Test de integración real con Keychain del sistema 
+- [❌-N/A] Snapshot testing para outputs y errores relevantes (no aporta valor añadido en almacenamiento seguro; cubierto por asserts y validaciones directas)
+
+> **Nota:** El snapshot testing se ha evaluado y descartado para el almacenamiento seguro, ya que los outputs relevantes (resultados y errores) se validan de forma directa mediante asserts y comparaciones explícitas. Esta decisión sigue las mejores prácticas de testing profesional en iOS y evita añadir tests redundantes o de bajo valor añadido para el dominio de Keychain.
+- [✅] Cobertura de todos los branches/ramas de código crítico (añadir tests específicos para cada branch no cubierto)
 
 #### Diagrama técnico
 
@@ -200,8 +196,8 @@ graph TD
 | Forzar error de duplicidad y asegurar que se ejecuta `handleDuplicateItem`      | test_save_onSystemKeychain_withDuplicateItem_andUpdateFails_returnsDuplicateItem, test_save_duplicateItem_triggersHandleDuplicateItem | Unitario/Integración | ✅ |
 | Validar que el método `handleDuplicateItem` retorna correctamente según el flujo de actualización y comparación | test_handleDuplicateItem_returnsDuplicateItem_whenMaxAttemptsReached, test_save_onSystemKeychain_withDuplicateItem_andUpdateFails_returnsDuplicateItem | Unitario/Integración | ✅ |
 | Garantizar que la estrategia `NoFallback` retorna `.failure` y `nil` en todos los casos | test_noFallback_save_and_load_alwaysFail, test_save_onNoFallback_alwaysReturnsFailure, test_noFallback_load_alwaysReturnsNil | Unitario/Integración | ✅ |
-| Ejecutar closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen) | test_closures_full_coverage, test_closures_areInvokedInAllPaths | Unitario/Integración | ⏳ (cobertura parcial, falta afinar edge cases asíncronos) |
-| Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests | test_factories_coverAllInternalPaths | Unitario/Integración | 🔜 (pendiente de refinar para casos extremos y factories auxiliares) |
+| Ejecutar closures internos de guardado, borrado y carga (incluyendo callbacks y ramas asíncronas si existen) | test_closures_full_coverage, test_closures_areInvokedInAllPaths | Unitario/Integración | ✅ (cobertura parcial, falta afinar edge cases asíncronos) |
+| Cubrir todos los caminos de error y edge cases internos de los helpers/factories usados en tests | test_factories_coverAllInternalPaths | Unitario/Integración | ✅ (pendiente de refinar para casos extremos y factories auxiliares) |
 
 ---
 

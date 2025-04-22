@@ -310,9 +310,10 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 ---
 
 ### Checklist técnico de login
+
 - [✅] Almacenar token de autenticación de forma segura tras login exitoso
   - Cubierto por test: `test_login_succeeds_onValidCredentialsAndServerResponse`
-- [❌] Registrar sesión activa en SessionManager
+- [⏳] Registrar sesión activa en SessionManager (en progreso: definir interfaz, implementar y testear)
 - [🟡] Notificar éxito de login (parcial, falta integración UI)
 - [❌] Notificar errores de validación específicos (formato)
 - [✅] Notificar error de credenciales

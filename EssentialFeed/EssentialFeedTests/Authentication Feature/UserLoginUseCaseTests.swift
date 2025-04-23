@@ -1,6 +1,6 @@
-import XCTest
 
-@testable import EssentialFeed
+import XCTest
+import EssentialFeed
 
 final class UserLoginUseCaseTests: XCTestCase {
   // CU: Autenticación de Usuario

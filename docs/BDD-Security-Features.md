@@ -294,6 +294,33 @@ para acceder a mis recursos protegidos.
 
 ---
 
+### Criterios de aceptación (BDD/Gherkin)   
+    Funcionalidad: Notificar al usuario el éxito del login tras autenticación correcta.
+
+   # Escenario: Login exitoso
+    Given el usuario introduce credenciales válidas
+    When el sistema valida y autentica correctamente
+    Then el sistema debe notificar explícitamente el éxito del login al usuario
+    And debe permitir el acceso a la pantalla principal o flujo protegido
+    And debe limpiar cualquier mensaje de error previo
+
+   # Escenario: Login exitoso con sesión previa
+    Given el usuario ya tiene una sesión previa
+    When realiza login exitoso
+    Then se notifica éxito y la sesión previa se reemplaza limpiamente
+
+### Estrategia de test (Clean Architecture, TDD, BDD)
+    **Test unitario del Presenter/UseCase**
+    Verificar que, tras login correcto, se llama al método/callback de notificación de éxito (por ejemplo, onLoginSuccess()).
+    Usar un spy/mock para la vista/UI y comprobar que recibe la señal de éxito.
+    Asegurarse de que no quedan errores previos visibles.
+
+    **Test de integración**
+    Simular el flujo completo: login → autenticación → notificación de éxito → navegación.
+    Comprobar que la UI muestra el mensaje correcto o navega al destino esperado.
+    Test de aceptación (opcional, si tienes capa de UI testing)
+    Simular usuario real: introducir credenciales válidas, pulsar login y verificar que aparece la confirmación o se accede al área protegida.
+
 ### Escenarios (Criterios de aceptación)
 _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklist técnico)_
 - Login exitoso (token almacenado de forma segura)

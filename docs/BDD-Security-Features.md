@@ -81,8 +81,10 @@
     - [🟡] Escenarios de expiración y renovación de token
 - 🟡 **Recuperación de contraseña**
     - [🟡] Escenarios de recuperación y validación
-- 🟡 **Gestión de sesiones**
-    - [🟡] Escenarios de cierre, renovación y limpieza de sesión
+- ✅ **Gestión de sesiones**
+    - [✅] Registro de sesión activa en SessionManager (interfaz, implementación y test cubiertos)
+    - [⏳] Escenarios de cierre de sesión y limpieza de sesión
+    - [🔜] Renovación automática de sesión (por implementar)
 
 ---
 
@@ -313,9 +315,10 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 
 - [✅] Almacenar token de autenticación de forma segura tras login exitoso
   - Cubierto por test: `test_login_succeeds_onValidCredentialsAndServerResponse`
-- [⏳] Registrar sesión activa en SessionManager (en progreso: definir interfaz, implementar y testear)
-- [🟡] Notificar éxito de login (parcial, falta integración UI)
-- [❌] Notificar errores de validación específicos (formato)
+- [✅] Registrar sesión activa en SessionManager (interfaz, implementación y test cubiertos)
+  - Cubierto por test: `SystemSessionManagerTests.swift`
+- [⏳] Notificar éxito de login (parcial, falta integración UI)
+- [🔜] Notificar errores de validación específicos (formato)
 - [✅] Notificar error de credenciales
   - Cubierto por test: `test_login_fails_onInvalidCredentialsAndNotifiesFailure`
 - [❌] Ofrecer recuperación de contraseña

@@ -1,5 +1,29 @@
 # Essential App Case Study
 
+## Architectural Decision: Composer vs Coordinator
+
+**Note:** This proof-of-concept project centralizes navigation in the Composer to keep things simple and to focus on practicing Clean Architecture, modularization, and TDD.
+
+- **Advantage:** Allows for experimentation and learning without overengineering.
+- **Limitation:** If the app grows significantly, the Composer can become a "God Object," making scalability and maintenance more difficult.
+
+**Professional recommendation:**
+- For real and scalable projects, migrate to a Coordinator pattern, with one Coordinator per feature or flow, to achieve loose coupling, high cohesion, and true modularization.
+- Document this decision and apply the Coordinator pattern from the start in ambitious projects.
+
+---
+
+If you have questions about migrating to Coordinators or want a reference demo, check the internal documentation or contact the architecture team.
+
+---
+
+## Current State
+- Navigation is centralized in the Composer.
+- Features are decoupled and testable.
+- Modularization and Clean Code are applied in every feature.
+
+---
+
 ## Key Documentation
 
 - [BDD & Security Features](./EssentialFeed/BDD-Security-Features.md): Functional use cases and narrative
@@ -43,15 +67,15 @@ So I can always enjoy images of my friends
 ```
 Given the customer doesn't have connectivity
   And there’s a cached version of the feed
- ## 🧪 Patrón de test para HTTPClient con URLProtocolStub
+ ## 🧪 Test Pattern for HTTPClient with URLProtocolStub
 
-Para asegurar que los tests de integración de `HTTPClient` sean deterministas, rápidos y no dependan de la red real, utilizamos un stub de red (`URLProtocolStub`) y una configuración personalizada de `URLSession`.
+To ensure that `HTTPClient` integration tests are deterministic, fast, and do not depend on the real network, we use a network stub (`URLProtocolStub`) and a custom `URLSession` configuration.
 
-**¿Por qué no usar `.shared`?**
-- Usar `.shared` puede provocar interferencias entre tests y dependencias accidentales de la red real.
-- Cada test debe ser hermético: control total sobre las respuestas, sin efectos colaterales ni dependencias externas.
+**Why not use `.shared`?**
+- Using `.shared` can cause interference between tests and accidental dependencies on the real network.
+- Each test must be hermetic: full control over responses, with no side effects or external dependencies.
 
-**Patrón recomendado:**
+**Recommended pattern:**
 ```swift
 private func makeSUT(
     session: URLSession? = nil,
@@ -66,16 +90,16 @@ private func makeSUT(
     return sut as HTTPClient
 }
 ```
-- Así, todos los tests de integración usan el stub, evitando la red real.
-- Si algún test necesita una sesión especial, puede proporcionarla.
+- This way, all integration tests use the stub, avoiding the real network.
+- If a test needs a special session, it can provide one.
 
-**Ventajas:**
-- Tests rápidos, predecibles y sin flakiness.
-- Aislamiento total de cada caso de test.
-- Facilita el TDD/BDD y la confianza en la suite de tests.
+**Advantages:**
+- Fast, predictable, and flake-free tests.
+- Full isolation of each test case.
+- Facilitates TDD/BDD and confidence in the test suite.
 
-> **Nota:** Este patrón es especialmente útil en proyectos modulares, CI y cuando hay tests concurrentes.
-  And the cache is less than seven days old
+> **Note:** This pattern is especially useful in modular projects, CI, and when there are concurrent tests.  
+ And the cache is less than seven days old
  When the customer requests to see the feed
  Then the app should display the latest feed saved
 
@@ -380,15 +404,15 @@ GET /image/{image-id}/comments
 ![](architecture.png)
 
 <!-- COVERAGE-REPORT-START -->
-# 📊 Resumen de Cobertura de Código
+# 📊 Code Coverage Summary
 
-**Cobertura total:** **91.39%**
+**Total coverage:** **91.39%**
 
 ---
 
-## Archivos con mayor cobertura
+## Files with Highest Coverage
 
-| Archivo | Cobertura | Test que lo cubre |
+| File | Coverage | Covered by Test |
 |---|---|---|
 | [UserLoginUseCase.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Authentication Feature/UserLoginUseCase.swift) | 100.00% | UserLoginUseCaseTests.swift |
 | [SecureStorage.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/Security Feature/SecureStorage.swift) | 100.00% | KeychainSecureStorageTests.swift
@@ -400,9 +424,9 @@ UserRegistrationUseCaseTests.swift |
 SystemKeychainTests.swift
 SecureStorageTests.swift |
 
-## Archivos con menor cobertura (>0%)
+## Files with Lower Coverage (>0%)
 
-| Archivo | Cobertura | Test que lo cubre |
+| File | Coverage | Covered by Test |
 |---|---|---|
 | [SystemKeychain.swift](/Users/juancarlosmerlosalbarracin/Developer/Essential_Developer/essential-feed-case-study/EssentialFeed/EssentialFeed/Security Feature/Keychain/SystemKeychain.swift) | 51.85% | SystemKeychainIntegrationCoverageTests.swift
 SystemKeychainTests.swift
@@ -415,16 +439,16 @@ SystemKeychainIntegrationCoverageTests.swift
 SecureStorageTests.swift |
 
 ---
-## Archivos de producción **sin ningún test asociado**
+## Production files **without any associated test**
 
-Todos los archivos de producción tienen al menos un test asociado.
+All production files have at least one associated test.
 
-> Estos archivos no tienen ningún test directo asociado según el mapeo por nombre y CU. Revisa si requieren cobertura o si son candidatos a refactorización.
+> These files have no direct test associated according to the mapping by name and use case. Review if they require coverage or if they are candidates for refactoring.
 
-### ¿Cómo leer este reporte?
-- **Cobertura total:** Porcentaje de líneas cubiertas por tests en todo el target.
-- **Mayor cobertura:** Archivos mejor cubiertos por los tests.
-- **Menor cobertura:** Archivos con menor cobertura (pero mayor a 0%).
+### How to read this report?
+- **Total coverage:** Percentage of lines covered by tests in the entire target.
+- **Highest coverage:** Files best covered by tests.
+- **Lowest coverage:** Files with the lowest coverage (but greater than 0%).
 
-> Para cobertura por clase o función, revisa el archivo `coverage-report.txt`.
+> For coverage by class or function, check the `coverage-report.txt` file.
 <!-- COVERAGE-REPORT-END -->

@@ -24,6 +24,49 @@ If you have questions about migrating to Coordinators or want a reference demo, 
 
 ---
 
+## Authentication Flow: Registration & Login
+
+### Overview
+
+The authentication flow consists of two independent use cases: **User Registration** and **User Login**. Each use case is fully decoupled and follows Clean Architecture principles, with its own technical checklist and acceptance criteria.
+
+- **Registration**: Allows a new user to create an account and securely store credentials.
+- **Login**: Allows a registered user to authenticate and access the app.
+
+### Navigation Flow (UI Layer)
+
+The navigation between Registration and Login is orchestrated by the Composer (or Coordinator, in scalable projects). This orchestration is not a business use case, but a UI responsibility. The flow is as follows:
+
+1. **Initial State**: The user is presented with either the Login or Registration screen (depending on app requirements).
+2. **From Registration to Login**:
+   - After a successful registration, the user is navigated to the Login screen to authenticate with their new credentials.
+3. **From Login to Registration**:
+   - If the user does not have an account, they can navigate from the Login screen to the Registration screen.
+4. **Error Handling**:
+   - Specific error messages are shown for invalid credentials, email already in use, connectivity issues, etc., as defined in each use case checklist.
+
+### Technical Notes
+
+- **Composer Responsibility**: The Composer handles the presentation and navigation between Registration and Login, ensuring loose coupling and modularity.
+- **No Domain Coupling**: Navigation logic is not part of the domain layer; it is purely a UI/infrastructure concern.
+- **Documentation**: Each use case has its own technical checklist and acceptance criteria, as defined in the BDD-Security-Features document.
+
+---
+
+**Example Diagram:**
+
+```mermaid
+flowchart TD
+    A[Login Screen] -- "No account?" --> B[Registration Screen]
+    B -- "Registration Success" --> A
+```
+
+---
+
+**Tip:** For scalable projects, consider migrating the navigation logic to a Coordinator pattern for even better modularity and testability.
+
+---
+
 ## Key Documentation
 
 - [BDD & Security Features](./EssentialFeed/BDD-Security-Features.md): Functional use cases and narrative

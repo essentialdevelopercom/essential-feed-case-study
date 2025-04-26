@@ -39,6 +39,9 @@
 		0895DAAD234B3F7E0031BB2D /* EssentialFeediOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0895DAAA234B3F7E0031BB2D /* EssentialFeediOS.framework */; };
 		0895DAAE234B3F7E0031BB2D /* EssentialFeediOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0895DAAA234B3F7E0031BB2D /* EssentialFeediOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		08CF92F62555A15B006B7E7D /* NullStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CF92F52555A15B006B7E7D /* NullStore.swift */; };
+		B449F2082DBD6ABC0078F27B /* LoginComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B449F2032DBD6ABC0078F27B /* LoginComposer.swift */; };
+		B449F2092DBD6ABC0078F27B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B449F2052DBD6ABC0078F27B /* LoginView.swift */; };
+		B449F20A2DBD6ABC0078F27B /* AuthComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B449F2022DBD6ABC0078F27B /* AuthComposer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +107,9 @@
 		08B5033925346BE1003FF218 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		08B5033B25346BFE003FF218 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		08CF92F52555A15B006B7E7D /* NullStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NullStore.swift; sourceTree = "<group>"; };
+		B449F2022DBD6ABC0078F27B /* AuthComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthComposer.swift; sourceTree = "<group>"; };
+		B449F2032DBD6ABC0078F27B /* LoginComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginComposer.swift; sourceTree = "<group>"; };
+		B449F2052DBD6ABC0078F27B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -169,6 +175,7 @@
 		0895DA85234B3B950031BB2D /* EssentialApp */ = {
 			isa = PBXGroup;
 			children = (
+				B449F2072DBD6ABC0078F27B /* Authentication Feature */,
 				0895DA86234B3B950031BB2D /* AppDelegate.swift */,
 				0895DA88234B3B950031BB2D /* SceneDelegate.swift */,
 				08CF92F52555A15B006B7E7D /* NullStore.swift */,
@@ -205,6 +212,32 @@
 				0895DAAA234B3F7E0031BB2D /* EssentialFeediOS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B449F2042DBD6ABC0078F27B /* Composition */ = {
+			isa = PBXGroup;
+			children = (
+				B449F2022DBD6ABC0078F27B /* AuthComposer.swift */,
+				B449F2032DBD6ABC0078F27B /* LoginComposer.swift */,
+			);
+			path = Composition;
+			sourceTree = "<group>";
+		};
+		B449F2062DBD6ABC0078F27B /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B449F2052DBD6ABC0078F27B /* LoginView.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		B449F2072DBD6ABC0078F27B /* Authentication Feature */ = {
+			isa = PBXGroup;
+			children = (
+				B449F2042DBD6ABC0078F27B /* Composition */,
+				B449F2062DBD6ABC0078F27B /* UI */,
+			);
+			path = "Authentication Feature";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -314,6 +347,9 @@
 			files = (
 				08073B44238D2DFA00A75DC6 /* FeedUIComposer.swift in Sources */,
 				0895DA87234B3B950031BB2D /* AppDelegate.swift in Sources */,
+				B449F2082DBD6ABC0078F27B /* LoginComposer.swift in Sources */,
+				B449F2092DBD6ABC0078F27B /* LoginView.swift in Sources */,
+				B449F20A2DBD6ABC0078F27B /* AuthComposer.swift in Sources */,
 				08073B45238D2DFA00A75DC6 /* LoadResourcePresentationAdapter.swift in Sources */,
 				08CF92F62555A15B006B7E7D /* NullStore.swift in Sources */,
 				08073B48238D2DFA00A75DC6 /* WeakRefVirtualProxy.swift in Sources */,
@@ -538,8 +574,8 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = EssentialAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -561,8 +597,8 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = EssentialAppTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

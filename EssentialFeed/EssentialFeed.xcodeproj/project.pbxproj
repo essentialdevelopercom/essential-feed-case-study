@@ -133,13 +133,14 @@
 		08EFE6BD22D6384100DA417A /* FeedImageCellController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EFE6BC22D6384100DA417A /* FeedImageCellController.swift */; };
 		08F8822D236499B200CAEE16 /* FeedCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8822C236499B200CAEE16 /* FeedCache.swift */; };
 		B40098352DB022350081699A /* UserRegistrationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4D71EF12DAF1D34003A1316 /* UserRegistrationUseCase.swift */; };
+		B400BE982DBD61E900A18EE5 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B400BE962DBD61E900A18EE5 /* LoginViewModel.swift */; };
+		B400BE992DBD61E900A18EE5 /* UserLoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B400BE902DBD61E900A18EE5 /* UserLoginUseCase.swift */; };
+		B400BE9C2DBD61E900A18EE5 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B400BE922DBD61E900A18EE5 /* LoginPresenter.swift */; };
+		B400BE9E2DBD61E900A18EE5 /* LoginPresentingProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B400BE932DBD61E900A18EE5 /* LoginPresentingProtocols.swift */; };
 		B402E0302DB864AF00B29ECF /* SessionManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = B402E02E2DB864AF00B29ECF /* SessionManaging.swift */; };
-		B46E732A2DB906200061CB60 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B46E73292DB906200061CB60 /* LoginView.swift */; };
-		B46E732B2DB906200061CB60 /* LoginPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B46E73282DB906200061CB60 /* LoginPresenter.swift */; };
 		B46E732D2DB9068A0061CB60 /* LoginPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B46E732C2DB9068A0061CB60 /* LoginPresenterTests.swift */; };
 		B47D59752DB39E8900034806 /* UserLoginUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47D59732DB39E4A00034806 /* UserLoginUseCaseTests.swift */; };
 		B47D597C2DB3D67F00034806 /* SecureStorageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47D59792DB3D67F00034806 /* SecureStorageTests.swift */; };
-		B4803EE22DB7A6CA00E2D68A /* UserLoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4803EE12DB7A6CA00E2D68A /* UserLoginUseCase.swift */; };
 		B49D2E8C2DB8E7F800D36E0D /* SystemSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49D2E8B2DB8E7F800D36E0D /* SystemSessionManager.swift */; };
 		B49D2E8E2DB8E98400D36E0D /* SystemSessionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B49D2E8D2DB8E83B00D36E0D /* SystemSessionManagerTests.swift */; };
 		B49EFABB2DB54B6F007B703C /* SystemKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42EB7002DAEBA17002FBC51 /* SystemKeychain.swift */; };
@@ -321,16 +322,17 @@
 		08EFE6BC22D6384100DA417A /* FeedImageCellController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageCellController.swift; sourceTree = "<group>"; };
 		08F8822C236499B200CAEE16 /* FeedCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCache.swift; sourceTree = "<group>"; };
 		08FC5AA922D5F47900148E12 /* FeedImageDataLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedImageDataLoader.swift; sourceTree = "<group>"; };
+		B400BE902DBD61E900A18EE5 /* UserLoginUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginUseCase.swift; sourceTree = "<group>"; };
+		B400BE922DBD61E900A18EE5 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
+		B400BE932DBD61E900A18EE5 /* LoginPresentingProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresentingProtocols.swift; sourceTree = "<group>"; };
+		B400BE962DBD61E900A18EE5 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B402E02B2DB8642D00B29ECF /* SessionManagerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManagerSpy.swift; sourceTree = "<group>"; };
 		B402E02E2DB864AF00B29ECF /* SessionManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionManaging.swift; sourceTree = "<group>"; };
 		B42EB7002DAEBA17002FBC51 /* SystemKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SystemKeychain.swift; path = "EssentialFeed/Security Feature/Keychain/SystemKeychain.swift"; sourceTree = SOURCE_ROOT; };
 		B442B75D2AB3451700284B92 /* KeychainProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = KeychainProtocol.swift; path = "EssentialFeed/Security Feature/Keychain/KeychainProtocol.swift"; sourceTree = SOURCE_ROOT; };
-		B46E73282DB906200061CB60 /* LoginPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenter.swift; sourceTree = "<group>"; };
-		B46E73292DB906200061CB60 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B46E732C2DB9068A0061CB60 /* LoginPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPresenterTests.swift; sourceTree = "<group>"; };
 		B47D59732DB39E4A00034806 /* UserLoginUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginUseCaseTests.swift; sourceTree = "<group>"; };
 		B47D59792DB3D67F00034806 /* SecureStorageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureStorageTests.swift; sourceTree = "<group>"; };
-		B4803EE12DB7A6CA00E2D68A /* UserLoginUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginUseCase.swift; sourceTree = "<group>"; };
 		B49D2E8B2DB8E7F800D36E0D /* SystemSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemSessionManager.swift; sourceTree = "<group>"; };
 		B49D2E8D2DB8E83B00D36E0D /* SystemSessionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SystemSessionManagerTests.swift; path = "EssentialFeedTests/Security Feature/Session/SystemSessionManagerTests.swift"; sourceTree = SOURCE_ROOT; };
 		B49EFABC2DB54D0B007B703C /* KeychainSecureStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSecureStorage.swift; sourceTree = "<group>"; };
@@ -946,6 +948,31 @@
 			path = "Registration Feature";
 			sourceTree = "<group>";
 		};
+		B400BE912DBD61E900A18EE5 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				B400BE902DBD61E900A18EE5 /* UserLoginUseCase.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		B400BE942DBD61E900A18EE5 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				B400BE922DBD61E900A18EE5 /* LoginPresenter.swift */,
+				B400BE932DBD61E900A18EE5 /* LoginPresentingProtocols.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		B400BE972DBD61E900A18EE5 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				B400BE962DBD61E900A18EE5 /* LoginViewModel.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
 		B402E02C2DB8642D00B29ECF /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -994,9 +1021,9 @@
 		B4803EE02DB7A63C00E2D68A /* Authentication Feature */ = {
 			isa = PBXGroup;
 			children = (
-				B46E73282DB906200061CB60 /* LoginPresenter.swift */,
-				B46E73292DB906200061CB60 /* LoginView.swift */,
-				B4803EE12DB7A6CA00E2D68A /* UserLoginUseCase.swift */,
+				B400BE912DBD61E900A18EE5 /* Domain */,
+				B400BE942DBD61E900A18EE5 /* Presentation */,
+				B400BE972DBD61E900A18EE5 /* UI */,
 			);
 			path = "Authentication Feature";
 			sourceTree = "<group>";
@@ -1317,7 +1344,6 @@
 				08285AFB228C17B8000A8987 /* CoreDataHelpers.swift in Sources */,
 				08C0880E21E4EF2900ACFB30 /* FeedItemsMapper.swift in Sources */,
 				B40098352DB022350081699A /* UserRegistrationUseCase.swift in Sources */,
-				B4803EE22DB7A6CA00E2D68A /* UserLoginUseCase.swift in Sources */,
 				087148C4232BFCF100D6BE1A /* FeedImageViewModel.swift in Sources */,
 				08EF9D29250BBC6C004539C2 /* ResourceErrorView.swift in Sources */,
 				08E546CC24F9631300C64FAE /* FeedImageDataMapper.swift in Sources */,
@@ -1336,8 +1362,6 @@
 				08C0880C21E4EED600ACFB30 /* HTTPClient.swift in Sources */,
 				080F9A372531DDC600EAD475 /* FeedEndpoint.swift in Sources */,
 				B49EFABB2DB54B6F007B703C /* SystemKeychain.swift in Sources */,
-				B46E732A2DB906200061CB60 /* LoginView.swift in Sources */,
-				B46E732B2DB906200061CB60 /* LoginPresenter.swift in Sources */,
 				080EDF0C21B6DAE800813479 /* FeedImage.swift in Sources */,
 				0889B0FA2530B0AA00FEAB5A /* ImageCommentsEndpoint.swift in Sources */,
 				0804862E236345A40087ED48 /* FeedImageDataCache.swift in Sources */,
@@ -1348,6 +1372,10 @@
 				08EF9D27250BBC1B004539C2 /* ResourceLoadingView.swift in Sources */,
 				08897BEF233A1C8E0029F5E4 /* HTTPURLResponse+StatusCode.swift in Sources */,
 				08285AFD228C1843000A8987 /* ManagedCache.swift in Sources */,
+				B400BE982DBD61E900A18EE5 /* LoginViewModel.swift in Sources */,
+				B400BE992DBD61E900A18EE5 /* UserLoginUseCase.swift in Sources */,
+				B400BE9C2DBD61E900A18EE5 /* LoginPresenter.swift in Sources */,
+				B400BE9E2DBD61E900A18EE5 /* LoginPresentingProtocols.swift in Sources */,
 				08285AF1228BF91E000A8987 /* CoreDataFeedStore.swift in Sources */,
 				B402E0302DB864AF00B29ECF /* SessionManaging.swift in Sources */,
 				087148BD232BEC6700D6BE1A /* ResourceErrorViewModel.swift in Sources */,

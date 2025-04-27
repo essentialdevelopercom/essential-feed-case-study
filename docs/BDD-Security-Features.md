@@ -33,10 +33,13 @@
 ### Leyenda
 
 - [✅] Completado y cubierto (con test o funcionalidad)
-- [🟡] Parcialmente cubierto, en progreso, o pendiente de edge cases (ver comentario)
+- [🟡] Parcialmente cubierto o pendiente de edge cases (ver comentario)
 - [⏳] En progreso 
 - [🔜] Planificado/próximo, aún no iniciado
 - [❌] No implementado, no cubierto, o bloqueado
+cual marcamos como ⏳? , cual marcamos como 🔜, cual como 🟡, cual como ✅ y cual como ❌? actualiza
+
+
 
 ---
 
@@ -317,14 +320,37 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
   - Cubierto por test: `test_login_succeeds_onValidCredentialsAndServerResponse`
 - [✅] Registrar sesión activa en SessionManager (interfaz, implementación y test cubiertos)
   - Cubierto por test: `SystemSessionManagerTests.swift`
-- [⏳] Notificar éxito de login (parcial, falta integración UI)
-- [🔜] Notificar errores de validación específicos (formato)
-- [✅] Notificar error de credenciales
-  - Cubierto por test: `test_login_fails_onInvalidCredentialsAndNotifiesFailure`
-- [❌] Ofrecer recuperación de contraseña
+- [🟡/❌] Notificar éxito de login (presenter unitario, falta integración UI)
+  - Parcialmente cubierto: lógica y tests unitarios listos, falta integración UI
+- [⏳] Notificar errores de validación específicos (formato)
+
+  #### Checklist técnico (Subtareas): Notificar errores de validación específicos (formato)
+
+- [⏳] El sistema valida el formato de los datos de login antes de enviar la petición
+- [⏳] Si el email no tiene formato válido, muestra mensaje de error específico y no envía petición
+- [⏳] Si la contraseña está vacía o no cumple requisitos mínimos, muestra mensaje de error específico y no envía petición
+- [⏳] Los mensajes de error son claros, accesibles y están alineados con las guidelines de producto
+- [⏳] Los tests unitarios cubren todos los escenarios de validación de formato (email, contraseña, campos vacíos, etc)
+- [⏳] Los tests de integración garantizan que no se realiza petición HTTP ni acceso a Keychain cuando hay errores de formato
+- [⏳] El ciclo está cubierto por tests automáticos en CI
+- [⏳] El checklist principal puede marcarse como [✅] tras validar todo lo anterior
+
+- [🔜] Ofrecer recuperación de contraseña
+  - Será el siguiente caso a abordar tras finalizar errores de validación
 - [❌] Almacenar la solicitud para reintentar (sin conexión)
 - [❌] Notificar error de conectividad
 - [❌] Aplicar retardo/bloqueo tras múltiples intentos fallidos
+
+---
+
+#### Checklist integración UI: Notificar éxito de login:  [🟡] Notificar éxito de login (presenter unitario, falta integración UI)
+
+- [❌] El presenter llama a la vista real al completar el login exitoso
+- [❌] La vista muestra la notificación de éxito al usuario (según guidelines de producto)
+- [❌] El usuario puede ver y entender el mensaje de éxito (accesibilidad y UX)
+- [❌] Hay tests de UI/integración que validan el flujo completo (login → notificación)
+- [❌] El ciclo está cubierto por tests automáticos en CI
+- [❌] El checklist principal puede marcarse como [✅] tras validar todo lo anterior
 
 ---
 
@@ -337,6 +363,8 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 - El sistema recibe el token y lo almacena de forma segura
 - El sistema registra la sesión activa
 - El sistema notifica éxito de login
+
+
 
 **Sad path:**
 - Credenciales incorrectas: sistema notifica error y permite reintentar, registra intento fallido para métricas

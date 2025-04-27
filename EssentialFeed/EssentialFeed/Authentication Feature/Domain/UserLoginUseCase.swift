@@ -23,6 +23,8 @@ public protocol AuthAPI {
 public enum LoginError: Error, Equatable {
 	case invalidCredentials
 	case network
+	case invalidEmailFormat
+	case invalidPasswordFormat
 }
 
 public protocol LoginSuccessObserver {
@@ -43,14 +45,19 @@ public final class UserLoginUseCase {
 		self.failureObserver = failureObserver
 	}
 	public func login(with credentials: LoginCredentials) async -> Result<LoginResponse, LoginError> {
-		let result = await api.login(with: credentials)
-		switch result {
-			case let .success(response):
-				self.successObserver?.didLoginSuccessfully(response: response)
-				return .success(response)
-			case let .failure(error):
-				self.failureObserver?.didFailLogin(error: error)
-				return .failure(error)
-		}
-	}
+        // Validación mínima de email (solo ejemplo: contiene '@')
+        guard credentials.email.contains("@") else {
+            self.failureObserver?.didFailLogin(error: .invalidEmailFormat)
+            return .failure(.invalidEmailFormat)
+        }
+        let result = await api.login(with: credentials)
+        switch result {
+            case let .success(response):
+                self.successObserver?.didLoginSuccessfully(response: response)
+                return .success(response)
+            case let .failure(error):
+                self.failureObserver?.didFailLogin(error: error)
+                return .failure(error)
+        }
+    }
 }

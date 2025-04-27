@@ -3,6 +3,28 @@ import XCTest
 import EssentialFeed
 
 final class UserLoginUseCaseTests: XCTestCase {
+    
+    // CU: Autenticación de Usuario
+    // Checklist: Validar formato de email y contraseña
+    func test_login_fails_withInvalidEmailFormat_andDoesNotSendRequest() async {
+        let (sut, api, _, failureObserver) = makeSUT()
+        let invalidEmail = "usuario_invalido" // sin '@'
+        let credentials = LoginCredentials(email: invalidEmail, password: "ValidPassword123")
+
+        // No configuramos stubbedResult porque NO debería llamarse la API
+
+        let result = await sut.login(with: credentials)
+
+        switch result {
+        case .failure(let error):
+            XCTAssertEqual(error, .invalidEmailFormat, "Should return invalid email format error")
+            XCTAssertFalse(api.wasCalled, "API should NOT be called when email format is invalid")
+            XCTAssertTrue(failureObserver.didNotifyFailure, "Failure observer should be notified on validation error")
+        case .success:
+            XCTFail("Expected failure, got success")
+        }
+    }
+
   // CU: Autenticación de Usuario
   // Checklist: Notificar éxito al observer y almacenar token seguro
   func test_login_succeeds_onValidCredentialsAndServerResponse() async throws {
@@ -56,10 +78,13 @@ final class UserLoginUseCaseTests: XCTestCase {
 
 // MARK: - Test Doubles
 final class AuthAPISpy: AuthAPI {
-  var stubbedResult: Result<LoginResponse, LoginError>?
-  func login(with credentials: LoginCredentials) async -> Result<LoginResponse, LoginError> {
-    return stubbedResult!
-  }
+    var stubbedResult: Result<LoginResponse, LoginError>?
+    private(set) var wasCalled = false
+
+    func login(with credentials: LoginCredentials) async -> Result<LoginResponse, LoginError> {
+        wasCalled = true
+        return stubbedResult!
+    }
 }
 
 final class LoginSuccessObserverSpy: LoginSuccessObserver {

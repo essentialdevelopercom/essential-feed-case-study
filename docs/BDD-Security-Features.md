@@ -70,7 +70,11 @@ cual marcamos como ⏳? , cual marcamos como 🔜, cual como 🟡, cual como ✅
     - [✅] Soporte para claves unicode y datos binarios grandes
     - [✅] Validación post-guardado
     - [✅] Prevención de memory leaks
-    - [✅] Manejo de errores específicos de Keychain
+    - [✅] Mapping de errores a mensajes claros y específicos para el usuario final  
+    - Implementado en producción (`Authentication Feature/Presentation/LoginErrorMessageMapper.swift`)  
+    - Testeado en `Authentication Feature/UserLoginErrorMappingTests.swift`  
+    - Mensajes en inglés, preparados para internacionalización  
+    - 100% cobertura
     - [✅] Cobertura de concurrencia (thread safety)
     - [✅] Cobertura de persistencia real (integration tests)
 - ✅ **Registro de Usuario**
@@ -330,8 +334,13 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
   - Cubierto por test: `test_login_fails_withInvalidEmailFormat_andDoesNotSendRequest`
 - [✅] Si el email no tiene formato válido, muestra mensaje de error específico y no envía petición  
   - Cubierto por test: `test_login_fails_withInvalidEmailFormat_andDoesNotSendRequest`
-- [⏳] Si la contraseña está vacía o no cumple requisitos mínimos, muestra mensaje de error específico y no envía petición
-- [⏳] Los mensajes de error son claros, accesibles y están alineados con las guidelines de producto
+- [✅] Si la contraseña está vacía o no cumple requisitos mínimos, muestra mensaje de error específico y no envía petición  
+  - Cubierto por test: `test_login_fails_withInvalidPassword_andDoesNotSendRequest`
+- [✅] Los mensajes de error son claros, accesibles y están alineados con las guidelines de producto  
+    - Implementado en producción (`Authentication Feature/Presentation/LoginErrorMessageMapper.swift`)  
+    - Testeado en `Authentication Feature/UserLoginErrorMappingTests.swift`  
+    - Mensajes en inglés, preparados para internacionalización  
+    - 100% cobertura
 - [⏳] Los tests unitarios cubren todos los escenarios de validación de formato (email, contraseña, campos vacíos, etc)
 - [⏳] Los tests de integración garantizan que no se realiza petición HTTP ni acceso a Keychain cuando hay errores de formato
 - [⏳] El ciclo está cubierto por tests automáticos en CI

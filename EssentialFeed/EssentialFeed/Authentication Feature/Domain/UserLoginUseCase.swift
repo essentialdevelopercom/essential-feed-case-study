@@ -50,6 +50,11 @@ public final class UserLoginUseCase {
             self.failureObserver?.didFailLogin(error: .invalidEmailFormat)
             return .failure(.invalidEmailFormat)
         }
+        // Validación mínima de contraseña (no vacía y al menos 8 caracteres)
+        guard credentials.password.count >= 8 else {
+            self.failureObserver?.didFailLogin(error: .invalidPasswordFormat)
+            return .failure(.invalidPasswordFormat)
+        }
         let result = await api.login(with: credentials)
         switch result {
             case let .success(response):

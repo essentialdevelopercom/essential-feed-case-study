@@ -344,7 +344,7 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 - [✅] Los tests unitarios cubren todos los escenarios de validación de formato (email, contraseña, campos vacíos, etc)
     - Cubierto en `Authentication Feature/UserLoginUseCaseTests.swift` con escenarios exhaustivos y lógica de producción alineada
     - Validación robusta (trim, longitud, no solo espacios)
-- [⏳] Los tests de integración garantizan que no se realiza petición HTTP ni acceso a Keychain cuando hay errores de formato
+- [✅] Los tests de integración garantizan que no se realiza petición HTTP ni acceso a Keychain cuando hay errores de formato
 - [⏳] El ciclo está cubierto por tests automáticos en CI
 - [⏳] El checklist principal puede marcarse como [✅] tras validar todo lo anterior
 

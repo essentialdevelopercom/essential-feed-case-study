@@ -1,5 +1,5 @@
 //
-//  Copyright © 2019 Essential Developer. All rights reserved.
+// Copyright © Essential Developer. All rights reserved.
 //
 
 import XCTest
@@ -75,11 +75,15 @@ class CacheFeedUseCaseTests: XCTestCase {
 	private func expect(_ sut: LocalFeedLoader, toCompleteWithError expectedError: NSError?, when action: () -> Void, file: StaticString = #filePath, line: UInt = #line) {
 		action()
 		
+		var receivedError: NSError?
+		
 		do {
 			try sut.save(uniqueImageFeed().models)
 		} catch {
-			XCTAssertEqual(error as NSError?, expectedError, file: file, line: line)
+			receivedError = error as NSError?
 		}
+		
+		XCTAssertEqual(receivedError, expectedError, file: file, line: line)
 	}
 	
 }

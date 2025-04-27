@@ -1,5 +1,5 @@
 //
-//  Copyright © 2019 Essential Developer. All rights reserved.
+// Copyright © Essential Developer. All rights reserved.
 //
 
 import UIKit
@@ -14,15 +14,28 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
 		}
 	}()
 	
+	private var onViewDidAppear: ((ListViewController) -> Void)?
+	
 	public var onRefresh: (() -> Void)?
 	
 	public override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		configureTableView()
-		refresh()
+		configureTraitCollectionObservers()
+		
+		onViewDidAppear = { vc in
+			vc.onViewDidAppear = nil
+			vc.refresh()
+		}
 	}
 	
+	public override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		onViewDidAppear?(self)
+	}
+
 	private func configureTableView() {
 		dataSource.defaultRowAnimation = .fade
 		tableView.dataSource = dataSource
@@ -35,16 +48,18 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
 		}
 	}
 	
+	private func configureTraitCollectionObservers() {
+		registerForTraitChanges(
+			[UITraitPreferredContentSizeCategory.self]
+		) { (self: Self, previous: UITraitCollection) in
+			self.tableView.reloadData()
+		}
+	}
+	
 	public override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		
 		tableView.sizeTableHeaderToFit()
-	}
-	
-	public override func traitCollectionDidChange(_ previous: UITraitCollection?) {
-		if previous?.preferredContentSizeCategory != traitCollection.preferredContentSizeCategory {
-			tableView.reloadData()
-		}
 	}
 	
 	@IBAction private func refresh() {
@@ -58,11 +73,7 @@ public final class ListViewController: UITableViewController, UITableViewDataSou
 			snapshot.appendItems(cellControllers, toSection: section)
 		}
 		
-		if #available(iOS 15.0, *) {
-			dataSource.applySnapshotUsingReloadData(snapshot)
-		} else {
-			dataSource.apply(snapshot)
-		}
+		dataSource.apply(snapshot)
 	}
 	
 	public func display(_ viewModel: ResourceLoadingViewModel) {

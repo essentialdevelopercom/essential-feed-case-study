@@ -1,5 +1,5 @@
 //
-//  Copyright © 2019 Essential Developer. All rights reserved.
+// Copyright © Essential Developer. All rights reserved.
 //
 
 import UIKit
@@ -37,8 +37,13 @@ extension FeedImageCellController: UITableViewDataSource, UITableViewDelegate, U
 		cell?.locationLabel.text = viewModel.location
 		cell?.descriptionLabel.text = viewModel.description
 		cell?.feedImageView.image = nil
+		cell?.feedImageContainer.isShimmering = true
+		cell?.feedImageRetryButton.isHidden = true
 		cell?.onRetry = { [weak self] in
 			self?.delegate.didRequestImage()
+		}
+		cell?.onReuse = { [weak self] in
+			self?.releaseCellForReuse()
 		}
 		delegate.didRequestImage()
 		return cell!
@@ -46,6 +51,11 @@ extension FeedImageCellController: UITableViewDataSource, UITableViewDelegate, U
 	
 	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		selection()
+	}
+	
+	public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		self.cell = cell as? FeedImageCell
+		delegate.didRequestImage()
 	}
 	
 	public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -66,6 +76,7 @@ extension FeedImageCellController: UITableViewDataSource, UITableViewDelegate, U
 	}
 	
 	private func releaseCellForReuse() {
+		cell?.onReuse = nil
 		cell = nil
 	}
 }

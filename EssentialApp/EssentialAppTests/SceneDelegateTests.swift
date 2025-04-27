@@ -1,5 +1,5 @@
 //
-//  Copyright © 2019 Essential Developer. All rights reserved.
+//  Copyright © Essential Developer. All rights reserved.
 //
 
 import XCTest
@@ -36,7 +36,7 @@ class SceneDelegateTests: XCTestCase {
 		var makeKeyAndVisibleCallCount = 0
 		
 		override func makeKeyAndVisible() {
-			makeKeyAndVisibleCallCount = 1
+			makeKeyAndVisibleCallCount += 1
 		}
 	}
 	

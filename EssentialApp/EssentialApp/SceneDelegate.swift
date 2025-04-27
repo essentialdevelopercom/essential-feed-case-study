@@ -1,5 +1,5 @@
 //
-//  Copyright © 2019 Essential Developer. All rights reserved.
+//  Copyright © Essential Developer. All rights reserved.
 //
 
 import os
@@ -11,11 +11,16 @@ import EssentialFeed
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	var window: UIWindow?
 	
-	private lazy var scheduler: AnyDispatchQueueScheduler = DispatchQueue(
-		label: "com.essentialdeveloper.infra.queue",
-		qos: .userInitiated,
-		attributes: .concurrent
-	).eraseToAnyScheduler()
+	private lazy var scheduler: AnyDispatchQueueScheduler = {
+		if let store = store as? CoreDataFeedStore {
+			return .scheduler(for: store)
+		}
+		
+		return DispatchQueue(
+			label: "com.essentialdeveloper.infra.queue",
+			qos: .userInitiated
+		).eraseToAnyScheduler()
+	}()
 	
 	private lazy var httpClient: HTTPClient = {
 		URLSessionHTTPClient(session: URLSession(configuration: .ephemeral))
@@ -32,7 +37,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		} catch {
 			assertionFailure("Failed to instantiate CoreData store with error: \(error.localizedDescription)")
 			logger.fault("Failed to instantiate CoreData store with error: \(error.localizedDescription)")
-			return NullStore()
+			return InMemoryFeedStore()
 		}
 	}()
 	
@@ -48,11 +53,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			imageLoader: makeLocalImageLoaderWithRemoteFallback,
 			selection: showComments))
 	
-	convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore, scheduler: AnyDispatchQueueScheduler) {
+	convenience init(httpClient: HTTPClient, store: FeedStore & FeedImageDataStore) {
 		self.init()
 		self.httpClient = httpClient
 		self.store = store
-		self.scheduler = scheduler
 	}
 	
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -68,10 +72,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 	
 	func sceneWillResignActive(_ scene: UIScene) {
-		do {
-			try localFeedLoader.validateCache()
-		} catch {
-			logger.error("Failed to validate cache with error: \(error.localizedDescription)")
+		scheduler.schedule { [localFeedLoader, logger] in
+			do {
+				try localFeedLoader.validateCache()
+			} catch {
+				logger.error("Failed to validate cache with error: \(error.localizedDescription)")
+			}
 		}
 	}
 	
@@ -92,10 +98,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	
 	private func makeRemoteFeedLoaderWithLocalFallback() -> AnyPublisher<Paginated<FeedImage>, Error> {
 		makeRemoteFeedLoader()
+			.receive(on: scheduler)
 			.caching(to: localFeedLoader)
 			.fallback(to: localFeedLoader.loadPublisher)
 			.map(makeFirstPage)
-			.subscribe(on: scheduler)
 			.eraseToAnyPublisher()
 	}
 	
@@ -106,6 +112,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 				(cachedItems + newItems, newItems.last)
 			}
 			.map(makePage)
+			.receive(on: scheduler)
 			.caching(to: localFeedLoader)
 			.subscribe(on: scheduler)
 			.eraseToAnyPublisher()
@@ -139,8 +146,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 				httpClient
 					.getPublisher(url: url)
 					.tryMap(FeedImageDataMapper.map)
+					.receive(on: scheduler)
 					.caching(to: localImageLoader, using: url)
-					.subscribe(on: scheduler)
 					.eraseToAnyPublisher()
 			})
 			.subscribe(on: scheduler)

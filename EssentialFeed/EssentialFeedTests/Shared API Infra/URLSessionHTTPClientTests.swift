@@ -1,5 +1,5 @@
 //
-//  Copyright © 2019 Essential Developer. All rights reserved.
+// Copyright © Essential Developer. All rights reserved.
 //
 
 import EssentialFeed
@@ -174,5 +174,4 @@ class URLSessionHTTPClientTests: XCTestCase {
     return URLResponse(
       url: anyURL(), mimeType: nil, expectedContentLength: 0, textEncodingName: nil)
   }
-
 }

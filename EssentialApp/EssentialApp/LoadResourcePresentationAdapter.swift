@@ -1,5 +1,5 @@
 //
-//  Copyright © 2019 Essential Developer. All rights reserved.
+//  Copyright © Essential Developer. All rights reserved.
 //
 
 import Combine
@@ -24,7 +24,7 @@ final class LoadResourcePresentationAdapter<Resource, View: ResourceView> {
 		isLoading = true
 		
 		cancellable = loader()
-			.dispatchOnMainQueue()
+			.dispatchOnMainThread()
 			.handleEvents(receiveCancel: { [weak self] in
 				self?.isLoading = false
 			})

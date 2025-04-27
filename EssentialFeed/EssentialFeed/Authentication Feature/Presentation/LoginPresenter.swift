@@ -1,10 +1,10 @@
 import Foundation
 
 public final class LoginPresenter {
-    private weak var successView: LoginSuccessPresentingView?
-    private weak var errorClearingView: LoginErrorClearingPresentingView?
+    private weak var successView: (any LoginSuccessPresentingView)?
+    private weak var errorClearingView: (any LoginErrorClearingPresentingView)?
     
-    public init(successView: LoginSuccessPresentingView, errorClearingView: LoginErrorClearingPresentingView) {
+    public init(successView: (any LoginSuccessPresentingView)?, errorClearingView: (any LoginErrorClearingPresentingView)?) {
         self.successView = successView
         self.errorClearingView = errorClearingView
     }

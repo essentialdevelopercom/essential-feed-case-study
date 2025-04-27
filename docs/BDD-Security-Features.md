@@ -326,8 +326,10 @@ _(Solo referencia para QA/negocio. El avance se marca únicamente en el checklis
 
   #### Checklist técnico (Subtareas): Notificar errores de validación específicos (formato)
 
-- [⏳] El sistema valida el formato de los datos de login antes de enviar la petición
-- [⏳] Si el email no tiene formato válido, muestra mensaje de error específico y no envía petición
+- [✅] El sistema valida el formato de los datos de login antes de enviar la petición  
+  - Cubierto por test: `test_login_fails_withInvalidEmailFormat_andDoesNotSendRequest`
+- [✅] Si el email no tiene formato válido, muestra mensaje de error específico y no envía petición  
+  - Cubierto por test: `test_login_fails_withInvalidEmailFormat_andDoesNotSendRequest`
 - [⏳] Si la contraseña está vacía o no cumple requisitos mínimos, muestra mensaje de error específico y no envía petición
 - [⏳] Los mensajes de error son claros, accesibles y están alineados con las guidelines de producto
 - [⏳] Los tests unitarios cubren todos los escenarios de validación de formato (email, contraseña, campos vacíos, etc)

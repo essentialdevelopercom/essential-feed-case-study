@@ -1,0 +1,21 @@
+name: EssentialFeed CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest
+      - name: Build and test (unit + integración)
+        run: |
+          xcodebuild test -project EssentialFeed/EssentialFeed.xcodeproj -scheme CI_macOS -destination 'platform=macOS' | xcpretty

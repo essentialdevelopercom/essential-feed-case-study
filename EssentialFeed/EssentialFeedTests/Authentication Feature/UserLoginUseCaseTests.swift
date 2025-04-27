@@ -1,10 +1,81 @@
+// CU: User Authentication - Login Validation
+// Checklist: All format validation scenarios must be covered by unit tests (empty email, whitespace email, empty password, whitespace password, short password, both fields empty)
+
 import EssentialFeed
 import XCTest
 
 final class UserLoginUseCaseTests: XCTestCase {
 	
-	// CU: Autenticación de Usuario
-	// Checklist: Validar formato de email y contraseña
+	func test_login_fails_withEmptyEmail_andDoesNotSendRequest() async {
+		let (sut, api, _, failureObserver) = makeSUT()
+		let credentials = LoginCredentials(email: "", password: "ValidPassword123")
+		let result = await sut.login(with: credentials)
+		switch result {
+			case .failure(let error):
+				XCTAssertEqual(error, .invalidEmailFormat, "Should return invalid email format error for empty email")
+				XCTAssertFalse(api.wasCalled, "API should NOT be called when email is empty")
+				XCTAssertTrue(failureObserver.didNotifyFailure, "Failure observer should be notified on validation error")
+			case .success:
+				XCTFail("Expected failure, got success")
+		}
+	}
+	
+	func test_login_fails_withWhitespaceOnlyEmail_andDoesNotSendRequest() async {
+		let (sut, api, _, failureObserver) = makeSUT()
+		let credentials = LoginCredentials(email: "    ", password: "ValidPassword123")
+		let result = await sut.login(with: credentials)
+		switch result {
+			case .failure(let error):
+				XCTAssertEqual(error, .invalidEmailFormat, "Should return invalid email format error for whitespace-only email")
+				XCTAssertFalse(api.wasCalled, "API should NOT be called when email is whitespace-only")
+				XCTAssertTrue(failureObserver.didNotifyFailure, "Failure observer should be notified on validation error")
+			case .success:
+				XCTFail("Expected failure, got success")
+		}
+	}
+	
+	func test_login_fails_withWhitespaceOnlyPassword_andDoesNotSendRequest() async {
+		let (sut, api, _, failureObserver) = makeSUT()
+		let credentials = LoginCredentials(email: "user@example.com", password: "     ")
+		let result = await sut.login(with: credentials)
+		switch result {
+			case .failure(let error):
+				XCTAssertEqual(error, .invalidPasswordFormat, "Should return invalid password format error for whitespace-only password")
+				XCTAssertFalse(api.wasCalled, "API should NOT be called when password is whitespace-only")
+				XCTAssertTrue(failureObserver.didNotifyFailure, "Failure observer should be notified on validation error")
+			case .success:
+				XCTFail("Expected failure, got success")
+		}
+	}
+	
+	func test_login_fails_withShortPassword_andDoesNotSendRequest() async {
+		let (sut, api, _, failureObserver) = makeSUT()
+		let credentials = LoginCredentials(email: "user@example.com", password: "12345")
+		let result = await sut.login(with: credentials)
+		switch result {
+			case .failure(let error):
+				XCTAssertEqual(error, .invalidPasswordFormat, "Should return invalid password format error for short password")
+				XCTAssertFalse(api.wasCalled, "API should NOT be called when password is too short")
+				XCTAssertTrue(failureObserver.didNotifyFailure, "Failure observer should be notified on validation error")
+			case .success:
+				XCTFail("Expected failure, got success")
+		}
+	}
+	
+	func test_login_fails_withEmptyEmailAndPassword_andDoesNotSendRequest() async {
+		let (sut, api, _, failureObserver) = makeSUT()
+		let credentials = LoginCredentials(email: "", password: "")
+		let result = await sut.login(with: credentials)
+		switch result {
+			case .failure(let error):
+				XCTAssertEqual(error, .invalidEmailFormat, "Should return invalid email format error when both fields are empty (email checked first)")
+				XCTAssertFalse(api.wasCalled, "API should NOT be called when both fields are empty")
+				XCTAssertTrue(failureObserver.didNotifyFailure, "Failure observer should be notified on validation error")
+			case .success:
+				XCTFail("Expected failure, got success")
+		}
+	}
+	
 	func test_login_fails_withInvalidEmailFormat_andDoesNotSendRequest() async {
 		let (sut, api, _, failureObserver) = makeSUT()
 		let invalidEmail = "usuario_invalido"  // sin '@'
@@ -25,8 +96,6 @@ final class UserLoginUseCaseTests: XCTestCase {
 		}
 	}
 	
-	// CU: Autenticación de Usuario
-	// Checklist: Validar formato de email y contraseña
 	func test_login_fails_withInvalidPassword_andDoesNotSendRequest() async {
 		let (sut, api, _, failureObserver) = makeSUT()
 		let invalidPassword = ""  // O prueba con una password demasiado corta
@@ -45,8 +114,6 @@ final class UserLoginUseCaseTests: XCTestCase {
 		}
 	}
 	
-	// CU: Autenticación de Usuario
-	// Checklist: Manejar error de credenciales y notificar fallo al observer
 	func test_login_fails_onInvalidCredentials() async throws {
 		let (sut, api, _, failureObserver) = makeSUT()
 		let credentials = LoginCredentials(email: "user@example.com", password: "wrongpass")
@@ -65,8 +132,6 @@ final class UserLoginUseCaseTests: XCTestCase {
 		}
 	}
 	
-	// CU: Autenticación de Usuario
-	// Checklist: Notificar éxito al observer y almacenar token seguro
 	func test_login_succeeds_onValidCredentialsAndServerResponse() async throws {
 		let (sut, api, successObserver, _) = makeSUT()
 		let credentials = LoginCredentials(email: "user@example.com", password: "password123")

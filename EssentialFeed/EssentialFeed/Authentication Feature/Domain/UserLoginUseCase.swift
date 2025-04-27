@@ -39,19 +39,23 @@ public final class UserLoginUseCase {
 	private let api: AuthAPI
 	private let successObserver: LoginSuccessObserver?
 	private let failureObserver: LoginFailureObserver?
+	
 	public init(api: AuthAPI, successObserver: LoginSuccessObserver? = nil, failureObserver: LoginFailureObserver? = nil) {
 		self.api = api
 		self.successObserver = successObserver
 		self.failureObserver = failureObserver
 	}
+	
 	public func login(with credentials: LoginCredentials) async -> Result<LoginResponse, LoginError> {
-        // Validación mínima de email (solo ejemplo: contiene '@')
-        guard credentials.email.contains("@") else {
+        let trimmedEmail = credentials.email.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedPassword = credentials.password.trimmingCharacters(in: .whitespacesAndNewlines)
+        // Email must not be empty and must contain '@'
+        guard !trimmedEmail.isEmpty, trimmedEmail.contains("@") else {
             self.failureObserver?.didFailLogin(error: .invalidEmailFormat)
             return .failure(.invalidEmailFormat)
         }
-        // Validación mínima de contraseña (no vacía y al menos 8 caracteres)
-        guard credentials.password.count >= 8 else {
+        // Password must not be empty, must have at least 8 characters, and not be only whitespace
+        guard !trimmedPassword.isEmpty, trimmedPassword.count >= 8 else {
             self.failureObserver?.didFailLogin(error: .invalidPasswordFormat)
             return .failure(.invalidPasswordFormat)
         }

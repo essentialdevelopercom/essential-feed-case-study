@@ -1,8 +1,8 @@
 // CU: LoginPresenter
-// Checklist:
-// - Notifies the view of login success
-// - Clears previous error messages on success
-// - Does not crash if views are nil
+// Technical Checklist (BDD):
+// 1. Notifies the view of login success
+// 2. Clears previous error messages on success
+// 3. Does not crash if successView or errorClearingView are nil
 
 import XCTest
 import EssentialFeed

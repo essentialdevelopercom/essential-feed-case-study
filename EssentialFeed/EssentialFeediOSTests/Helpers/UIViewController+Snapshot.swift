@@ -40,7 +40,9 @@ private final class SnapshotWindow: UIWindow {
 	private var configuration: SnapshotConfiguration = .iPhone(style: .light)
 	
 	convenience init(configuration: SnapshotConfiguration, root: UIViewController) {
-		self.init(frame: CGRect(origin: .zero, size: configuration.size))
+		let dummyScene = (UIWindowScene.self as NSObject.Type).init() as! UIWindowScene
+		self.init(windowScene: dummyScene)
+		self.frame = CGRect(origin: .zero, size: configuration.size)
 		self.configuration = configuration
 		self.layoutMargins = configuration.layoutMargins
 		self.rootViewController = root

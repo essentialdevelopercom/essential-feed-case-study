@@ -5,6 +5,7 @@
 import XCTest
 import EssentialFeed
 
+@MainActor
 class ImageCommentsLocalizationTests: XCTestCase {
 	
 	func test_localizedStrings_haveKeysAndValuesForAllSupportedLocalizations() {

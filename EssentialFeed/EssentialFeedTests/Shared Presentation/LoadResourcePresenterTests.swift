@@ -5,6 +5,7 @@
 import XCTest
 import EssentialFeed
 
+@MainActor
 class LoadResourcePresenterTests: XCTestCase {
 	
 	func test_init_doesNotSendMessagesToView() {

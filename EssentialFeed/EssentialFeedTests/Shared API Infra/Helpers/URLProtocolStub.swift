@@ -3,54 +3,41 @@
 //
 
 import Foundation
+import Synchronization
 
 class URLProtocolStub: URLProtocol {
 	private struct Stub {
-		let onStartLoading: (URLProtocolStub) -> Void
+		let data: Data?
+		let response: URLResponse?
+		let error: Error?
+		let shouldComplete: Bool
+		let onStartLoading: @MainActor (URLRequest) -> Void
 	}
 	
-	private static var _stub: Stub?
-	private static var stub: Stub? {
-		get { return queue.sync { _stub } }
-		set { queue.sync { _stub = newValue } }
-	}
-	
-	private static let queue = DispatchQueue(label: "URLProtocolStub.queue")
+	private static let stub = Mutex<Stub?>(nil)
 	
 	static func stub(data: Data?, response: URLResponse?, error: Error?) {
-		stub = Stub(onStartLoading: { urlProtocol in
-			guard let client = urlProtocol.client else { return }
-			
-			if let data {
-				client.urlProtocol(urlProtocol, didLoad: data)
-			}
-			
-			if let response {
-				client.urlProtocol(urlProtocol, didReceive: response, cacheStoragePolicy: .notAllowed)
-			}
-			
-			if let error {
-				client.urlProtocol(urlProtocol, didFailWithError: error)
-			} else {
-				client.urlProtocolDidFinishLoading(urlProtocol)
-			}
-		})
+		stub.withLock { stub in
+			stub = Stub(data: data, response: response, error: error, shouldComplete: true, onStartLoading: { _ in })
+		}
 	}
 	
-	static func observeRequests(observer: @escaping (URLRequest) -> Void) {
-		stub = Stub(onStartLoading: { urlProtocol in
-			urlProtocol.client?.urlProtocolDidFinishLoading(urlProtocol)
-			
-			observer(urlProtocol.request)
-		})
+	static func observeRequests(observer: @MainActor @escaping (URLRequest) -> Void) {
+		stub.withLock { stub in
+			stub = Stub(data: Data(), response: HTTPURLResponse(), error: nil, shouldComplete: true, onStartLoading: observer)
+		}
 	}
 	
-	static func onStartLoading(observer: @escaping () -> Void) {
-		stub = Stub(onStartLoading: { _ in observer() })
+	static func onStartLoading(observer: @MainActor @escaping () -> Void) {
+		stub.withLock { stub in
+			stub = Stub(data: nil, response: nil, error: nil, shouldComplete: false, onStartLoading: { _ in observer() })
+		}
 	}
 	
 	static func removeStub() {
-		stub = nil
+		stub.withLock { stub in
+			stub = nil
+		}
 	}
 	
 	override class func canInit(with request: URLRequest) -> Bool {
@@ -62,7 +49,27 @@ class URLProtocolStub: URLProtocol {
 	}
 	
 	override func startLoading() {
-		URLProtocolStub.stub?.onStartLoading(self)
+		guard let stub = URLProtocolStub.stub.withLock({ $0 }) else { return }
+
+		Task { @MainActor [request] in
+			stub.onStartLoading(request)
+		}
+		
+		guard let client = self.client else { return }
+		
+		if let data = stub.data {
+			client.urlProtocol(self, didLoad: data)
+		}
+		
+		if let response = stub.response {
+			client.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+		}
+		
+		if let error = stub.error {
+			client.urlProtocol(self, didFailWithError: error)
+		} else if stub.shouldComplete {
+			client.urlProtocolDidFinishLoading(self)
+		}
 	}
 	
 	override func stopLoading() {}

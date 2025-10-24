@@ -6,6 +6,7 @@ import UIKit
 import EssentialFeed
 import EssentialFeediOS
 
+@MainActor
 final class FeedViewAdapter: ResourceView {
 	private weak var controller: ListViewController?
 	private let imageLoader: (URL) -> FeedImageDataLoader.Publisher

@@ -4,11 +4,11 @@
 
 import Foundation
 
-public struct ImageCommentsViewModel {
+public struct ImageCommentsViewModel: Sendable {
 	public let comments: [ImageCommentViewModel]
 }
 
-public struct ImageCommentViewModel: Hashable {
+public struct ImageCommentViewModel: Hashable, Sendable {
 	public let message: String
 	public let date: String
 	public let username: String

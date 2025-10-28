@@ -5,10 +5,11 @@
 import XCTest
 import EssentialFeed
 
+@MainActor
 class EssentialFeedAPIEndToEndTests: XCTestCase {
 	
-	func test_endToEndTestServerGETFeedResult_matchesFixedTestAccountData() {
-		switch getFeedResult() {
+	func test_endToEndTestServerGETFeedResult_matchesFixedTestAccountData() async {
+		switch await getFeedResult() {
 		case let .success(imageFeed)?:
 			XCTAssertEqual(imageFeed.count, 8, "Expected 8 images in the test account image feed")
 			XCTAssertEqual(imageFeed[0], expectedImage(at: 0))
@@ -28,8 +29,8 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
 		}
 	}
 	
-	func test_endToEndTestServerGETFeedImageDataResult_matchesFixedTestAccountData() {
-		switch getFeedImageDataResult() {
+	func test_endToEndTestServerGETFeedImageDataResult_matchesFixedTestAccountData() async {
+		switch await getFeedImageDataResult() {
 		case let .success(data)?:
 			XCTAssertFalse(data.isEmpty, "Expected non-empty image data")
 			
@@ -43,45 +44,37 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
 	
 	// MARK: - Helpers
 	
-	private func getFeedResult(file: StaticString = #filePath, line: UInt = #line) -> Swift.Result<[FeedImage], Error>? {
+	private func getFeedResult(file: StaticString = #filePath, line: UInt = #line) async -> Swift.Result<[FeedImage], Error>? {
 		let client = ephemeralClient()
-		let exp = expectation(description: "Wait for load completion")
 		
-		var receivedResult: Swift.Result<[FeedImage], Error>?
-		client.get(from: feedTestServerURL) { result in
-			receivedResult = result.flatMap { (data, response) in
-				do {
-					return .success(try FeedItemsMapper.map(data, from: response))
-				} catch {
-					return .failure(error)
-				}
+		return await withCheckedContinuation { continuation in
+			client.get(from: feedTestServerURL) { result in
+				continuation.resume(returning:  result.flatMap { (data, response) in
+					do {
+						return .success(try FeedItemsMapper.map(data, from: response))
+					} catch {
+						return .failure(error)
+					}
+				})
 			}
-			exp.fulfill()
 		}
-		wait(for: [exp], timeout: 5.0)
-		
-		return receivedResult
 	}
 	
-	private func getFeedImageDataResult(file: StaticString = #filePath, line: UInt = #line) -> Result<Data, Error>? {
+	private func getFeedImageDataResult(file: StaticString = #filePath, line: UInt = #line) async -> Result<Data, Error>? {
 		let client = ephemeralClient()
 		let url = feedTestServerURL.appendingPathComponent("73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")
-		let exp = expectation(description: "Wait for load completion")
 		
-		var receivedResult: Result<Data, Error>?
-		client.get(from: url) { result in
-			receivedResult = result.flatMap { (data, response) in
-				do {
-					return .success(try FeedImageDataMapper.map(data, from: response))
-				} catch {
-					return .failure(error)
-				}
+		return await withCheckedContinuation { continuation in
+			client.get(from: url) { result in
+				continuation.resume(returning:  result.flatMap { (data, response) in
+					do {
+						return .success(try FeedImageDataMapper.map(data, from: response))
+					} catch {
+						return .failure(error)
+					}
+				})
 			}
-			exp.fulfill()
 		}
-		wait(for: [exp], timeout: 5.0)
-		
-		return receivedResult
 	}
 	
 	private var feedTestServerURL: URL {

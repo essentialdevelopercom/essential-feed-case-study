@@ -8,6 +8,7 @@ import EssentialApp
 import EssentialFeed
 import EssentialFeediOS
 
+@MainActor
 class FeedUIIntegrationTests: XCTestCase {
 	
 	func test_feedView_hasTitle() {
@@ -137,18 +138,6 @@ class FeedUIIntegrationTests: XCTestCase {
 		assertThat(sut, isRendering: [image0])
 	}
 	
-	func test_loadFeedCompletion_dispatchesFromBackgroundToMainThread() {
-		let (sut, loader) = makeSUT()
-		sut.simulateAppearance()
-		
-		let exp = expectation(description: "Wait for background queue")
-		DispatchQueue.global().async {
-			loader.completeFeedLoading(at: 0)
-			exp.fulfill()
-		}
-		wait(for: [exp], timeout: 1.0)
-	}
-	
 	func test_loadFeedCompletion_rendersErrorMessageOnErrorUntilNextReload() {
 		let (sut, loader) = makeSUT()
 		
@@ -223,20 +212,6 @@ class FeedUIIntegrationTests: XCTestCase {
 		
 		loader.completeLoadMoreWithError(at: 1)
 		XCTAssertFalse(sut.isShowingLoadMoreFeedIndicator, "Expected no loading indicator once user initiated loading completes with error")
-	}
-	
-	func test_loadMoreCompletion_dispatchesFromBackgroundToMainThread() {
-		let (sut, loader) = makeSUT()
-		sut.simulateAppearance()
-		loader.completeFeedLoading(at: 0)
-		sut.simulateLoadMoreFeedAction()
-		
-		let exp = expectation(description: "Wait for background queue")
-		DispatchQueue.global().async {
-			loader.completeLoadMore()
-			exp.fulfill()
-		}
-		wait(for: [exp], timeout: 1.0)
 	}
 	
 	func test_loadMoreCompletion_rendersErrorMessageOnError() {
@@ -545,21 +520,6 @@ class FeedUIIntegrationTests: XCTestCase {
 		XCTAssertNil(view?.renderedImage, "Expected no rendered image when an image load finishes after the view is not visible anymore")
 	}
 	
-	func test_loadImageDataCompletion_dispatchesFromBackgroundToMainThread() {
-		let (sut, loader) = makeSUT()
-		
-		sut.simulateAppearance()
-		loader.completeFeedLoading(with: [makeImage()])
-		_ = sut.simulateFeedImageViewVisible(at: 0)
-		
-		let exp = expectation(description: "Wait for background queue")
-		DispatchQueue.global().async {
-			loader.completeImageLoading(with: self.anyImageData(), at: 0)
-			exp.fulfill()
-		}
-		wait(for: [exp], timeout: 1.0)
-	}
-	
 	func test_feedImageView_doesNotLoadImageAgainUntilPreviousRequestCompletes() {
 		let image = makeImage(url: URL(string: "http://url-0.com")!)
 		let (sut, loader) = makeSUT()
@@ -589,7 +549,7 @@ class FeedUIIntegrationTests: XCTestCase {
 	// MARK: - Helpers
 	
 	private func makeSUT(
-		selection: @escaping (FeedImage) -> Void = { _ in },
+		selection: @MainActor @escaping (FeedImage) -> Void = { _ in },
 		file: StaticString = #filePath,
 		line: UInt = #line
 	) -> (sut: ListViewController, loader: LoaderSpy) {

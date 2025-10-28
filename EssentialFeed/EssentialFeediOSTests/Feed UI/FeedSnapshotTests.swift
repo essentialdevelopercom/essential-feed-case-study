@@ -6,6 +6,7 @@ import XCTest
 import EssentialFeediOS
 @testable import EssentialFeed
 
+@MainActor
 class FeedSnapshotTests: XCTestCase {
 	
 	func test_feedWithContent() {

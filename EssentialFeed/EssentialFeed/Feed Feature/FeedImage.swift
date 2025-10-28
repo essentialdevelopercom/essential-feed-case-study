@@ -4,7 +4,7 @@
 
 import Foundation
 
-public struct FeedImage: Hashable {
+public struct FeedImage: Hashable, Sendable {
 	public let id: UUID
 	public let description: String?
 	public let location: String?

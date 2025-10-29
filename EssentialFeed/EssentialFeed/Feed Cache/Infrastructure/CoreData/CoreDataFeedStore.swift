@@ -45,6 +45,11 @@ public final class CoreDataFeedStore: Sendable {
 		}
 	}
 	
+	public func perform<T>(_ action: @escaping @Sendable () throws -> T) async rethrows -> T {
+		try await context.perform(action)
+	}
+	
+	@available(*, deprecated, message: "Use async version instead")
 	public func perform(_ action: @Sendable @escaping () -> Void) {
 		context.perform(action)
 	}

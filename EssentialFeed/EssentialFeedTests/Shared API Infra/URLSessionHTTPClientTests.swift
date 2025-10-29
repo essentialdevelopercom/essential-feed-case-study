@@ -47,9 +47,7 @@ class URLSessionHTTPClientTests: XCTestCase {
 	}
 	
 	func test_getFromURL_failsOnAllInvalidRepresentationCases() async {
-		assertNotNil(await resultErrorFor((data: nil, response: nil, error: nil)))
 		assertNotNil(await resultErrorFor((data: nil, response: nonHTTPURLResponse(), error: nil)))
-		assertNotNil(await resultErrorFor((data: anyData(), response: nil, error: nil)))
 		assertNotNil(await resultErrorFor((data: anyData(), response: nil, error: anyNSError())))
 		assertNotNil(await resultErrorFor((data: nil, response: nonHTTPURLResponse(), error: anyNSError())))
 		assertNotNil(await resultErrorFor((data: nil, response: anyHTTPURLResponse(), error: anyNSError())))

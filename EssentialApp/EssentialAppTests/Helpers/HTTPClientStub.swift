@@ -16,6 +16,10 @@ class HTTPClientStub: HTTPClient {
 		self.stub = stub
 	}
 	
+	func get(from url: URL) async throws -> (Data, HTTPURLResponse) {
+		try stub(url).get()
+	}
+	
 	func get(from url: URL, completion: @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
 		completion(stub(url))
 		return Task()

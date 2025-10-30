@@ -9,14 +9,14 @@ import EssentialFeediOS
 @MainActor
 final class FeedViewAdapter: ResourceView {
 	private weak var controller: ListViewController?
-	private let imageLoader: (URL) -> FeedImageDataLoader.Publisher
+	private let imageLoader: (URL) async throws -> Data
 	private let selection: (FeedImage) -> Void
 	private let currentFeed: [FeedImage: CellController]
 	
-	private typealias ImageDataPresentationAdapter = LoadResourcePresentationAdapter<Data, WeakRefVirtualProxy<FeedImageCellController>>
+	private typealias ImageDataPresentationAdapter = AsyncLoadResourcePresentationAdapter<Data, WeakRefVirtualProxy<FeedImageCellController>>
 	private typealias LoadMorePresentationAdapter = LoadResourcePresentationAdapter<Paginated<FeedImage>, FeedViewAdapter>
 	
-	init(currentFeed: [FeedImage: CellController] = [:], controller: ListViewController, imageLoader: @escaping (URL) -> FeedImageDataLoader.Publisher, selection: @escaping (FeedImage) -> Void) {
+	init(currentFeed: [FeedImage: CellController] = [:], controller: ListViewController, imageLoader: @escaping (URL) async throws -> Data, selection: @escaping (FeedImage) -> Void) {
 		self.currentFeed = currentFeed
 		self.controller = controller
 		self.imageLoader = imageLoader
@@ -33,7 +33,7 @@ final class FeedViewAdapter: ResourceView {
 			}
 			
 			let adapter = ImageDataPresentationAdapter(loader: { [imageLoader] in
-				imageLoader(model.url)
+				try await imageLoader(model.url)
 			})
 			
 			let view = FeedImageCellController(

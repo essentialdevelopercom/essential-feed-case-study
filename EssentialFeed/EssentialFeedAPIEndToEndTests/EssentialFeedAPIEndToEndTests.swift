@@ -47,16 +47,11 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
 	private func getFeedResult(file: StaticString = #filePath, line: UInt = #line) async -> Swift.Result<[FeedImage], Error>? {
 		let client = ephemeralClient()
 		
-		return await withCheckedContinuation { continuation in
-			client.get(from: feedTestServerURL) { result in
-				continuation.resume(returning:  result.flatMap { (data, response) in
-					do {
-						return .success(try FeedItemsMapper.map(data, from: response))
-					} catch {
-						return .failure(error)
-					}
-				})
-			}
+		do {
+			let (data, response) = try await client.get(from: feedTestServerURL)
+			return .success(try FeedItemsMapper.map(data, from: response))
+		} catch {
+			return .failure(error)
 		}
 	}
 	
@@ -64,16 +59,11 @@ class EssentialFeedAPIEndToEndTests: XCTestCase {
 		let client = ephemeralClient()
 		let url = feedTestServerURL.appendingPathComponent("73A7F70C-75DA-4C2E-B5A3-EED40DC53AA6/image")
 		
-		return await withCheckedContinuation { continuation in
-			client.get(from: url) { result in
-				continuation.resume(returning:  result.flatMap { (data, response) in
-					do {
-						return .success(try FeedImageDataMapper.map(data, from: response))
-					} catch {
-						return .failure(error)
-					}
-				})
-			}
+		do {
+			let (data, response) = try await client.get(from: url)
+			return .success(try FeedImageDataMapper.map(data, from: response))
+		} catch {
+			return .failure(error)
 		}
 	}
 	

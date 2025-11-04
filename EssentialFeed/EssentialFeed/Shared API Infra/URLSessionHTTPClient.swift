@@ -12,28 +12,12 @@ public final class URLSessionHTTPClient: HTTPClient {
 	}
 	
 	private struct UnexpectedValuesRepresentation: Error {}
-	
-	private struct URLSessionTaskWrapper: HTTPClientTask {
-		let wrapped: URLSessionTask
 		
-		func cancel() {
-			wrapped.cancel()
+	public func get(from url: URL) async throws -> (Data, HTTPURLResponse) {
+		let (data, response) = try await session.data(from: url)
+		guard let response = response as? HTTPURLResponse else {
+			throw UnexpectedValuesRepresentation()
 		}
-	}
-	
-	public func get(from url: URL, completion: @Sendable @escaping (HTTPClient.Result) -> Void) -> HTTPClientTask {
-		let task = session.dataTask(with: url) { data, response, error in
-			completion(Result {
-				if let error = error {
-					throw error
-				} else if let data = data, let response = response as? HTTPURLResponse {
-					return (data, response)
-				} else {
-					throw UnexpectedValuesRepresentation()
-				}
-			})
-		}
-		task.resume()
-		return URLSessionTaskWrapper(wrapped: task)
-	}
+		return (data, response)
+	}	
 }

@@ -96,13 +96,52 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		}
 	}
 	
+	private func loadRemoteFeedWithLocalFallback() async throws -> Paginated<FeedImage> {
+		do {
+			let feed = try await loadAndCacheRemoteFeed()
+			return makeFirstPage(items: feed)
+		} catch {
+			let feed = try await loadLocalFeed()
+			return makeFirstPage(items: feed)
+		}
+	}
+	
+	private func loadAndCacheRemoteFeed() async throws -> [FeedImage] {
+		let feed = try await loadRemoteFeed()
+		await store.schedule { [store] in
+			let localFeedLoader = LocalFeedLoader(store: store, currentDate: Date.init)
+			try? localFeedLoader.save(feed)
+		}
+		return feed
+	}
+
+	private func loadLocalFeed() async throws -> [FeedImage] {
+		try await store.schedule { [store] in
+			let localFeedLoader = LocalFeedLoader(store: store, currentDate: Date.init)
+			return try localFeedLoader.load()
+		}
+	}
+	
+	private func loadRemoteFeed(after: FeedImage? = nil) async throws -> [FeedImage] {
+		let url = FeedEndpoint.get(after: after).url(baseURL: baseURL)
+		let (data, response) = try await httpClient.get(from: url)
+		return try FeedItemsMapper.map(data, from: response)
+	}
+	
 	private func makeRemoteFeedLoaderWithLocalFallback() -> AnyPublisher<Paginated<FeedImage>, Error> {
-		makeRemoteFeedLoader()
-			.receive(on: scheduler)
-			.caching(to: localFeedLoader)
-			.fallback(to: localFeedLoader.loadPublisher)
-			.map(makeFirstPage)
-			.eraseToAnyPublisher()
+		Deferred {
+			Future { completion in
+				Task.immediate {
+					do {
+						let feed = try await self.loadRemoteFeedWithLocalFallback()
+						completion(.success(feed))
+					} catch {
+						completion(.failure(error))
+					}
+				}
+			}
+		}
+		.eraseToAnyPublisher()
 	}
 	
 	private func makeRemoteLoadMoreLoader(last: FeedImage?) -> AnyPublisher<Paginated<FeedImage>, Error> {

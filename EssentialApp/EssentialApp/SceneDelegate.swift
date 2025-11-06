@@ -143,18 +143,35 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		}
 		.eraseToAnyPublisher()
 	}
+
+	private func loadMoreRemoteFeed(last: FeedImage?) async throws -> Paginated<FeedImage> {
+		async let cachedItems = try await loadLocalFeed()
+		async let newItems = try await loadRemoteFeed(after: last)
+		
+		let items = try await cachedItems + newItems
+		
+		await store.schedule { [store] in
+			let localFeedLoader = LocalFeedLoader(store: store, currentDate: Date.init)
+			try? localFeedLoader.save(items)
+		}
+		
+		return try await makePage(items: items, last: newItems.last)
+	}
 	
 	private func makeRemoteLoadMoreLoader(last: FeedImage?) -> AnyPublisher<Paginated<FeedImage>, Error> {
-		localFeedLoader.loadPublisher()
-			.zip(makeRemoteFeedLoader(after: last))
-			.map { (cachedItems, newItems) in
-				(cachedItems + newItems, newItems.last)
+		Deferred {
+			Future { completion in
+				Task.immediate {
+					do {
+						let feed = try await self.loadMoreRemoteFeed(last: last)
+						completion(.success(feed))
+					} catch {
+						completion(.failure(error))
+					}
+				}
 			}
-			.map(makePage)
-			.receive(on: scheduler)
-			.caching(to: localFeedLoader)
-			.subscribe(on: scheduler)
-			.eraseToAnyPublisher()
+		}
+		.eraseToAnyPublisher()
 	}
 	
 	private func makeRemoteFeedLoader(after: FeedImage? = nil) -> AnyPublisher<[FeedImage], Error> {

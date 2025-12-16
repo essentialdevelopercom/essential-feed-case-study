@@ -13,8 +13,8 @@ final class FeedViewAdapter: ResourceView {
 	private let selection: (FeedImage) -> Void
 	private let currentFeed: [FeedImage: CellController]
 	
-	private typealias ImageDataPresentationAdapter = AsyncLoadResourcePresentationAdapter<Data, WeakRefVirtualProxy<FeedImageCellController>>
-	private typealias LoadMorePresentationAdapter = AsyncLoadResourcePresentationAdapter<Paginated<FeedImage>, FeedViewAdapter>
+	private typealias ImageDataPresentationAdapter = LoadResourcePresentationAdapter<Data, WeakRefVirtualProxy<FeedImageCellController>>
+	private typealias LoadMorePresentationAdapter = LoadResourcePresentationAdapter<Paginated<FeedImage>, FeedViewAdapter>
 	
 	init(currentFeed: [FeedImage: CellController] = [:], controller: ListViewController, imageLoader: @escaping (URL) async throws -> Data, selection: @escaping (FeedImage) -> Void) {
 		self.currentFeed = currentFeed
